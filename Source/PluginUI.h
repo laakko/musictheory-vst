@@ -33,7 +33,8 @@
     Describe your class and how it works here!
                                                                     //[/Comments]
 */
-class PluginUI  : public Component
+class PluginUI  : public Component,
+                  public ComboBox::Listener
 {
 public:
     //==============================================================================
@@ -46,7 +47,15 @@ public:
 
     void paint (Graphics& g) override;
     void resized() override;
+    void comboBoxChanged (ComboBox* comboBoxThatHasChanged) override;
 
+    // Binary resources:
+    static const char* headstock_jpg;
+    static const int headstock_jpgSize;
+    static const char* headstock_jpg2;
+    static const int headstock_jpg2Size;
+    static const char* headstock_jpg3;
+    static const int headstock_jpg3Size;
 
 
 private:
@@ -54,6 +63,15 @@ private:
     //[/UserVariables]
 
     //==============================================================================
+    ScopedPointer<GroupComponent> groupComponent3;
+    ScopedPointer<GroupComponent> groupComponent2;
+    ScopedPointer<GroupComponent> groupComponent;
+    ScopedPointer<ComboBox> comboBox;
+    ScopedPointer<TextEditor> textEditor;
+    ScopedPointer<ComboBox> comboBox2;
+    ScopedPointer<ComboBox> comboBox3;
+    ScopedPointer<ComboBox> comboBox4;
+    ScopedPointer<ComboBox> comboBox5;
 
 
     //==============================================================================

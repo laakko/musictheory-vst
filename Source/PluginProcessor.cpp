@@ -163,7 +163,7 @@ bool MusicTheoryAudioProcessor::hasEditor() const
 
 AudioProcessorEditor* MusicTheoryAudioProcessor::createEditor()
 {
-    return new MusicTheoryAudioProcessorEditor (*this);
+    return new PluginEditor (*this);
 }
 
 //==============================================================================

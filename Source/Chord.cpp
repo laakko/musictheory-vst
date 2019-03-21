@@ -204,7 +204,7 @@ namespace acentric_core {
 
 		Note base = chord.getRoot();
 		std::vector<Interval> pitches = chord.getPitches();
-		os << "Chord:";
+		//os << "Chord:";
 
 		for (auto pitch : pitches) {
 			os << " " << (base + pitch);

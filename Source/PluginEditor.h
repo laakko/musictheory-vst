@@ -52,6 +52,8 @@ public:
 
     //==============================================================================
     //[UserMethods]     -- You can add your own custom methods in this section.
+	void updateScale();
+	void updateChord();
     //[/UserMethods]
 
     void paint (Graphics& g) override;
@@ -62,6 +64,9 @@ public:
 
 private:
     //[UserVariables]   -- You can add your own custom variables in this section.
+	std::vector<juce::ScopedPointer<juce::TextEditor>> texteditors;
+	std::vector<juce::ScopedPointer<juce::TextEditor>> guitarnotes; // Vector to store guitar neck notes
+
     //[/UserVariables]
 
     //==============================================================================
@@ -73,9 +78,11 @@ private:
     ScopedPointer<TextEditor> textEditor;
     ScopedPointer<ComboBox> comboBox2;
     ScopedPointer<ComboBox> scaleMode;
-    ScopedPointer<ComboBox> comboBox4;
-    ScopedPointer<ComboBox> comboBox5;
+    ScopedPointer<ComboBox> chordRoot;
+    ScopedPointer<ComboBox> chordType;
     ScopedPointer<TextEditor> textEditor2;
+    ScopedPointer<TextEditor> txtScale;
+    ScopedPointer<TextEditor> txtChord;
 
 
     //==============================================================================

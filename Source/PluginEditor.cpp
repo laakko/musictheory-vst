@@ -25,15 +25,15 @@
 
 //[MiscUserDefs] You can add your own user definitions and misc code here...
 using namespace acentric_core;
-Note scaleroot;
-Note chordroot;
-BasicScale scaletype;
-BasicChord chordtype;
+Note scaleroot = Note{ BasicNote::C };
+Note chordroot = Note{ BasicNote::C };
+BasicScale scaletype = BasicScale{ BasicScale::Major };
+BasicChord chordtype = BasicChord{ BasicChord::maj };
 //[/MiscUserDefs]
 
 //==============================================================================
 PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
-    : AudioProcessorEditor (&p)
+    : AudioProcessorEditor (&p), processor (p)
 {
     //[Constructor_pre] You can add your own custom stuff here..
 
@@ -75,7 +75,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     scaleKey->addListener (this);
 
     addAndMakeVisible (textEditor = new TextEditor ("new text editor"));
-    textEditor->setMultiLine (true);
+    textEditor->setMultiLine (false);
     textEditor->setReturnKeyStartsNewLine (false);
     textEditor->setReadOnly (true);
     textEditor->setScrollbarsShown (true);
@@ -87,7 +87,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     addAndMakeVisible (comboBox2 = new ComboBox ("new combo box"));
     comboBox2->setEditableText (false);
     comboBox2->setJustificationType (Justification::centredLeft);
-    comboBox2->setTextWhenNothingSelected (TRANS("Showing.."));
+    comboBox2->setTextWhenNothingSelected (TRANS("Notes"));
     comboBox2->setTextWhenNoChoicesAvailable (TRANS("(no choices)"));
     comboBox2->addItem (TRANS("Notes"), 1);
     comboBox2->addItem (TRANS("Scales"), 2);
@@ -102,48 +102,45 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     scaleMode->addItem (TRANS("Major"), 1);
     scaleMode->addItem (TRANS("Minor"), 2);
     scaleMode->addItem (TRANS("Harmonic Minor"), 3);
-    scaleMode->addItem (TRANS("Melodic Minor"), 4);
-    scaleMode->addItem (TRANS("Blues"), 5);
-    scaleMode->addItem (TRANS("Minor Pentatonic"), 6);
-    scaleMode->addItem (TRANS("Major Pentatonic"), 7);
-    scaleMode->addItem (TRANS("Dorian"), 8);
-    scaleMode->addItem (TRANS("Lydian"), 9);
-    scaleMode->addItem (TRANS("Mixolydian"), 10);
-    scaleMode->addItem (TRANS("Phrygian"), 11);
+    scaleMode->addItem (TRANS("Blues"), 4);
+    scaleMode->addItem (TRANS("Minor Pentatonic"), 5);
+    scaleMode->addItem (TRANS("Major Pentatonic"), 6);
+    scaleMode->addItem (TRANS("Dorian"), 7);
+    scaleMode->addItem (TRANS("Lydian"), 8);
+    scaleMode->addItem (TRANS("Mixolydian"), 9);
+    scaleMode->addItem (TRANS("Phrygian"), 10);
     scaleMode->addListener (this);
 
-    addAndMakeVisible (comboBox4 = new ComboBox ("new combo box"));
-    comboBox4->setEditableText (false);
-    comboBox4->setJustificationType (Justification::centredLeft);
-    comboBox4->setTextWhenNothingSelected (TRANS("root"));
-    comboBox4->setTextWhenNoChoicesAvailable (TRANS("(no choices)"));
-    comboBox4->addItem (TRANS("C"), 1);
-    comboBox4->addItem (TRANS("C#"), 2);
-    comboBox4->addItem (TRANS("D"), 3);
-    comboBox4->addItem (TRANS("D#"), 4);
-    comboBox4->addItem (TRANS("E"), 5);
-    comboBox4->addItem (TRANS("F"), 6);
-    comboBox4->addItem (TRANS("F#"), 7);
-    comboBox4->addItem (TRANS("G"), 8);
-    comboBox4->addItem (TRANS("G#"), 9);
-    comboBox4->addItem (TRANS("A"), 10);
-    comboBox4->addItem (TRANS("A#"), 11);
-    comboBox4->addItem (TRANS("B"), 12);
-    comboBox4->addListener (this);
+    addAndMakeVisible (chordRoot = new ComboBox ("new combo box"));
+    chordRoot->setEditableText (false);
+    chordRoot->setJustificationType (Justification::centredLeft);
+    chordRoot->setTextWhenNothingSelected (TRANS("root"));
+    chordRoot->setTextWhenNoChoicesAvailable (TRANS("(no choices)"));
+    chordRoot->addItem (TRANS("C"), 1);
+    chordRoot->addItem (TRANS("C#"), 2);
+    chordRoot->addItem (TRANS("D"), 3);
+    chordRoot->addItem (TRANS("D#"), 4);
+    chordRoot->addItem (TRANS("E"), 5);
+    chordRoot->addItem (TRANS("F"), 6);
+    chordRoot->addItem (TRANS("F#"), 7);
+    chordRoot->addItem (TRANS("G"), 8);
+    chordRoot->addItem (TRANS("G#"), 9);
+    chordRoot->addItem (TRANS("A"), 10);
+    chordRoot->addItem (TRANS("A#"), 11);
+    chordRoot->addItem (TRANS("B"), 12);
+    chordRoot->addListener (this);
 
-    addAndMakeVisible (comboBox5 = new ComboBox ("new combo box"));
-    comboBox5->setEditableText (false);
-    comboBox5->setJustificationType (Justification::centredLeft);
-    comboBox5->setTextWhenNothingSelected (TRANS("type"));
-    comboBox5->setTextWhenNoChoicesAvailable (TRANS("(no choices)"));
-    comboBox5->addItem (TRANS("m"), 1);
-    comboBox5->addItem (TRANS("M"), 2);
-    comboBox5->addItem (TRANS("aug"), 3);
-    comboBox5->addItem (TRANS("7"), 4);
-    comboBox5->addItem (TRANS("M7"), 5);
-    comboBox5->addItem (TRANS("m7"), 6);
-    comboBox5->addItem (TRANS("Hendrix"), 7);
-    comboBox5->addListener (this);
+    addAndMakeVisible (chordType = new ComboBox ("new combo box"));
+    chordType->setEditableText (false);
+    chordType->setJustificationType (Justification::centredLeft);
+    chordType->setTextWhenNothingSelected (TRANS("type"));
+    chordType->setTextWhenNoChoicesAvailable (TRANS("(no choices)"));
+    chordType->addItem (TRANS("m"), 1);
+    chordType->addItem (TRANS("M"), 2);
+    chordType->addItem (TRANS("aug"), 3);
+    chordType->addItem (TRANS("M7"), 4);
+    chordType->addItem (TRANS("m7"), 5);
+    chordType->addListener (this);
 
     addAndMakeVisible (textEditor2 = new TextEditor ("new text editor"));
     textEditor2->setMultiLine (true);
@@ -154,6 +151,26 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     textEditor2->setPopupMenuEnabled (true);
     textEditor2->setColour (TextEditor::backgroundColourId, Colour (0xff508385));
     textEditor2->setText (TRANS("write anything here ...\n"));
+
+    addAndMakeVisible (txtScale = new TextEditor ("new text editor"));
+    txtScale->setMultiLine (true);
+    txtScale->setReturnKeyStartsNewLine (false);
+    txtScale->setReadOnly (true);
+    txtScale->setScrollbarsShown (false);
+    txtScale->setCaretVisible (false);
+    txtScale->setPopupMenuEnabled (false);
+    txtScale->setColour (TextEditor::backgroundColourId, Colours::cadetblue);
+    txtScale->setText (String());
+
+    addAndMakeVisible (txtChord = new TextEditor ("new text editor"));
+    txtChord->setMultiLine (true);
+    txtChord->setReturnKeyStartsNewLine (false);
+    txtChord->setReadOnly (true);
+    txtChord->setScrollbarsShown (false);
+    txtChord->setCaretVisible (false);
+    txtChord->setPopupMenuEnabled (false);
+    txtChord->setColour (TextEditor::backgroundColourId, Colours::cadetblue);
+    txtChord->setText (String());
 
 
     //[UserPreSize]
@@ -179,9 +196,11 @@ PluginEditor::~PluginEditor()
     textEditor = nullptr;
     comboBox2 = nullptr;
     scaleMode = nullptr;
-    comboBox4 = nullptr;
-    comboBox5 = nullptr;
+    chordRoot = nullptr;
+    chordType = nullptr;
     textEditor2 = nullptr;
+    txtScale = nullptr;
+    txtChord = nullptr;
 
 
     //[Destructor]. You can add your own custom destruction code here..
@@ -1365,9 +1384,11 @@ void PluginEditor::resized()
     textEditor->setBounds (608, 384, 150, 24);
     comboBox2->setBounds (592, 88, 150, 24);
     scaleMode->setBounds (208, 304, 168, 24);
-    comboBox4->setBounds (96, 136, 64, 24);
-    comboBox5->setBounds (168, 136, 88, 24);
+    chordRoot->setBounds (96, 136, 64, 24);
+    chordType->setBounds (168, 136, 88, 24);
     textEditor2->setBounds (56, 440, 1056, 240);
+    txtScale->setBounds (96, 352, 272, 48);
+    txtChord->setBounds (96, 176, 272, 48);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -1378,45 +1399,150 @@ void PluginEditor::comboBoxChanged (ComboBox* comboBoxThatHasChanged)
     //[/UsercomboBoxChanged_Pre]
 
     if (comboBoxThatHasChanged == scaleKey)
-    {	
+    {
         //[UserComboBoxCode_scaleKey] -- add your combo box handling code here..
 
 		std::string scalekeystr = scaleKey->getText().toStdString();
 		char scalekeychar = scalekeystr[0];
-		
+
 		int offset = 0;
 		if (scalekeystr[1] != NULL) {
 			offset = 1;
 		}
 
 		scaleroot = Note{ scalekeychar, offset,4 };
+		updateScale();
 
-		std::ostringstream stream;
-		stream << scaleroot << std::endl;
-		std::string streamstr = stream.str();
-		textEditor->setText(streamstr);
-		
         //[/UserComboBoxCode_scaleKey]
     }
     else if (comboBoxThatHasChanged == comboBox2)
     {
         //[UserComboBoxCode_comboBox2] -- add your combo box handling code here..
+		if (comboBox2->getText() == "Scales") {
+			// Show only notes that are in the chosen scale
+			texteditors.at(0)->setText(TRANS("scales"));
+		}
+		else if (comboBox2->getText() == "Chords") {
+			// Show only notes that are in the chosen chords
+			texteditors.at(0)->setText(TRANS("chords"));
+		}
+		else if (comboBox2->getText() == "Notes") {
+			// Show all notes
+			texteditors.at(0)->setText(TRANS("notes"));
+		}
         //[/UserComboBoxCode_comboBox2]
     }
     else if (comboBoxThatHasChanged == scaleMode)
     {
         //[UserComboBoxCode_scaleMode] -- add your combo box handling code here..
+		std::string scalemodestr = scaleMode->getText().toStdString();
+
+		if (scalemodestr == "Major") {
+			scaletype = BasicScale{ BasicScale::Major };
+			updateScale();
+		}
+		else if (scalemodestr == "Minor") {
+			scaletype = BasicScale{ BasicScale::Minor };
+			updateScale();
+		}
+		else if (scalemodestr == "Harmonic Minor") {
+			scaletype = BasicScale{ BasicScale::HarmonicMinor };
+			updateScale();
+		}
+		else if (scalemodestr == "Minor Pentatonic") {
+			scaletype = BasicScale{ BasicScale::MinorPentatonic };
+			updateScale();
+		}
+		else if (scalemodestr == "Major Pentatonic") {
+			scaletype = BasicScale{ BasicScale::MajorPentatonic };
+			updateScale();
+		}
+		else if (scalemodestr == "Blues") {
+			scaletype = BasicScale{ BasicScale::Blues };
+			updateScale();
+		}
+		else if (scalemodestr == "Dorian") {
+			scaletype = BasicScale{ BasicScale::Dorian };
+			updateScale();
+		}
+		else if (scalemodestr == "Lydian") {
+			scaletype = BasicScale{ BasicScale::Lydian};
+			updateScale();
+		}
+		else if (scalemodestr == "Mixolydian") {
+			scaletype = BasicScale{ BasicScale::Mixolydian };
+			updateScale();
+		}
+		else if (scalemodestr == "Phrygian") {
+			scaletype = BasicScale{ BasicScale::Phrygian};
+			updateScale();
+		}
+		else if (scalemodestr == "Aeolian") {
+			scaletype = BasicScale{ BasicScale::Aeolian };
+			updateScale();
+		}
+		else if (scalemodestr == "Ionian") {
+			scaletype = BasicScale{ BasicScale::Ionian};
+			updateScale();
+		}
+		else if (scalemodestr == "Locrian") {
+			scaletype = BasicScale{ BasicScale::Locrian};
+			updateScale();
+		}
+		else if (scalemodestr == "Metallica") {
+			scaletype = BasicScale{ BasicScale::Metallica };
+			updateScale();
+		}
+		else {
+			txtScale->setText(TRANS("invalid scale type"));
+		}
+
         //[/UserComboBoxCode_scaleMode]
     }
-    else if (comboBoxThatHasChanged == comboBox4)
+    else if (comboBoxThatHasChanged == chordRoot)
     {
-        //[UserComboBoxCode_comboBox4] -- add your combo box handling code here..
-        //[/UserComboBoxCode_comboBox4]
+        //[UserComboBoxCode_chordRoot] -- add your combo box handling code here..
+		std::string chordkeystr = chordRoot->getText().toStdString();
+		char chordkeychar = chordkeystr[0];
+
+		int offset = 0;
+		if (chordkeystr[1] != NULL) {
+			offset = 1;
+		}
+
+		chordroot = Note{ chordkeychar, offset,4 };
+		updateChord();
+        //[/UserComboBoxCode_chordRoot]
     }
-    else if (comboBoxThatHasChanged == comboBox5)
+    else if (comboBoxThatHasChanged == chordType)
     {
-        //[UserComboBoxCode_comboBox5] -- add your combo box handling code here..
-        //[/UserComboBoxCode_comboBox5]
+        //[UserComboBoxCode_chordType] -- add your combo box handling code here..
+		std::string chordtypestr = chordType->getText().toStdString();
+
+		if (chordtypestr == "M") {
+			chordtype = BasicChord{ BasicChord::maj };
+			updateChord();
+		}
+		else if (chordtypestr == "m") {
+			chordtype = BasicChord{ BasicChord::min};
+			updateChord();
+		}
+		else if (chordtypestr == "M7") {
+			chordtype = BasicChord{ BasicChord::maj7 };
+			updateChord();
+		}
+		else if (chordtypestr == "m7") {
+			chordtype = BasicChord{ BasicChord::min7 };
+			updateChord();
+		}
+		else if (chordtypestr == "aug") {
+			chordtype = BasicChord{ BasicChord::aug };
+			updateChord();
+		}
+		else {
+			txtChord->setText(TRANS("Invalid chord type"));
+		}
+        //[/UserComboBoxCode_chordType]
     }
 
     //[UsercomboBoxChanged_Post]
@@ -1426,6 +1552,19 @@ void PluginEditor::comboBoxChanged (ComboBox* comboBoxThatHasChanged)
 
 
 //[MiscUserCode] You can add your own definitions of your custom methods or any other code here...
+void PluginEditor::updateScale() {
+	std::ostringstream stream;
+	stream << Scale(scaleroot, scaletype) << std::endl;
+	std::string scalestr = stream.str();
+	txtScale->setText(scalestr);
+}
+
+void PluginEditor::updateChord() {
+	std::ostringstream stream;
+	stream << Chord(chordroot, chordtype) << std::endl;
+	std::string chordstr = stream.str();
+	txtChord->setText(chordstr);
+}
 //[/MiscUserCode]
 
 
@@ -1730,24 +1869,32 @@ BEGIN_JUCER_METADATA
               scrollbars="1" caret="0" popupmenu="1"/>
   <COMBOBOX name="new combo box" id="28c57b6ee300da4c" memberName="comboBox2"
             virtualName="" explicitFocusOrder="0" pos="592 88 150 24" editable="0"
-            layout="33" items="Notes&#10;Scales&#10;Chords" textWhenNonSelected="Showing.."
+            layout="33" items="Notes&#10;Scales&#10;Chords" textWhenNonSelected="Notes"
             textWhenNoItems="(no choices)"/>
   <COMBOBOX name="new combo box" id="1c5c8e2cb3a97fca" memberName="scaleMode"
             virtualName="" explicitFocusOrder="0" pos="208 304 168 24" editable="0"
-            layout="33" items="Major&#10;Minor&#10;Harmonic Minor&#10;Melodic Minor&#10;Blues&#10;Minor Pentatonic&#10;Major Pentatonic&#10;Dorian&#10;Lydian&#10;Mixolydian&#10;Phrygian"
+            layout="33" items="Major&#10;Minor&#10;Harmonic Minor&#10;Blues&#10;Minor Pentatonic&#10;Major Pentatonic&#10;Dorian&#10;Lydian&#10;Mixolydian&#10;Phrygian"
             textWhenNonSelected="none" textWhenNoItems="(no choices)"/>
-  <COMBOBOX name="new combo box" id="5df79c76e34b7dfe" memberName="comboBox4"
+  <COMBOBOX name="new combo box" id="5df79c76e34b7dfe" memberName="chordRoot"
             virtualName="" explicitFocusOrder="0" pos="96 136 64 24" editable="0"
             layout="33" items="C&#10;C#&#10;D&#10;D#&#10;E&#10;F&#10;F#&#10;G&#10;G#&#10;A&#10;A#&#10;B"
             textWhenNonSelected="root" textWhenNoItems="(no choices)"/>
-  <COMBOBOX name="new combo box" id="f1a298a1b78330af" memberName="comboBox5"
+  <COMBOBOX name="new combo box" id="f1a298a1b78330af" memberName="chordType"
             virtualName="" explicitFocusOrder="0" pos="168 136 88 24" editable="0"
-            layout="33" items="m&#10;M&#10;aug&#10;7&#10;M7&#10;m7&#10;Hendrix"
-            textWhenNonSelected="type" textWhenNoItems="(no choices)"/>
+            layout="33" items="m&#10;M&#10;aug&#10;M7&#10;m7" textWhenNonSelected="type"
+            textWhenNoItems="(no choices)"/>
   <TEXTEDITOR name="new text editor" id="61e50ec73da81d20" memberName="textEditor2"
               virtualName="" explicitFocusOrder="0" pos="56 440 1056 240" bkgcol="ff508385"
               initialText="write anything here ...&#10;" multiline="1" retKeyStartsLine="1"
               readonly="0" scrollbars="1" caret="1" popupmenu="1"/>
+  <TEXTEDITOR name="new text editor" id="f01c2b8f289a8b31" memberName="txtScale"
+              virtualName="" explicitFocusOrder="0" pos="96 352 272 48" bkgcol="ff5f9ea0"
+              initialText="" multiline="1" retKeyStartsLine="0" readonly="1"
+              scrollbars="0" caret="0" popupmenu="0"/>
+  <TEXTEDITOR name="new text editor" id="e8c8a7592443a9c8" memberName="txtChord"
+              virtualName="" explicitFocusOrder="0" pos="96 176 272 48" bkgcol="ff5f9ea0"
+              initialText="" multiline="1" retKeyStartsLine="0" readonly="1"
+              scrollbars="0" caret="0" popupmenu="0"/>
 </JUCER_COMPONENT>
 
 END_JUCER_METADATA

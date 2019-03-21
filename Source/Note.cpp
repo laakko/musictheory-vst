@@ -217,9 +217,6 @@ namespace acentric_core {
 			os << "(#^" << note.getOffset() << ")";
 		}
 
-		// Print octave
-		os << note.getOctave();
-
 		return os;
 	}
 

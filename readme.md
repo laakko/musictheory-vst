@@ -1,6 +1,6 @@
 ### Music Theory Helper VST - MTHVST 
 
-* Work in progress *
+_(Work in progress)_
 
 C++/Juce VST plugin, which contains handy music theory helpers especially for guitar players: 
 - Scales

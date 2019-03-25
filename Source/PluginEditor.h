@@ -54,6 +54,10 @@ public:
     //[UserMethods]     -- You can add your own custom methods in this section.
 	void updateScale();
 	void updateChord();
+	void updateGuitarNeckScales();
+	void updateGuitarNeckChords();
+	void resetGuitarNotes();
+
 	juce::String simplifyNotes(std::string str);
     //[/UserMethods]
 
@@ -64,6 +68,8 @@ public:
     // Binary resources:
     static const char* screenshot_20190321Blank20Pdf_png;
     static const int screenshot_20190321Blank20Pdf_pngSize;
+    static const char* gneck_inverted_png;
+    static const int gneck_inverted_pngSize;
 
 
 private:
@@ -79,7 +85,6 @@ private:
     ScopedPointer<GroupComponent> groupComponent3;
     ScopedPointer<GroupComponent> groupComponent2;
     ScopedPointer<ComboBox> scaleKey;
-    ScopedPointer<TextEditor> textEditor;
     ScopedPointer<ComboBox> comboBox2;
     ScopedPointer<ComboBox> scaleMode;
     ScopedPointer<ComboBox> chordRoot;
@@ -159,7 +164,55 @@ private:
     ScopedPointer<TextEditor> E;
     ScopedPointer<TextEditor> B5;
     ScopedPointer<TextEditor> E6;
-    Image cachedImage_screenshot_20190321Blank20Pdf_png_1;
+    ScopedPointer<TextEditor> GS7;
+    ScopedPointer<TextEditor> DS7;
+    ScopedPointer<TextEditor> AS7;
+    ScopedPointer<TextEditor> F6;
+    ScopedPointer<TextEditor> C7;
+    ScopedPointer<TextEditor> F7;
+    ScopedPointer<TextEditor> A7;
+    ScopedPointer<TextEditor> E7;
+    ScopedPointer<TextEditor> B7;
+    ScopedPointer<TextEditor> FS7;
+    ScopedPointer<TextEditor> CS7;
+    ScopedPointer<TextEditor> FS8;
+    ScopedPointer<TextEditor> AS8;
+    ScopedPointer<TextEditor> F8;
+    ScopedPointer<TextEditor> C8;
+    ScopedPointer<TextEditor> G7;
+    ScopedPointer<TextEditor> D7;
+    ScopedPointer<TextEditor> G8;
+    ScopedPointer<TextEditor> B8;
+    ScopedPointer<TextEditor> FS9;
+    ScopedPointer<TextEditor> CS8;
+    ScopedPointer<TextEditor> GS8;
+    ScopedPointer<TextEditor> DS8;
+    ScopedPointer<TextEditor> GS9;
+    ScopedPointer<TextEditor> C9;
+    ScopedPointer<TextEditor> G9;
+    ScopedPointer<TextEditor> D8;
+    ScopedPointer<TextEditor> A8;
+    ScopedPointer<TextEditor> E8;
+    ScopedPointer<TextEditor> A9;
+    ScopedPointer<TextEditor> CS9;
+    ScopedPointer<TextEditor> GS10;
+    ScopedPointer<TextEditor> DS9;
+    ScopedPointer<TextEditor> AS9;
+    ScopedPointer<TextEditor> F9;
+    ScopedPointer<TextEditor> AS10;
+    ScopedPointer<TextEditor> D9;
+    ScopedPointer<TextEditor> A10;
+    ScopedPointer<TextEditor> E9;
+    ScopedPointer<TextEditor> B9;
+    ScopedPointer<TextEditor> FS10;
+    ScopedPointer<TextEditor> B10;
+    ScopedPointer<TextEditor> DS10;
+    ScopedPointer<TextEditor> AS11;
+    ScopedPointer<TextEditor> F10;
+    ScopedPointer<TextEditor> C10;
+    ScopedPointer<TextEditor> G10;
+    ScopedPointer<TextEditor> C11;
+    Image cachedImage_gneck_inverted_png_1;
 
 
     //==============================================================================

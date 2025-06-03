@@ -57,23 +57,23 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
 
     //[/Constructor_pre]
 
-    addAndMakeVisible (groupComponent = new GroupComponent ("new group",
-                                                            TRANS("guitar")));
+    addAndMakeVisible (*(groupComponent = std::make_unique<GroupComponent> ("new group",
+                                                            TRANS("guitar"))));
     groupComponent->setColour (GroupComponent::outlineColourId, Colours::aquamarine);
 
-    addAndMakeVisible (groupComponent4 = new GroupComponent ("new group",
-                                                             TRANS("scales")));
+    addAndMakeVisible (*(groupComponent4 = std::make_unique<GroupComponent> ("new group",
+                                                             TRANS("scales"))));
     groupComponent4->setColour (GroupComponent::outlineColourId, Colours::aquamarine);
 
-    addAndMakeVisible (groupComponent3 = new GroupComponent ("new group",
-                                                             TRANS("notepad")));
+    addAndMakeVisible (*(groupComponent3 = std::make_unique<GroupComponent> ("new group",
+                                                             TRANS("notepad"))));
     groupComponent3->setColour (GroupComponent::outlineColourId, Colours::aquamarine);
 
-    addAndMakeVisible (groupComponent2 = new GroupComponent ("new group",
-                                                             TRANS("chords")));
+    addAndMakeVisible (*(groupComponent2 = std::make_unique<GroupComponent> ("new group",
+                                                             TRANS("chords"))));
     groupComponent2->setColour (GroupComponent::outlineColourId, Colours::aquamarine);
 
-    addAndMakeVisible (scaleKey = new ComboBox ("new combo box"));
+    addAndMakeVisible (*(scaleKey = std::make_unique<ComboBox> ("new combo box")));
     scaleKey->setEditableText (false);
     scaleKey->setJustificationType (Justification::centredLeft);
     scaleKey->setTextWhenNothingSelected (TRANS("none"));
@@ -92,7 +92,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     scaleKey->addItem (TRANS("B"), 12);
     scaleKey->addListener (this);
 
-    addAndMakeVisible (comboBox2 = new ComboBox ("new combo box"));
+    addAndMakeVisible (*(comboBox2 = std::make_unique<ComboBox> ("new combo box")));
     comboBox2->setEditableText (false);
     comboBox2->setJustificationType (Justification::centredLeft);
     comboBox2->setTextWhenNothingSelected (TRANS("Notes"));
@@ -102,7 +102,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     comboBox2->addItem (TRANS("Chords"), 3);
     comboBox2->addListener (this);
 
-    addAndMakeVisible (scaleMode = new ComboBox ("new combo box"));
+    addAndMakeVisible (*(scaleMode = std::make_unique<ComboBox> ("new combo box")));
     scaleMode->setEditableText (false);
     scaleMode->setJustificationType (Justification::centredLeft);
     scaleMode->setTextWhenNothingSelected (TRANS("none"));
@@ -119,7 +119,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     scaleMode->addItem (TRANS("Phrygian"), 10);
     scaleMode->addListener (this);
 
-    addAndMakeVisible (chordRoot = new ComboBox ("new combo box"));
+    addAndMakeVisible (*(chordRoot = std::make_unique<ComboBox> ("new combo box")));
     chordRoot->setEditableText (false);
     chordRoot->setJustificationType (Justification::centredLeft);
     chordRoot->setTextWhenNothingSelected (TRANS("root"));
@@ -138,7 +138,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     chordRoot->addItem (TRANS("B"), 12);
     chordRoot->addListener (this);
 
-    addAndMakeVisible (chordType = new ComboBox ("new combo box"));
+    addAndMakeVisible (*(chordType = std::make_unique<ComboBox> ("new combo box")));
     chordType->setEditableText (false);
     chordType->setJustificationType (Justification::centredLeft);
     chordType->setTextWhenNothingSelected (TRANS("type"));
@@ -150,7 +150,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     chordType->addItem (TRANS("m7"), 5);
     chordType->addListener (this);
 
-    addAndMakeVisible (textEditor2 = new TextEditor ("new text editor"));
+    addAndMakeVisible (*(textEditor2 = std::make_unique<TextEditor> ("new text editor")));
     textEditor2->setMultiLine (true);
     textEditor2->setReturnKeyStartsNewLine (true);
     textEditor2->setReadOnly (false);
@@ -160,7 +160,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     textEditor2->setColour (TextEditor::backgroundColourId, Colour (0xff508385));
     textEditor2->setText (TRANS("write anything here ...\n"));
 
-    addAndMakeVisible (txtScale = new TextEditor ("new text editor"));
+    addAndMakeVisible (*(txtScale = std::make_unique<TextEditor> ("new text editor")));
     txtScale->setMultiLine (true);
     txtScale->setReturnKeyStartsNewLine (false);
     txtScale->setReadOnly (true);
@@ -170,7 +170,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     txtScale->setColour (TextEditor::backgroundColourId, Colours::cadetblue);
     txtScale->setText (String());
 
-    addAndMakeVisible (txtChord = new TextEditor ("new text editor"));
+    addAndMakeVisible (*(txtChord = std::make_unique<TextEditor> ("new text editor")));
     txtChord->setMultiLine (true);
     txtChord->setReturnKeyStartsNewLine (false);
     txtChord->setReadOnly (true);
@@ -180,7 +180,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     txtChord->setColour (TextEditor::backgroundColourId, Colours::cadetblue);
     txtChord->setText (String());
 
-    addAndMakeVisible (GS4 = new TextEditor ("new text editor"));
+    addAndMakeVisible (*(GS4 = std::make_unique<TextEditor> ("new text editor")));
     GS4->setMultiLine (true);
     GS4->setReturnKeyStartsNewLine (false);
     GS4->setReadOnly (true);
@@ -193,7 +193,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     GS4->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     GS4->setText (TRANS("G#"));
 
-    addAndMakeVisible (DS3 = new TextEditor ("new text editor"));
+    addAndMakeVisible (*(DS3 = std::make_unique<TextEditor> ("new text editor")));
     DS3->setMultiLine (true);
     DS3->setReturnKeyStartsNewLine (false);
     DS3->setReadOnly (true);
@@ -206,7 +206,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     DS3->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     DS3->setText (TRANS("D#"));
 
-    addAndMakeVisible (AS2 = new TextEditor ("new text editor"));
+    addAndMakeVisible (*(AS2 = std::make_unique<TextEditor> ("new text editor")));
     AS2->setMultiLine (true);
     AS2->setReturnKeyStartsNewLine (false);
     AS2->setReadOnly (true);
@@ -219,7 +219,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     AS2->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     AS2->setText (TRANS("A#"));
 
-    addAndMakeVisible (F1 = new TextEditor ("new text editor"));
+    addAndMakeVisible (*(F1 = std::make_unique<TextEditor> ("new text editor")));
     F1->setMultiLine (true);
     F1->setReturnKeyStartsNewLine (false);
     F1->setReadOnly (true);
@@ -232,7 +232,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     F1->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     F1->setText (TRANS("F"));
 
-    addAndMakeVisible (C5 = new TextEditor ("new text editor"));
+    addAndMakeVisible (*(C5 = std::make_unique<TextEditor> ("new text editor")));
     C5->setMultiLine (true);
     C5->setReturnKeyStartsNewLine (false);
     C5->setReadOnly (true);
@@ -245,7 +245,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     C5->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     C5->setText (TRANS("C"));
 
-    addAndMakeVisible (F2 = new TextEditor ("new text editor"));
+    addAndMakeVisible (*(F2 = std::make_unique<TextEditor> ("new text editor")));
     F2->setMultiLine (true);
     F2->setReturnKeyStartsNewLine (false);
     F2->setReadOnly (true);
@@ -258,7 +258,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     F2->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     F2->setText (TRANS("F"));
 
-    addAndMakeVisible (A4 = new TextEditor ("new text editor"));
+    addAndMakeVisible (*(A4 = std::make_unique<TextEditor> ("new text editor")));
     A4->setMultiLine (true);
     A4->setReturnKeyStartsNewLine (false);
     A4->setReadOnly (true);
@@ -271,7 +271,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     A4->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     A4->setText (TRANS("A"));
 
-    addAndMakeVisible (E3 = new TextEditor ("new text editor"));
+    addAndMakeVisible (*(E3 = std::make_unique<TextEditor> ("new text editor")));
     E3->setMultiLine (true);
     E3->setReturnKeyStartsNewLine (false);
     E3->setReadOnly (true);
@@ -284,7 +284,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     E3->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     E3->setText (TRANS("E"));
 
-    addAndMakeVisible (B2 = new TextEditor ("new text editor"));
+    addAndMakeVisible (*(B2 = std::make_unique<TextEditor> ("new text editor")));
     B2->setMultiLine (true);
     B2->setReturnKeyStartsNewLine (false);
     B2->setReadOnly (true);
@@ -297,7 +297,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     B2->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     B2->setText (TRANS("B"));
 
-    addAndMakeVisible (FS = new TextEditor ("new text editor"));
+    addAndMakeVisible (*(FS = std::make_unique<TextEditor> ("new text editor")));
     FS->setMultiLine (true);
     FS->setReturnKeyStartsNewLine (false);
     FS->setReadOnly (true);
@@ -308,10 +308,9 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     FS->setColour (TextEditor::backgroundColourId, Colour (0xff5681ab));
     FS->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
     FS->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
-    FS->setText (TRANS("\n"
-    "F#\n"));
+    FS->setText (TRANS("F#"));
 
-    addAndMakeVisible (CS5 = new TextEditor ("new text editor"));
+    addAndMakeVisible (*(CS5 = std::make_unique<TextEditor> ("new text editor")));
     CS5->setMultiLine (true);
     CS5->setReturnKeyStartsNewLine (false);
     CS5->setReadOnly (true);
@@ -324,7 +323,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     CS5->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     CS5->setText (TRANS("C#"));
 
-    addAndMakeVisible (FS6 = new TextEditor ("new text editor"));
+    addAndMakeVisible (*(FS6 = std::make_unique<TextEditor> ("new text editor")));
     FS6->setMultiLine (true);
     FS6->setReturnKeyStartsNewLine (false);
     FS6->setReadOnly (true);
@@ -337,7 +336,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     FS6->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     FS6->setText (TRANS("F#"));
 
-    addAndMakeVisible (AS4 = new TextEditor ("new text editor"));
+    addAndMakeVisible (*(AS4 = std::make_unique<TextEditor> ("new text editor")));
     AS4->setMultiLine (true);
     AS4->setReturnKeyStartsNewLine (false);
     AS4->setReadOnly (true);
@@ -350,7 +349,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     AS4->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     AS4->setText (TRANS("A#"));
 
-    addAndMakeVisible (F = new TextEditor ("new text editor"));
+    addAndMakeVisible (*(F = std::make_unique<TextEditor> ("new text editor")));
     F->setMultiLine (true);
     F->setReturnKeyStartsNewLine (false);
     F->setReadOnly (true);
@@ -363,7 +362,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     F->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     F->setText (TRANS("F"));
 
-    addAndMakeVisible (C2 = new TextEditor ("new text editor"));
+    addAndMakeVisible (*(C2 = std::make_unique<TextEditor> ("new text editor")));
     C2->setMultiLine (true);
     C2->setReturnKeyStartsNewLine (false);
     C2->setReadOnly (true);
@@ -376,7 +375,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     C2->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     C2->setText (TRANS("C"));
 
-    addAndMakeVisible (G = new TextEditor ("new text editor"));
+    addAndMakeVisible (*(G = std::make_unique<TextEditor> ("new text editor")));
     G->setMultiLine (true);
     G->setReturnKeyStartsNewLine (false);
     G->setReadOnly (true);
@@ -389,7 +388,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     G->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     G->setText (TRANS("G"));
 
-    addAndMakeVisible (D5 = new TextEditor ("new text editor"));
+    addAndMakeVisible (*(D5 = std::make_unique<TextEditor> ("new text editor")));
     D5->setMultiLine (true);
     D5->setReturnKeyStartsNewLine (false);
     D5->setReadOnly (true);
@@ -402,7 +401,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     D5->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     D5->setText (TRANS("D"));
 
-    addAndMakeVisible (G6 = new TextEditor ("new text editor"));
+    addAndMakeVisible (*(G6 = std::make_unique<TextEditor> ("new text editor")));
     G6->setMultiLine (true);
     G6->setReturnKeyStartsNewLine (false);
     G6->setReadOnly (true);
@@ -415,7 +414,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     G6->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     G6->setText (TRANS("G"));
 
-    addAndMakeVisible (B4 = new TextEditor ("new text editor"));
+    addAndMakeVisible (*(B4 = std::make_unique<TextEditor> ("new text editor")));
     B4->setMultiLine (true);
     B4->setReturnKeyStartsNewLine (false);
     B4->setReadOnly (true);
@@ -428,7 +427,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     B4->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     B4->setText (TRANS("B"));
 
-    addAndMakeVisible (FS3 = new TextEditor ("new text editor"));
+    addAndMakeVisible (*(FS3 = std::make_unique<TextEditor> ("new text editor")));
     FS3->setMultiLine (true);
     FS3->setReturnKeyStartsNewLine (false);
     FS3->setReadOnly (true);
@@ -441,7 +440,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     FS3->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     FS3->setText (TRANS("F#"));
 
-    addAndMakeVisible (CS2 = new TextEditor ("new text editor"));
+    addAndMakeVisible (*(CS2 = std::make_unique<TextEditor> ("new text editor")));
     CS2->setMultiLine (true);
     CS2->setReturnKeyStartsNewLine (false);
     CS2->setReadOnly (true);
@@ -454,7 +453,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     CS2->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     CS2->setText (TRANS("C#"));
 
-    addAndMakeVisible (GS = new TextEditor ("new text editor"));
+    addAndMakeVisible (*(GS = std::make_unique<TextEditor> ("new text editor")));
     GS->setMultiLine (true);
     GS->setReturnKeyStartsNewLine (false);
     GS->setReadOnly (true);
@@ -467,7 +466,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     GS->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     GS->setText (TRANS("G#"));
 
-    addAndMakeVisible (DS5 = new TextEditor ("new text editor"));
+    addAndMakeVisible (*(DS5 = std::make_unique<TextEditor> ("new text editor")));
     DS5->setMultiLine (true);
     DS5->setReturnKeyStartsNewLine (false);
     DS5->setReadOnly (true);
@@ -480,7 +479,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     DS5->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     DS5->setText (TRANS("D#"));
 
-    addAndMakeVisible (GS6 = new TextEditor ("new text editor"));
+    addAndMakeVisible (*(GS6 = std::make_unique<TextEditor> ("new text editor")));
     GS6->setMultiLine (true);
     GS6->setReturnKeyStartsNewLine (false);
     GS6->setReadOnly (true);
@@ -493,7 +492,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     GS6->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     GS6->setText (TRANS("G#"));
 
-    addAndMakeVisible (C4 = new TextEditor ("new text editor"));
+    addAndMakeVisible (*(C4 = std::make_unique<TextEditor> ("new text editor")));
     C4->setMultiLine (true);
     C4->setReturnKeyStartsNewLine (false);
     C4->setReadOnly (true);
@@ -506,7 +505,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     C4->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     C4->setText (TRANS("C"));
 
-    addAndMakeVisible (G3 = new TextEditor ("new text editor"));
+    addAndMakeVisible (*(G3 = std::make_unique<TextEditor> ("new text editor")));
     G3->setMultiLine (true);
     G3->setReturnKeyStartsNewLine (false);
     G3->setReadOnly (true);
@@ -519,7 +518,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     G3->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     G3->setText (TRANS("G"));
 
-    addAndMakeVisible (D2 = new TextEditor ("new text editor"));
+    addAndMakeVisible (*(D2 = std::make_unique<TextEditor> ("new text editor")));
     D2->setMultiLine (true);
     D2->setReturnKeyStartsNewLine (false);
     D2->setReadOnly (true);
@@ -532,7 +531,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     D2->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     D2->setText (TRANS("D"));
 
-    addAndMakeVisible (A = new TextEditor ("new text editor"));
+    addAndMakeVisible (*(A = std::make_unique<TextEditor> ("new text editor")));
     A->setMultiLine (true);
     A->setReturnKeyStartsNewLine (false);
     A->setReadOnly (true);
@@ -545,7 +544,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     A->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     A->setText (TRANS("A"));
 
-    addAndMakeVisible (E5 = new TextEditor ("new text editor"));
+    addAndMakeVisible (*(E5 = std::make_unique<TextEditor> ("new text editor")));
     E5->setMultiLine (true);
     E5->setReturnKeyStartsNewLine (false);
     E5->setReadOnly (true);
@@ -558,7 +557,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     E5->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     E5->setText (TRANS("E"));
 
-    addAndMakeVisible (A6 = new TextEditor ("new text editor"));
+    addAndMakeVisible (*(A6 = std::make_unique<TextEditor> ("new text editor")));
     A6->setMultiLine (true);
     A6->setReturnKeyStartsNewLine (false);
     A6->setReadOnly (true);
@@ -571,7 +570,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     A6->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     A6->setText (TRANS("A"));
 
-    addAndMakeVisible (CS4 = new TextEditor ("new text editor"));
+    addAndMakeVisible (*(CS4 = std::make_unique<TextEditor> ("new text editor")));
     CS4->setMultiLine (true);
     CS4->setReturnKeyStartsNewLine (false);
     CS4->setReadOnly (true);
@@ -584,7 +583,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     CS4->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     CS4->setText (TRANS("C#"));
 
-    addAndMakeVisible (GS3 = new TextEditor ("new text editor"));
+    addAndMakeVisible (*(GS3 = std::make_unique<TextEditor> ("new text editor")));
     GS3->setMultiLine (true);
     GS3->setReturnKeyStartsNewLine (false);
     GS3->setReadOnly (true);
@@ -597,7 +596,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     GS3->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     GS3->setText (TRANS("G#"));
 
-    addAndMakeVisible (DS2 = new TextEditor ("new text editor"));
+    addAndMakeVisible (*(DS2 = std::make_unique<TextEditor> ("new text editor")));
     DS2->setMultiLine (true);
     DS2->setReturnKeyStartsNewLine (false);
     DS2->setReadOnly (true);
@@ -610,7 +609,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     DS2->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     DS2->setText (TRANS("D#"));
 
-    addAndMakeVisible (AS = new TextEditor ("new text editor"));
+    addAndMakeVisible (*(AS = std::make_unique<TextEditor> ("new text editor")));
     AS->setMultiLine (true);
     AS->setReturnKeyStartsNewLine (false);
     AS->setReadOnly (true);
@@ -623,7 +622,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     AS->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     AS->setText (TRANS("A#"));
 
-    addAndMakeVisible (F5 = new TextEditor ("new text editor"));
+    addAndMakeVisible (*(F5 = std::make_unique<TextEditor> ("new text editor")));
     F5->setMultiLine (true);
     F5->setReturnKeyStartsNewLine (false);
     F5->setReadOnly (true);
@@ -636,7 +635,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     F5->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     F5->setText (TRANS("F"));
 
-    addAndMakeVisible (AS6 = new TextEditor ("new text editor"));
+    addAndMakeVisible (*(AS6 = std::make_unique<TextEditor> ("new text editor")));
     AS6->setMultiLine (true);
     AS6->setReturnKeyStartsNewLine (false);
     AS6->setReadOnly (true);
@@ -649,7 +648,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     AS6->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     AS6->setText (TRANS("A#"));
 
-    addAndMakeVisible (D4 = new TextEditor ("new text editor"));
+    addAndMakeVisible (*(D4 = std::make_unique<TextEditor> ("new text editor")));
     D4->setMultiLine (true);
     D4->setReturnKeyStartsNewLine (false);
     D4->setReadOnly (true);
@@ -662,7 +661,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     D4->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     D4->setText (TRANS("D"));
 
-    addAndMakeVisible (A3 = new TextEditor ("new text editor"));
+    addAndMakeVisible (*(A3 = std::make_unique<TextEditor> ("new text editor")));
     A3->setMultiLine (true);
     A3->setReturnKeyStartsNewLine (false);
     A3->setReadOnly (true);
@@ -675,7 +674,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     A3->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     A3->setText (TRANS("A"));
 
-    addAndMakeVisible (E2 = new TextEditor ("new text editor"));
+    addAndMakeVisible (*(E2 = std::make_unique<TextEditor> ("new text editor")));
     E2->setMultiLine (true);
     E2->setReturnKeyStartsNewLine (false);
     E2->setReadOnly (true);
@@ -688,7 +687,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     E2->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     E2->setText (TRANS("E"));
 
-    addAndMakeVisible (B = new TextEditor ("new text editor"));
+    addAndMakeVisible (*(B = std::make_unique<TextEditor> ("new text editor")));
     B->setMultiLine (true);
     B->setReturnKeyStartsNewLine (false);
     B->setReadOnly (true);
@@ -701,7 +700,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     B->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     B->setText (TRANS("B"));
 
-    addAndMakeVisible (FS5 = new TextEditor ("new text editor"));
+    addAndMakeVisible (*(FS5 = std::make_unique<TextEditor> ("new text editor")));
     FS5->setMultiLine (true);
     FS5->setReturnKeyStartsNewLine (false);
     FS5->setReadOnly (true);
@@ -714,7 +713,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     FS5->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     FS5->setText (TRANS("F#"));
 
-    addAndMakeVisible (B6 = new TextEditor ("new text editor"));
+    addAndMakeVisible (*(B6 = std::make_unique<TextEditor> ("new text editor")));
     B6->setMultiLine (true);
     B6->setReturnKeyStartsNewLine (false);
     B6->setReadOnly (true);
@@ -727,7 +726,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     B6->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     B6->setText (TRANS("B"));
 
-    addAndMakeVisible (DS4 = new TextEditor ("new text editor"));
+    addAndMakeVisible (*(DS4 = std::make_unique<TextEditor> ("new text editor")));
     DS4->setMultiLine (true);
     DS4->setReturnKeyStartsNewLine (false);
     DS4->setReadOnly (true);
@@ -740,7 +739,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     DS4->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     DS4->setText (TRANS("D#"));
 
-    addAndMakeVisible (AS3 = new TextEditor ("new text editor"));
+    addAndMakeVisible (*(AS3 = std::make_unique<TextEditor> ("new text editor")));
     AS3->setMultiLine (true);
     AS3->setReturnKeyStartsNewLine (false);
     AS3->setReadOnly (true);
@@ -753,7 +752,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     AS3->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     AS3->setText (TRANS("A#"));
 
-    addAndMakeVisible (F3 = new TextEditor ("new text editor"));
+    addAndMakeVisible (*(F3 = std::make_unique<TextEditor> ("new text editor")));
     F3->setMultiLine (true);
     F3->setReturnKeyStartsNewLine (false);
     F3->setReadOnly (true);
@@ -766,7 +765,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     F3->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     F3->setText (TRANS("F"));
 
-    addAndMakeVisible (C = new TextEditor ("new text editor"));
+    addAndMakeVisible (*(C = std::make_unique<TextEditor> ("new text editor")));
     C->setMultiLine (true);
     C->setReturnKeyStartsNewLine (false);
     C->setReadOnly (true);
@@ -779,7 +778,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     C->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     C->setText (TRANS("C"));
 
-    addAndMakeVisible (G5 = new TextEditor ("new text editor"));
+    addAndMakeVisible (*(G5 = std::make_unique<TextEditor> ("new text editor")));
     G5->setMultiLine (true);
     G5->setReturnKeyStartsNewLine (false);
     G5->setReadOnly (true);
@@ -792,7 +791,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     G5->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     G5->setText (TRANS("G"));
 
-    addAndMakeVisible (C6 = new TextEditor ("new text editor"));
+    addAndMakeVisible (*(C6 = std::make_unique<TextEditor> ("new text editor")));
     C6->setMultiLine (true);
     C6->setReturnKeyStartsNewLine (false);
     C6->setReadOnly (true);
@@ -805,7 +804,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     C6->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     C6->setText (TRANS("C"));
 
-    addAndMakeVisible (E4 = new TextEditor ("new text editor"));
+    addAndMakeVisible (*(E4 = std::make_unique<TextEditor> ("new text editor")));
     E4->setMultiLine (true);
     E4->setReturnKeyStartsNewLine (false);
     E4->setReadOnly (true);
@@ -818,7 +817,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     E4->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     E4->setText (TRANS("E"));
 
-    addAndMakeVisible (B3 = new TextEditor ("new text editor"));
+    addAndMakeVisible (*(B3 = std::make_unique<TextEditor> ("new text editor")));
     B3->setMultiLine (true);
     B3->setReturnKeyStartsNewLine (false);
     B3->setReadOnly (true);
@@ -831,7 +830,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     B3->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     B3->setText (TRANS("B"));
 
-    addAndMakeVisible (FS2 = new TextEditor ("new text editor"));
+    addAndMakeVisible (*(FS2 = std::make_unique<TextEditor> ("new text editor")));
     FS2->setMultiLine (true);
     FS2->setReturnKeyStartsNewLine (false);
     FS2->setReadOnly (true);
@@ -844,7 +843,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     FS2->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     FS2->setText (TRANS("F#"));
 
-    addAndMakeVisible (CS = new TextEditor ("new text editor"));
+    addAndMakeVisible (*(CS = std::make_unique<TextEditor> ("new text editor")));
     CS->setMultiLine (true);
     CS->setReturnKeyStartsNewLine (false);
     CS->setReadOnly (true);
@@ -857,7 +856,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     CS->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     CS->setText (TRANS("C#"));
 
-    addAndMakeVisible (GS5 = new TextEditor ("new text editor"));
+    addAndMakeVisible (*(GS5 = std::make_unique<TextEditor> ("new text editor")));
     GS5->setMultiLine (true);
     GS5->setReturnKeyStartsNewLine (false);
     GS5->setReadOnly (true);
@@ -870,7 +869,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     GS5->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     GS5->setText (TRANS("G#"));
 
-    addAndMakeVisible (CS6 = new TextEditor ("new text editor"));
+    addAndMakeVisible (*(CS6 = std::make_unique<TextEditor> ("new text editor")));
     CS6->setMultiLine (true);
     CS6->setReturnKeyStartsNewLine (false);
     CS6->setReadOnly (true);
@@ -883,7 +882,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     CS6->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     CS6->setText (TRANS("C#"));
 
-    addAndMakeVisible (F4 = new TextEditor ("new text editor"));
+    addAndMakeVisible (*(F4 = std::make_unique<TextEditor> ("new text editor")));
     F4->setMultiLine (true);
     F4->setReturnKeyStartsNewLine (false);
     F4->setReadOnly (true);
@@ -896,7 +895,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     F4->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     F4->setText (TRANS("F"));
 
-    addAndMakeVisible (C3 = new TextEditor ("new text editor"));
+    addAndMakeVisible (*(C3 = std::make_unique<TextEditor> ("new text editor")));
     C3->setMultiLine (true);
     C3->setReturnKeyStartsNewLine (false);
     C3->setReadOnly (true);
@@ -909,7 +908,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     C3->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     C3->setText (TRANS("C"));
 
-    addAndMakeVisible (G2 = new TextEditor ("new text editor"));
+    addAndMakeVisible (*(G2 = std::make_unique<TextEditor> ("new text editor")));
     G2->setMultiLine (true);
     G2->setReturnKeyStartsNewLine (false);
     G2->setReadOnly (true);
@@ -922,7 +921,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     G2->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     G2->setText (TRANS("G"));
 
-    addAndMakeVisible (D = new TextEditor ("new text editor"));
+    addAndMakeVisible (*(D = std::make_unique<TextEditor> ("new text editor")));
     D->setMultiLine (true);
     D->setReturnKeyStartsNewLine (false);
     D->setReadOnly (true);
@@ -935,7 +934,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     D->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     D->setText (TRANS("D"));
 
-    addAndMakeVisible (A5 = new TextEditor ("new text editor"));
+    addAndMakeVisible (*(A5 = std::make_unique<TextEditor> ("new text editor")));
     A5->setMultiLine (true);
     A5->setReturnKeyStartsNewLine (false);
     A5->setReadOnly (true);
@@ -948,7 +947,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     A5->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     A5->setText (TRANS("A"));
 
-    addAndMakeVisible (D6 = new TextEditor ("new text editor"));
+    addAndMakeVisible (*(D6 = std::make_unique<TextEditor> ("new text editor")));
     D6->setMultiLine (true);
     D6->setReturnKeyStartsNewLine (false);
     D6->setReadOnly (true);
@@ -961,7 +960,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     D6->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     D6->setText (TRANS("D"));
 
-    addAndMakeVisible (FS4 = new TextEditor ("new text editor"));
+    addAndMakeVisible (*(FS4 = std::make_unique<TextEditor> ("new text editor")));
     FS4->setMultiLine (true);
     FS4->setReturnKeyStartsNewLine (false);
     FS4->setReadOnly (true);
@@ -974,7 +973,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     FS4->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     FS4->setText (TRANS("F#"));
 
-    addAndMakeVisible (CS3 = new TextEditor ("new text editor"));
+    addAndMakeVisible (*(CS3 = std::make_unique<TextEditor> ("new text editor")));
     CS3->setMultiLine (true);
     CS3->setReturnKeyStartsNewLine (false);
     CS3->setReadOnly (true);
@@ -987,7 +986,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     CS3->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     CS3->setText (TRANS("C#"));
 
-    addAndMakeVisible (GS2 = new TextEditor ("new text editor"));
+    addAndMakeVisible (*(GS2 = std::make_unique<TextEditor> ("new text editor")));
     GS2->setMultiLine (true);
     GS2->setReturnKeyStartsNewLine (false);
     GS2->setReadOnly (true);
@@ -1000,7 +999,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     GS2->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     GS2->setText (TRANS("G#"));
 
-    addAndMakeVisible (DS = new TextEditor ("new text editor"));
+    addAndMakeVisible (*(DS = std::make_unique<TextEditor> ("new text editor")));
     DS->setMultiLine (true);
     DS->setReturnKeyStartsNewLine (false);
     DS->setReadOnly (true);
@@ -1013,7 +1012,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     DS->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     DS->setText (TRANS("D#"));
 
-    addAndMakeVisible (AS5 = new TextEditor ("new text editor"));
+    addAndMakeVisible (*(AS5 = std::make_unique<TextEditor> ("new text editor")));
     AS5->setMultiLine (true);
     AS5->setReturnKeyStartsNewLine (false);
     AS5->setReadOnly (true);
@@ -1026,7 +1025,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     AS5->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     AS5->setText (TRANS("A#"));
 
-    addAndMakeVisible (DS6 = new TextEditor ("new text editor"));
+    addAndMakeVisible (*(DS6 = std::make_unique<TextEditor> ("new text editor")));
     DS6->setMultiLine (true);
     DS6->setReturnKeyStartsNewLine (false);
     DS6->setReadOnly (true);
@@ -1039,7 +1038,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     DS6->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     DS6->setText (TRANS("D#"));
 
-    addAndMakeVisible (G4 = new TextEditor ("new text editor"));
+    addAndMakeVisible (*(G4 = std::make_unique<TextEditor> ("new text editor")));
     G4->setMultiLine (true);
     G4->setReturnKeyStartsNewLine (false);
     G4->setReadOnly (true);
@@ -1052,7 +1051,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     G4->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     G4->setText (TRANS("G"));
 
-    addAndMakeVisible (D3 = new TextEditor ("new text editor"));
+    addAndMakeVisible (*(D3 = std::make_unique<TextEditor> ("new text editor")));
     D3->setMultiLine (true);
     D3->setReturnKeyStartsNewLine (false);
     D3->setReadOnly (true);
@@ -1065,7 +1064,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     D3->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     D3->setText (TRANS("D"));
 
-    addAndMakeVisible (A2 = new TextEditor ("new text editor"));
+    addAndMakeVisible (*(A2 = std::make_unique<TextEditor> ("new text editor")));
     A2->setMultiLine (true);
     A2->setReturnKeyStartsNewLine (false);
     A2->setReadOnly (true);
@@ -1078,7 +1077,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     A2->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     A2->setText (TRANS("A"));
 
-    addAndMakeVisible (E = new TextEditor ("new text editor"));
+    addAndMakeVisible (*(E = std::make_unique<TextEditor> ("new text editor")));
     E->setMultiLine (true);
     E->setReturnKeyStartsNewLine (false);
     E->setReadOnly (true);
@@ -1091,7 +1090,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     E->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     E->setText (TRANS("E"));
 
-    addAndMakeVisible (B5 = new TextEditor ("new text editor"));
+    addAndMakeVisible (*(B5 = std::make_unique<TextEditor> ("new text editor")));
     B5->setMultiLine (true);
     B5->setReturnKeyStartsNewLine (false);
     B5->setReadOnly (true);
@@ -1104,7 +1103,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     B5->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     B5->setText (TRANS("B"));
 
-    addAndMakeVisible (E6 = new TextEditor ("new text editor"));
+    addAndMakeVisible (*(E6 = std::make_unique<TextEditor> ("new text editor")));
     E6->setMultiLine (true);
     E6->setReturnKeyStartsNewLine (false);
     E6->setReadOnly (true);
@@ -1117,7 +1116,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     E6->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     E6->setText (TRANS("E"));
 
-    addAndMakeVisible (GS7 = new TextEditor ("new text editor"));
+    addAndMakeVisible (*(GS7 = std::make_unique<TextEditor> ("new text editor")));
     GS7->setMultiLine (true);
     GS7->setReturnKeyStartsNewLine (false);
     GS7->setReadOnly (true);
@@ -1130,7 +1129,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     GS7->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     GS7->setText (TRANS("G#"));
 
-    addAndMakeVisible (DS7 = new TextEditor ("new text editor"));
+    addAndMakeVisible (*(DS7 = std::make_unique<TextEditor> ("new text editor")));
     DS7->setMultiLine (true);
     DS7->setReturnKeyStartsNewLine (false);
     DS7->setReadOnly (true);
@@ -1143,7 +1142,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     DS7->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     DS7->setText (TRANS("D#"));
 
-    addAndMakeVisible (AS7 = new TextEditor ("new text editor"));
+    addAndMakeVisible (*(AS7 = std::make_unique<TextEditor> ("new text editor")));
     AS7->setMultiLine (true);
     AS7->setReturnKeyStartsNewLine (false);
     AS7->setReadOnly (true);
@@ -1156,7 +1155,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     AS7->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     AS7->setText (TRANS("A#"));
 
-    addAndMakeVisible (F6 = new TextEditor ("new text editor"));
+    addAndMakeVisible (*(F6 = std::make_unique<TextEditor> ("new text editor")));
     F6->setMultiLine (true);
     F6->setReturnKeyStartsNewLine (false);
     F6->setReadOnly (true);
@@ -1169,7 +1168,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     F6->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     F6->setText (TRANS("F"));
 
-    addAndMakeVisible (C7 = new TextEditor ("new text editor"));
+    addAndMakeVisible (*(C7 = std::make_unique<TextEditor> ("new text editor")));
     C7->setMultiLine (true);
     C7->setReturnKeyStartsNewLine (false);
     C7->setReadOnly (true);
@@ -1182,7 +1181,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     C7->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     C7->setText (TRANS("C"));
 
-    addAndMakeVisible (F7 = new TextEditor ("new text editor"));
+    addAndMakeVisible (*(F7 = std::make_unique<TextEditor> ("new text editor")));
     F7->setMultiLine (true);
     F7->setReturnKeyStartsNewLine (false);
     F7->setReadOnly (true);
@@ -1195,7 +1194,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     F7->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     F7->setText (TRANS("F"));
 
-    addAndMakeVisible (A7 = new TextEditor ("new text editor"));
+    addAndMakeVisible (*(A7 = std::make_unique<TextEditor> ("new text editor")));
     A7->setMultiLine (true);
     A7->setReturnKeyStartsNewLine (false);
     A7->setReadOnly (true);
@@ -1208,7 +1207,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     A7->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     A7->setText (TRANS("A"));
 
-    addAndMakeVisible (E7 = new TextEditor ("new text editor"));
+    addAndMakeVisible (*(E7 = std::make_unique<TextEditor> ("new text editor")));
     E7->setMultiLine (true);
     E7->setReturnKeyStartsNewLine (false);
     E7->setReadOnly (true);
@@ -1221,7 +1220,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     E7->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     E7->setText (TRANS("E"));
 
-    addAndMakeVisible (B7 = new TextEditor ("new text editor"));
+    addAndMakeVisible (*(B7 = std::make_unique<TextEditor> ("new text editor")));
     B7->setMultiLine (true);
     B7->setReturnKeyStartsNewLine (false);
     B7->setReadOnly (true);
@@ -1234,7 +1233,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     B7->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     B7->setText (TRANS("B"));
 
-    addAndMakeVisible (FS7 = new TextEditor ("new text editor"));
+    addAndMakeVisible (*(FS7 = std::make_unique<TextEditor> ("new text editor")));
     FS7->setMultiLine (true);
     FS7->setReturnKeyStartsNewLine (false);
     FS7->setReadOnly (true);
@@ -1248,7 +1247,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     FS7->setText (TRANS("\n"
     "F#\n"));
 
-    addAndMakeVisible (CS7 = new TextEditor ("new text editor"));
+    addAndMakeVisible (*(CS7 = std::make_unique<TextEditor> ("new text editor")));
     CS7->setMultiLine (true);
     CS7->setReturnKeyStartsNewLine (false);
     CS7->setReadOnly (true);
@@ -1261,7 +1260,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     CS7->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     CS7->setText (TRANS("C#"));
 
-    addAndMakeVisible (FS8 = new TextEditor ("new text editor"));
+    addAndMakeVisible (*(FS8 = std::make_unique<TextEditor> ("new text editor")));
     FS8->setMultiLine (true);
     FS8->setReturnKeyStartsNewLine (false);
     FS8->setReadOnly (true);
@@ -1274,7 +1273,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     FS8->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     FS8->setText (TRANS("F#"));
 
-    addAndMakeVisible (AS8 = new TextEditor ("new text editor"));
+    addAndMakeVisible (*(AS8 = std::make_unique<TextEditor> ("new text editor")));
     AS8->setMultiLine (true);
     AS8->setReturnKeyStartsNewLine (false);
     AS8->setReadOnly (true);
@@ -1287,7 +1286,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     AS8->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     AS8->setText (TRANS("A#"));
 
-    addAndMakeVisible (F8 = new TextEditor ("new text editor"));
+    addAndMakeVisible (*(F8 = std::make_unique<TextEditor> ("new text editor")));
     F8->setMultiLine (true);
     F8->setReturnKeyStartsNewLine (false);
     F8->setReadOnly (true);
@@ -1300,7 +1299,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     F8->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     F8->setText (TRANS("F"));
 
-    addAndMakeVisible (C8 = new TextEditor ("new text editor"));
+    addAndMakeVisible (*(C8 = std::make_unique<TextEditor> ("new text editor")));
     C8->setMultiLine (true);
     C8->setReturnKeyStartsNewLine (false);
     C8->setReadOnly (true);
@@ -1313,7 +1312,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     C8->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     C8->setText (TRANS("C"));
 
-    addAndMakeVisible (G7 = new TextEditor ("new text editor"));
+    addAndMakeVisible (*(G7 = std::make_unique<TextEditor> ("new text editor")));
     G7->setMultiLine (true);
     G7->setReturnKeyStartsNewLine (false);
     G7->setReadOnly (true);
@@ -1326,7 +1325,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     G7->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     G7->setText (TRANS("G"));
 
-    addAndMakeVisible (D7 = new TextEditor ("new text editor"));
+    addAndMakeVisible (*(D7 = std::make_unique<TextEditor> ("new text editor")));
     D7->setMultiLine (true);
     D7->setReturnKeyStartsNewLine (false);
     D7->setReadOnly (true);
@@ -1339,7 +1338,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     D7->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     D7->setText (TRANS("D"));
 
-    addAndMakeVisible (G8 = new TextEditor ("new text editor"));
+    addAndMakeVisible (*(G8 = std::make_unique<TextEditor> ("new text editor")));
     G8->setMultiLine (true);
     G8->setReturnKeyStartsNewLine (false);
     G8->setReadOnly (true);
@@ -1352,7 +1351,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     G8->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     G8->setText (TRANS("G"));
 
-    addAndMakeVisible (B8 = new TextEditor ("new text editor"));
+    addAndMakeVisible (*(B8 = std::make_unique<TextEditor> ("new text editor")));
     B8->setMultiLine (true);
     B8->setReturnKeyStartsNewLine (false);
     B8->setReadOnly (true);
@@ -1365,7 +1364,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     B8->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     B8->setText (TRANS("B"));
 
-    addAndMakeVisible (FS9 = new TextEditor ("new text editor"));
+    addAndMakeVisible (*(FS9 = std::make_unique<TextEditor> ("new text editor")));
     FS9->setMultiLine (true);
     FS9->setReturnKeyStartsNewLine (false);
     FS9->setReadOnly (true);
@@ -1378,7 +1377,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     FS9->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     FS9->setText (TRANS("F#"));
 
-    addAndMakeVisible (CS8 = new TextEditor ("new text editor"));
+    addAndMakeVisible (*(CS8 = std::make_unique<TextEditor> ("new text editor")));
     CS8->setMultiLine (true);
     CS8->setReturnKeyStartsNewLine (false);
     CS8->setReadOnly (true);
@@ -1391,7 +1390,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     CS8->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     CS8->setText (TRANS("C#"));
 
-    addAndMakeVisible (GS8 = new TextEditor ("new text editor"));
+    addAndMakeVisible (*(GS8 = std::make_unique<TextEditor> ("new text editor")));
     GS8->setMultiLine (true);
     GS8->setReturnKeyStartsNewLine (false);
     GS8->setReadOnly (true);
@@ -1404,7 +1403,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     GS8->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     GS8->setText (TRANS("G#"));
 
-    addAndMakeVisible (DS8 = new TextEditor ("new text editor"));
+    addAndMakeVisible (*(DS8 = std::make_unique<TextEditor> ("new text editor")));
     DS8->setMultiLine (true);
     DS8->setReturnKeyStartsNewLine (false);
     DS8->setReadOnly (true);
@@ -1417,7 +1416,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     DS8->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     DS8->setText (TRANS("D#"));
 
-    addAndMakeVisible (GS9 = new TextEditor ("new text editor"));
+    addAndMakeVisible (*(GS9 = std::make_unique<TextEditor> ("new text editor")));
     GS9->setMultiLine (true);
     GS9->setReturnKeyStartsNewLine (false);
     GS9->setReadOnly (true);
@@ -1430,7 +1429,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     GS9->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     GS9->setText (TRANS("G#"));
 
-    addAndMakeVisible (C9 = new TextEditor ("new text editor"));
+    addAndMakeVisible (*(C9 = std::make_unique<TextEditor> ("new text editor")));
     C9->setMultiLine (true);
     C9->setReturnKeyStartsNewLine (false);
     C9->setReadOnly (true);
@@ -1443,7 +1442,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     C9->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     C9->setText (TRANS("C"));
 
-    addAndMakeVisible (G9 = new TextEditor ("new text editor"));
+    addAndMakeVisible (*(G9 = std::make_unique<TextEditor> ("new text editor")));
     G9->setMultiLine (true);
     G9->setReturnKeyStartsNewLine (false);
     G9->setReadOnly (true);
@@ -1456,7 +1455,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     G9->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     G9->setText (TRANS("G"));
 
-    addAndMakeVisible (D8 = new TextEditor ("new text editor"));
+    addAndMakeVisible (*(D8 = std::make_unique<TextEditor> ("new text editor")));
     D8->setMultiLine (true);
     D8->setReturnKeyStartsNewLine (false);
     D8->setReadOnly (true);
@@ -1469,7 +1468,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     D8->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     D8->setText (TRANS("D"));
 
-    addAndMakeVisible (A8 = new TextEditor ("new text editor"));
+    addAndMakeVisible (*(A8 = std::make_unique<TextEditor> ("new text editor")));
     A8->setMultiLine (true);
     A8->setReturnKeyStartsNewLine (false);
     A8->setReadOnly (true);
@@ -1482,7 +1481,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     A8->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     A8->setText (TRANS("A"));
 
-    addAndMakeVisible (E8 = new TextEditor ("new text editor"));
+    addAndMakeVisible (*(E8 = std::make_unique<TextEditor> ("new text editor")));
     E8->setMultiLine (true);
     E8->setReturnKeyStartsNewLine (false);
     E8->setReadOnly (true);
@@ -1495,7 +1494,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     E8->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     E8->setText (TRANS("E"));
 
-    addAndMakeVisible (A9 = new TextEditor ("new text editor"));
+    addAndMakeVisible (*(A9 = std::make_unique<TextEditor> ("new text editor")));
     A9->setMultiLine (true);
     A9->setReturnKeyStartsNewLine (false);
     A9->setReadOnly (true);
@@ -1508,7 +1507,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     A9->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     A9->setText (TRANS("A"));
 
-    addAndMakeVisible (CS9 = new TextEditor ("new text editor"));
+    addAndMakeVisible (*(CS9 = std::make_unique<TextEditor> ("new text editor")));
     CS9->setMultiLine (true);
     CS9->setReturnKeyStartsNewLine (false);
     CS9->setReadOnly (true);
@@ -1521,7 +1520,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     CS9->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     CS9->setText (TRANS("C#"));
 
-    addAndMakeVisible (GS10 = new TextEditor ("new text editor"));
+    addAndMakeVisible (*(GS10 = std::make_unique<TextEditor> ("new text editor")));
     GS10->setMultiLine (true);
     GS10->setReturnKeyStartsNewLine (false);
     GS10->setReadOnly (true);
@@ -1534,7 +1533,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     GS10->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     GS10->setText (TRANS("G#"));
 
-    addAndMakeVisible (DS9 = new TextEditor ("new text editor"));
+    addAndMakeVisible (*(DS9 = std::make_unique<TextEditor> ("new text editor")));
     DS9->setMultiLine (true);
     DS9->setReturnKeyStartsNewLine (false);
     DS9->setReadOnly (true);
@@ -1547,7 +1546,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     DS9->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     DS9->setText (TRANS("D#"));
 
-    addAndMakeVisible (AS9 = new TextEditor ("new text editor"));
+    addAndMakeVisible (*(AS9 = std::make_unique<TextEditor> ("new text editor")));
     AS9->setMultiLine (true);
     AS9->setReturnKeyStartsNewLine (false);
     AS9->setReadOnly (true);
@@ -1560,7 +1559,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     AS9->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     AS9->setText (TRANS("A#"));
 
-    addAndMakeVisible (F9 = new TextEditor ("new text editor"));
+    addAndMakeVisible (*(F9 = std::make_unique<TextEditor> ("new text editor")));
     F9->setMultiLine (true);
     F9->setReturnKeyStartsNewLine (false);
     F9->setReadOnly (true);
@@ -1573,7 +1572,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     F9->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     F9->setText (TRANS("F"));
 
-    addAndMakeVisible (AS10 = new TextEditor ("new text editor"));
+    addAndMakeVisible (*(AS10 = std::make_unique<TextEditor> ("new text editor")));
     AS10->setMultiLine (true);
     AS10->setReturnKeyStartsNewLine (false);
     AS10->setReadOnly (true);
@@ -1586,7 +1585,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     AS10->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     AS10->setText (TRANS("A#"));
 
-    addAndMakeVisible (D9 = new TextEditor ("new text editor"));
+    addAndMakeVisible (*(D9 = std::make_unique<TextEditor> ("new text editor")));
     D9->setMultiLine (true);
     D9->setReturnKeyStartsNewLine (false);
     D9->setReadOnly (true);
@@ -1599,7 +1598,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     D9->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     D9->setText (TRANS("D"));
 
-    addAndMakeVisible (A10 = new TextEditor ("new text editor"));
+    addAndMakeVisible (*(A10 = std::make_unique<TextEditor> ("new text editor")));
     A10->setMultiLine (true);
     A10->setReturnKeyStartsNewLine (false);
     A10->setReadOnly (true);
@@ -1612,7 +1611,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     A10->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     A10->setText (TRANS("A"));
 
-    addAndMakeVisible (E9 = new TextEditor ("new text editor"));
+    addAndMakeVisible (*(E9 = std::make_unique<TextEditor> ("new text editor")));
     E9->setMultiLine (true);
     E9->setReturnKeyStartsNewLine (false);
     E9->setReadOnly (true);
@@ -1625,7 +1624,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     E9->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     E9->setText (TRANS("E"));
 
-    addAndMakeVisible (B9 = new TextEditor ("new text editor"));
+    addAndMakeVisible (*(B9 = std::make_unique<TextEditor> ("new text editor")));
     B9->setMultiLine (true);
     B9->setReturnKeyStartsNewLine (false);
     B9->setReadOnly (true);
@@ -1638,7 +1637,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     B9->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     B9->setText (TRANS("B"));
 
-    addAndMakeVisible (FS10 = new TextEditor ("new text editor"));
+    addAndMakeVisible (*(FS10 = std::make_unique<TextEditor> ("new text editor")));
     FS10->setMultiLine (true);
     FS10->setReturnKeyStartsNewLine (false);
     FS10->setReadOnly (true);
@@ -1651,7 +1650,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     FS10->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     FS10->setText (TRANS("F#"));
 
-    addAndMakeVisible (B10 = new TextEditor ("new text editor"));
+    addAndMakeVisible (*(B10 = std::make_unique<TextEditor> ("new text editor")));
     B10->setMultiLine (true);
     B10->setReturnKeyStartsNewLine (false);
     B10->setReadOnly (true);
@@ -1664,7 +1663,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     B10->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     B10->setText (TRANS("B"));
 
-    addAndMakeVisible (DS10 = new TextEditor ("new text editor"));
+    addAndMakeVisible (*(DS10 = std::make_unique<TextEditor> ("new text editor")));
     DS10->setMultiLine (true);
     DS10->setReturnKeyStartsNewLine (false);
     DS10->setReadOnly (true);
@@ -1677,7 +1676,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     DS10->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     DS10->setText (TRANS("D#"));
 
-    addAndMakeVisible (AS11 = new TextEditor ("new text editor"));
+    addAndMakeVisible (*(AS11 = std::make_unique<TextEditor> ("new text editor")));
     AS11->setMultiLine (true);
     AS11->setReturnKeyStartsNewLine (false);
     AS11->setReadOnly (true);
@@ -1690,7 +1689,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     AS11->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     AS11->setText (TRANS("A#"));
 
-    addAndMakeVisible (F10 = new TextEditor ("new text editor"));
+    addAndMakeVisible (*(F10 = std::make_unique<TextEditor> ("new text editor")));
     F10->setMultiLine (true);
     F10->setReturnKeyStartsNewLine (false);
     F10->setReadOnly (true);
@@ -1703,7 +1702,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     F10->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     F10->setText (TRANS("F"));
 
-    addAndMakeVisible (C10 = new TextEditor ("new text editor"));
+    addAndMakeVisible (*(C10 = std::make_unique<TextEditor> ("new text editor")));
     C10->setMultiLine (true);
     C10->setReturnKeyStartsNewLine (false);
     C10->setReadOnly (true);
@@ -1716,7 +1715,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     C10->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     C10->setText (TRANS("C"));
 
-    addAndMakeVisible (G10 = new TextEditor ("new text editor"));
+    addAndMakeVisible (*(G10 = std::make_unique<TextEditor> ("new text editor")));
     G10->setMultiLine (true);
     G10->setReturnKeyStartsNewLine (false);
     G10->setReadOnly (true);
@@ -1729,7 +1728,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     G10->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     G10->setText (TRANS("G"));
 
-    addAndMakeVisible (C11 = new TextEditor ("new text editor"));
+    addAndMakeVisible (*(C11 = std::make_unique<TextEditor> ("new text editor")));
     C11->setMultiLine (true);
     C11->setReturnKeyStartsNewLine (false);
     C11->setReadOnly (true);
@@ -1742,7 +1741,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     C11->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     C11->setText (TRANS("C"));
 
-    cachedImage_gneck_inverted_png_1 = ImageCache::getFromMemory (gneck_inverted_png, gneck_inverted_pngSize);
+    cachedImage_gneck_inverted_png_1 = std::make_unique<Image>(ImageCache::getFromMemory (gneck_inverted_png, gneck_inverted_pngSize));
 
     //[UserPreSize]
     //[/UserPreSize]
@@ -1752,138 +1751,138 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
 
     //[Constructor] You can add your own custom stuff here..
 
-	guitarnotes.push_back(C);
-	guitarnotes.push_back(C2);
-	guitarnotes.push_back(C3);
-	guitarnotes.push_back(C4);
-	guitarnotes.push_back(C5);
-	guitarnotes.push_back(C6);
-	guitarnotes.push_back(C7);
-	guitarnotes.push_back(C8);
-	guitarnotes.push_back(C9);
-	guitarnotes.push_back(C10);
-	guitarnotes.push_back(C11);
+	guitarnotes.push_back(std::move(C));
+	guitarnotes.push_back(std::move(C2));
+	guitarnotes.push_back(std::move(C3));
+	guitarnotes.push_back(std::move(C4));
+	guitarnotes.push_back(std::move(C5));
+	guitarnotes.push_back(std::move(C6));
+	guitarnotes.push_back(std::move(C7));
+	guitarnotes.push_back(std::move(C8));
+	guitarnotes.push_back(std::move(C9));
+	guitarnotes.push_back(std::move(C10));
+	guitarnotes.push_back(std::move(C11));
 
-	guitarnotes.push_back(CS);
-	guitarnotes.push_back(CS2);
-	guitarnotes.push_back(CS3);
-	guitarnotes.push_back(CS4);
-	guitarnotes.push_back(CS5);
-	guitarnotes.push_back(CS6);
-	guitarnotes.push_back(CS7);
-	guitarnotes.push_back(CS8);
-	guitarnotes.push_back(CS9);
+	guitarnotes.push_back(std::move(CS));
+	guitarnotes.push_back(std::move(CS2));
+	guitarnotes.push_back(std::move(CS3));
+	guitarnotes.push_back(std::move(CS4));
+	guitarnotes.push_back(std::move(CS5));
+	guitarnotes.push_back(std::move(CS6));
+	guitarnotes.push_back(std::move(CS7));
+	guitarnotes.push_back(std::move(CS8));
+	guitarnotes.push_back(std::move(CS9));
 
-	guitarnotes.push_back(D);
-	guitarnotes.push_back(D2);
-	guitarnotes.push_back(D3);
-	guitarnotes.push_back(D4);
-	guitarnotes.push_back(D5);
-	guitarnotes.push_back(D6);
-	guitarnotes.push_back(D7);
-	guitarnotes.push_back(D8);
-	guitarnotes.push_back(D9);
+	guitarnotes.push_back(std::move(D));
+	guitarnotes.push_back(std::move(D2));
+	guitarnotes.push_back(std::move(D3));
+	guitarnotes.push_back(std::move(D4));
+	guitarnotes.push_back(std::move(D5));
+	guitarnotes.push_back(std::move(D6));
+	guitarnotes.push_back(std::move(D7));
+	guitarnotes.push_back(std::move(D8));
+	guitarnotes.push_back(std::move(D9));
 
-	guitarnotes.push_back(DS);
-	guitarnotes.push_back(DS2);
-	guitarnotes.push_back(DS3);
-	guitarnotes.push_back(DS4);
-	guitarnotes.push_back(DS5);
-	guitarnotes.push_back(DS6);
-	guitarnotes.push_back(DS7);
-	guitarnotes.push_back(DS8);
-	guitarnotes.push_back(DS9);
-	guitarnotes.push_back(DS10);
+	guitarnotes.push_back(std::move(DS));
+	guitarnotes.push_back(std::move(DS2));
+	guitarnotes.push_back(std::move(DS3));
+	guitarnotes.push_back(std::move(DS4));
+	guitarnotes.push_back(std::move(DS5));
+	guitarnotes.push_back(std::move(DS6));
+	guitarnotes.push_back(std::move(DS7));
+	guitarnotes.push_back(std::move(DS8));
+	guitarnotes.push_back(std::move(DS9));
+	guitarnotes.push_back(std::move(DS10));
 
-	guitarnotes.push_back(E);
-	guitarnotes.push_back(E2);
-	guitarnotes.push_back(E3);
-	guitarnotes.push_back(E4);
-	guitarnotes.push_back(E5);
-	guitarnotes.push_back(E6);
-	guitarnotes.push_back(E7);
-	guitarnotes.push_back(E8);
-	guitarnotes.push_back(E9);
+	guitarnotes.push_back(std::move(E));
+	guitarnotes.push_back(std::move(E2));
+	guitarnotes.push_back(std::move(E3));
+	guitarnotes.push_back(std::move(E4));
+	guitarnotes.push_back(std::move(E5));
+	guitarnotes.push_back(std::move(E6));
+	guitarnotes.push_back(std::move(E7));
+	guitarnotes.push_back(std::move(E8));
+	guitarnotes.push_back(std::move(E9));
 
-	guitarnotes.push_back(F);
-	guitarnotes.push_back(F1);
-	guitarnotes.push_back(F2);
-	guitarnotes.push_back(F3);
-	guitarnotes.push_back(F4);
-	guitarnotes.push_back(F5);
-	guitarnotes.push_back(F6);
-	guitarnotes.push_back(F7);
-	guitarnotes.push_back(F8);
-	guitarnotes.push_back(F9);
-	guitarnotes.push_back(F10);
+	guitarnotes.push_back(std::move(F));
+	guitarnotes.push_back(std::move(F1));
+	guitarnotes.push_back(std::move(F2));
+	guitarnotes.push_back(std::move(F3));
+	guitarnotes.push_back(std::move(F4));
+	guitarnotes.push_back(std::move(F5));
+	guitarnotes.push_back(std::move(F6));
+	guitarnotes.push_back(std::move(F7));
+	guitarnotes.push_back(std::move(F8));
+	guitarnotes.push_back(std::move(F9));
+	guitarnotes.push_back(std::move(F10));
 
 
-	guitarnotes.push_back(FS);
-	guitarnotes.push_back(FS2);
-	guitarnotes.push_back(FS3);
-	guitarnotes.push_back(FS4);
-	guitarnotes.push_back(FS5);
-	guitarnotes.push_back(FS6);
-	guitarnotes.push_back(FS7);
-	guitarnotes.push_back(FS8);
-	guitarnotes.push_back(FS9);
-	guitarnotes.push_back(FS10);
+	guitarnotes.push_back(std::move(FS));
+	guitarnotes.push_back(std::move(FS2));
+	guitarnotes.push_back(std::move(FS3));
+	guitarnotes.push_back(std::move(FS4));
+	guitarnotes.push_back(std::move(FS5));
+	guitarnotes.push_back(std::move(FS6));
+	guitarnotes.push_back(std::move(FS7));
+	guitarnotes.push_back(std::move(FS8));
+	guitarnotes.push_back(std::move(FS9));
+	guitarnotes.push_back(std::move(FS10));
 
-	guitarnotes.push_back(G);
-	guitarnotes.push_back(G2);
-	guitarnotes.push_back(G3);
-	guitarnotes.push_back(G4);
-	guitarnotes.push_back(G5);
-	guitarnotes.push_back(G6);
-	guitarnotes.push_back(G7);
-	guitarnotes.push_back(G8);
-	guitarnotes.push_back(G9);
-	guitarnotes.push_back(G10);
+	guitarnotes.push_back(std::move(G));
+	guitarnotes.push_back(std::move(G2));
+	guitarnotes.push_back(std::move(G3));
+	guitarnotes.push_back(std::move(G4));
+	guitarnotes.push_back(std::move(G5));
+	guitarnotes.push_back(std::move(G6));
+	guitarnotes.push_back(std::move(G7));
+	guitarnotes.push_back(std::move(G8));
+	guitarnotes.push_back(std::move(G9));
+	guitarnotes.push_back(std::move(G10));
 
-	guitarnotes.push_back(GS);
-	guitarnotes.push_back(GS2);
-	guitarnotes.push_back(GS3);
-	guitarnotes.push_back(GS4);
-	guitarnotes.push_back(GS5);
-	guitarnotes.push_back(GS6);
-	guitarnotes.push_back(GS7);
-	guitarnotes.push_back(GS8);
-	guitarnotes.push_back(GS9);
-	guitarnotes.push_back(GS10);
+	guitarnotes.push_back(std::move(GS));
+	guitarnotes.push_back(std::move(GS2));
+	guitarnotes.push_back(std::move(GS3));
+	guitarnotes.push_back(std::move(GS4));
+	guitarnotes.push_back(std::move(GS5));
+	guitarnotes.push_back(std::move(GS6));
+	guitarnotes.push_back(std::move(GS7));
+	guitarnotes.push_back(std::move(GS8));
+	guitarnotes.push_back(std::move(GS9));
+	guitarnotes.push_back(std::move(GS10));
 
-	guitarnotes.push_back(A);
-	guitarnotes.push_back(A2);
-	guitarnotes.push_back(A3);
-	guitarnotes.push_back(A4);
-	guitarnotes.push_back(A5);
-	guitarnotes.push_back(A6);
-	guitarnotes.push_back(A7);
-	guitarnotes.push_back(A8);
-	guitarnotes.push_back(A9);
-	guitarnotes.push_back(A10);
+	guitarnotes.push_back(std::move(A));
+	guitarnotes.push_back(std::move(A2));
+	guitarnotes.push_back(std::move(A3));
+	guitarnotes.push_back(std::move(A4));
+	guitarnotes.push_back(std::move(A5));
+	guitarnotes.push_back(std::move(A6));
+	guitarnotes.push_back(std::move(A7));
+	guitarnotes.push_back(std::move(A8));
+	guitarnotes.push_back(std::move(A9));
+	guitarnotes.push_back(std::move(A10));
 
-	guitarnotes.push_back(AS);
-	guitarnotes.push_back(AS2);
-	guitarnotes.push_back(AS3);
-	guitarnotes.push_back(AS4);
-	guitarnotes.push_back(AS5);
-	guitarnotes.push_back(AS6);
-	guitarnotes.push_back(AS7);
-	guitarnotes.push_back(AS8);
-	guitarnotes.push_back(AS9);
-	guitarnotes.push_back(AS10);
-	guitarnotes.push_back(AS11);
+	guitarnotes.push_back(std::move(AS));
+	guitarnotes.push_back(std::move(AS2));
+	guitarnotes.push_back(std::move(AS3));
+	guitarnotes.push_back(std::move(AS4));
+	guitarnotes.push_back(std::move(AS5));
+	guitarnotes.push_back(std::move(AS6));
+	guitarnotes.push_back(std::move(AS7));
+	guitarnotes.push_back(std::move(AS8));
+	guitarnotes.push_back(std::move(AS9));
+	guitarnotes.push_back(std::move(AS10));
+	guitarnotes.push_back(std::move(AS11));
 
-	guitarnotes.push_back(B);
-	guitarnotes.push_back(B2);
-	guitarnotes.push_back(B3);
-	guitarnotes.push_back(B4);
-	guitarnotes.push_back(B5);
-	guitarnotes.push_back(B6);
-	guitarnotes.push_back(B7);
-	guitarnotes.push_back(B8);
-	guitarnotes.push_back(B9);
-	guitarnotes.push_back(B10);
+	guitarnotes.push_back(std::move(B));
+	guitarnotes.push_back(std::move(B2));
+	guitarnotes.push_back(std::move(B3));
+	guitarnotes.push_back(std::move(B4));
+	guitarnotes.push_back(std::move(B5));
+	guitarnotes.push_back(std::move(B6));
+	guitarnotes.push_back(std::move(B7));
+	guitarnotes.push_back(std::move(B8));
+	guitarnotes.push_back(std::move(B9));
+	guitarnotes.push_back(std::move(B10));
 
 	resetGuitarNotes();
     //[/Constructor]
@@ -2045,9 +2044,9 @@ void PluginEditor::paint (Graphics& g)
         //[UserPaintCustomArguments] Customize the painting arguments here..
         //[/UserPaintCustomArguments]
         g.setColour (Colours::black);
-        g.drawImage (cachedImage_gneck_inverted_png_1,
+        g.drawImage (*cachedImage_gneck_inverted_png_1,
                      x, y, width, height,
-                     0, 0, cachedImage_gneck_inverted_png_1.getWidth(), cachedImage_gneck_inverted_png_1.getHeight());
+                     0, 0, cachedImage_gneck_inverted_png_1->getWidth(), cachedImage_gneck_inverted_png_1->getHeight());
     }
 
     {
@@ -2288,14 +2287,14 @@ void PluginEditor::resized()
     groupComponent4->setBounds (8, 136, 272, 128);
     groupComponent3->setBounds (288, 72, 704, 192);
     groupComponent2->setBounds (8, 8, 272, 128);
-    scaleKey->setBounds (40, 192, 64, 24);
+    scaleKey->setBounds (40, 200, 64, 24);
     comboBox2->setBounds (24, 288, 150, 24);
-    scaleMode->setBounds (120, 192, 152, 24);
+    scaleMode->setBounds (120, 200, 152, 24);
     chordRoot->setBounds (56, 56, 64, 24);
     chordType->setBounds (144, 56, 88, 24);
     textEditor2->setBounds (304, 96, 680, 160);
     txtScale->setBounds (32, 224, 224, 32);
-    txtChord->setBounds (16, 96, 256, 32);
+    txtChord->setBounds (16, 90, 256, 32);
     GS4->setBounds (24, 400, 56, 24);
     DS3->setBounds (24, 440, 56, 24);
     AS2->setBounds (24, 480, 56, 24);
@@ -2425,7 +2424,7 @@ void PluginEditor::comboBoxChanged (ComboBox* comboBoxThatHasChanged)
     //[UsercomboBoxChanged_Pre]
     //[/UsercomboBoxChanged_Pre]
 
-    if (comboBoxThatHasChanged == scaleKey)
+    if (comboBoxThatHasChanged == scaleKey.get())
     {
         //[UserComboBoxCode_scaleKey] -- add your combo box handling code here..
 
@@ -2434,7 +2433,7 @@ void PluginEditor::comboBoxChanged (ComboBox* comboBoxThatHasChanged)
 		char scalekeychar = scalekeystr[0];
 
 		int offset = 0;
-		if (scalekeystr[1] != NULL) {
+		if (scalekeystr[1] != '\0') {
 			offset = 1;
 			root += "#";
 		}
@@ -2444,7 +2443,7 @@ void PluginEditor::comboBoxChanged (ComboBox* comboBoxThatHasChanged)
 
         //[/UserComboBoxCode_scaleKey]
     }
-    else if (comboBoxThatHasChanged == comboBox2)
+    else if (comboBoxThatHasChanged == comboBox2.get())
     {
         //[UserComboBoxCode_comboBox2] -- add your combo box handling code here..
 		if (comboBox2->getText() == "Scales") {
@@ -2453,7 +2452,7 @@ void PluginEditor::comboBoxChanged (ComboBox* comboBoxThatHasChanged)
 		}
 		else if (comboBox2->getText() == "Chords") {
 			// Show only notes that are in the chosen chords
-			texteditors.at(0)->setText(TRANS("chords"));
+			updateGuitarNeckChords();
 		}
 
 		else if (comboBox2->getText() == "Notes") {
@@ -2462,7 +2461,7 @@ void PluginEditor::comboBoxChanged (ComboBox* comboBoxThatHasChanged)
 		}
         //[/UserComboBoxCode_comboBox2]
     }
-    else if (comboBoxThatHasChanged == scaleMode)
+    else if (comboBoxThatHasChanged == scaleMode.get())
     {
         //[UserComboBoxCode_scaleMode] -- add your combo box handling code here..
 		std::string scalemodestr = scaleMode->getText().toStdString();
@@ -2529,14 +2528,14 @@ void PluginEditor::comboBoxChanged (ComboBox* comboBoxThatHasChanged)
 
         //[/UserComboBoxCode_scaleMode]
     }
-    else if (comboBoxThatHasChanged == chordRoot)
+    else if (comboBoxThatHasChanged == chordRoot.get())
     {
         //[UserComboBoxCode_chordRoot] -- add your combo box handling code here..
 		std::string chordkeystr = chordRoot->getText().toStdString();
 		char chordkeychar = chordkeystr[0];
 
 		int offset = 0;
-		if (chordkeystr[1] != NULL) {
+		if (chordkeystr[1] != '\0') {
 			offset = 1;
 		}
 
@@ -2544,7 +2543,7 @@ void PluginEditor::comboBoxChanged (ComboBox* comboBoxThatHasChanged)
 		updateChord();
         //[/UserComboBoxCode_chordRoot]
     }
-    else if (comboBoxThatHasChanged == chordType)
+    else if (comboBoxThatHasChanged == chordType.get())
     {
         //[UserComboBoxCode_chordType] -- add your combo box handling code here..
 		std::string chordtypestr = chordType->getText().toStdString();
@@ -2598,7 +2597,12 @@ void PluginEditor::updateChord() {
 	std::ostringstream stream;
 	stream << Chord(chordroot, chordtype) << std::endl;
 	std::string chordstr = stream.str();
-	txtChord->setText(chordstr);
+	juce::String jchordstr = simplifyNotes(chordstr);
+    txtChord->setText(jchordstr);
+    
+	if (comboBox2->getText() == "Chords") {
+		updateGuitarNeckChords();
+	}
 }
 
 juce::String PluginEditor::simplifyNotes(std::string str) {
@@ -2631,14 +2635,9 @@ juce::String PluginEditor::simplifyNotes(std::string str) {
 
 
 void PluginEditor::updateGuitarNeckScales() {
-
-	// Show only notes that are in the chosen scale
 	resetGuitarNotes();
-
 	for (int i = 0; i < guitarnotes.size(); ++i) {
-
 		guitarnotes.at(i)->setAlpha(0.7);
-
 		if (!(txtScale->getText().contains(guitarnotes.at(i)->getText() + " "))) {
 			guitarnotes.at(i)->setVisible(false);
 		}
@@ -2647,14 +2646,28 @@ void PluginEditor::updateGuitarNeckScales() {
 		}
 
 		// Make root note distinct
-		if (guitarnotes.at(i)->getText() == root) {
+		if (guitarnotes.at(i)->getText() == String(root.c_str())) {
 			guitarnotes.at(i)->setAlpha(1);
 		}
 	}
 }
 
 void PluginEditor::updateGuitarNeckChords() {
+    resetGuitarNotes();
+    for (int i = 0; i < guitarnotes.size(); ++i) {
+        guitarnotes.at(i)->setAlpha(0.7);
+        if (!(txtChord->getText().contains(guitarnotes.at(i)->getText() + " "))) {
+            guitarnotes.at(i)->setVisible(false);
+        }
+        if (txtChord->getText().getLastCharacters(3).trim() == guitarnotes.at(i)->getText()) {
+            guitarnotes.at(i)->setVisible(true);
+        }
 
+   		// Make root note distinct
+        if (guitarnotes.at(i)->getText() == chordRoot->getText()) {
+            guitarnotes.at(i)->setAlpha(1);
+        }
+    }
 }
 
 void PluginEditor::resetGuitarNotes() {

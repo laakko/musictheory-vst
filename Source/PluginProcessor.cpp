@@ -130,7 +130,7 @@ bool MusicTheoryAudioProcessor::isBusesLayoutSupported (const BusesLayout& layou
 }
 #endif
 
-void MusicTheoryAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer& midiMessages)
+void MusicTheoryAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuffer& midiMessages)
 {
     ScopedNoDenormals noDenormals;
     const int totalNumInputChannels  = getTotalNumInputChannels();

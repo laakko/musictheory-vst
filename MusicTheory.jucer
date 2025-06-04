@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<JUCERPROJECT id="yG5hKd" name="MusicTheory" projectType="audioplug" jucerVersion="7.0.9"
-              pluginFormats="buildVST3,buildStandalone" companyName="YourCompany">
+<JUCERPROJECT id="yG5hKd" name="MusicTheory" projectType="audioplug" pluginFormats="buildVST3,buildStandalone"
+              companyName="YourCompany" displaySplashScreen="1" jucerFormatVersion="1">
   <MAINGROUP id="ibxzpc" name="MusicTheory">
     <GROUP id="{1A63C5AB-4293-396B-CBF0-B20E756AA426}" name="Source">
       <FILE id="XusGAu" name="BasicNote.h" compile="0" resource="0" file="Source/BasicNote.h"/>
@@ -25,14 +25,13 @@
     </GROUP>
   </MAINGROUP>
   <EXPORTFORMATS>
-
     <LINUX_MAKE targetFolder="Builds/LinuxMakefile">
       <CONFIGURATIONS>
         <CONFIGURATION isDebug="1" name="Debug">
-            <PREPROCESSOR_DEFINITIONS>JUCE_VST3_CAN_REPLACE_VST2=0</PREPROCESSOR_DEFINITIONS>
+          <PREPROCESSOR_DEFINITIONS/>
         </CONFIGURATION>
         <CONFIGURATION isDebug="0" name="Release">
-            <PREPROCESSOR_DEFINITIONS>JUCE_VST3_CAN_REPLACE_VST2=0</PREPROCESSOR_DEFINITIONS>
+          <PREPROCESSOR_DEFINITIONS/>
         </CONFIGURATION>
       </CONFIGURATIONS>
       <MODULEPATHS>
@@ -50,14 +49,33 @@
         <MODULEPATH id="juce_gui_extra" path="JUCE/modules"/>
       </MODULEPATHS>
     </LINUX_MAKE>
-
+    <VS2022 targetFolder="Builds/VisualStudio2022">
+      <CONFIGURATIONS>
+        <CONFIGURATION isDebug="1" name="Debug"/>
+        <CONFIGURATION isDebug="0" name="Release"/>
+      </CONFIGURATIONS>
+      <MODULEPATHS>
+        <MODULEPATH id="juce_audio_basics" path="..\JUCE\modules"/>
+        <MODULEPATH id="juce_audio_devices" path="..\JUCE\modules"/>
+        <MODULEPATH id="juce_audio_formats" path="..\JUCE\modules"/>
+        <MODULEPATH id="juce_audio_plugin_client" path="..\JUCE\modules"/>
+        <MODULEPATH id="juce_audio_processors" path="..\JUCE\modules"/>
+        <MODULEPATH id="juce_audio_utils" path="..\JUCE\modules"/>
+        <MODULEPATH id="juce_core" path="..\JUCE\modules"/>
+        <MODULEPATH id="juce_data_structures" path="..\JUCE\modules"/>
+        <MODULEPATH id="juce_events" path="..\JUCE\modules"/>
+        <MODULEPATH id="juce_graphics" path="..\JUCE\modules"/>
+        <MODULEPATH id="juce_gui_basics" path="..\JUCE\modules"/>
+        <MODULEPATH id="juce_gui_extra" path="..\JUCE\modules"/>
+      </MODULEPATHS>
+    </VS2022>
   </EXPORTFORMATS>
-
   <MODULES>
     <MODULE id="juce_audio_basics" showAllCode="1" useLocalCopy="0" useGlobalPath="0"/>
     <MODULE id="juce_audio_devices" showAllCode="1" useLocalCopy="0" useGlobalPath="0"/>
     <MODULE id="juce_audio_formats" showAllCode="1" useLocalCopy="0" useGlobalPath="0"/>
-    <MODULE id="juce_audio_plugin_client" showAllCode="1" useLocalCopy="0" useGlobalPath="0"/>
+    <MODULE id="juce_audio_plugin_client" showAllCode="1" useLocalCopy="0"
+            useGlobalPath="0"/>
     <MODULE id="juce_audio_processors" showAllCode="1" useLocalCopy="0" useGlobalPath="0"/>
     <MODULE id="juce_audio_utils" showAllCode="1" useLocalCopy="0" useGlobalPath="0"/>
     <MODULE id="juce_core" showAllCode="1" useLocalCopy="0" useGlobalPath="0"/>
@@ -68,9 +86,7 @@
     <MODULE id="juce_gui_extra" showAllCode="1" useLocalCopy="0" useGlobalPath="0"/>
   </MODULES>
   <JUCEOPTIONS>
-    <PREPROCESSOR_DEFINITIONS>
-      JUCE_VSTSDK_V2=0;JUCE_PLUGINHOST_VST=0
-    </PREPROCESSOR_DEFINITIONS>
+    <PREPROCESSOR_DEFINITIONS/>
   </JUCEOPTIONS>
   <LIVE_SETTINGS>
     <LINUX/>

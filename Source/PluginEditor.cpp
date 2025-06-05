@@ -117,6 +117,8 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     scaleMode->addItem (TRANS("Lydian"), 8);
     scaleMode->addItem (TRANS("Mixolydian"), 9);
     scaleMode->addItem (TRANS("Phrygian"), 10);
+    scaleMode->addItem (TRANS("PhrygianDominant"), 11);
+    scaleMode->addItem (TRANS("Metallica"), 12);
     scaleMode->addListener (this);
 
     addAndMakeVisible (*(chordRoot = std::make_unique<ComboBox> ("new combo box")));
@@ -2522,6 +2524,9 @@ void PluginEditor::comboBoxChanged (ComboBox* comboBoxThatHasChanged)
 			scaletype = BasicScale{ BasicScale::Metallica };
 			updateScale();
 		}
+        else if (scalemodestr == "PhrygianDominant") {
+            scaletype = BasicScale{ BasicScale::PhrygianDominant };
+            updateScale();
 		else {
 			txtScale->setText(TRANS("invalid scale type"));
 		}

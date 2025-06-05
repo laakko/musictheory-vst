@@ -129,6 +129,15 @@ namespace acentric_core {
 			degrees.push_back(Interval{ 'm', 6 });
 			degrees.push_back(Interval{ 'M', 7 });
 			break;
+
+		case BasicScale::PhrygianDominant:
+			degrees.push_back(Interval{ 'm', 2 });
+			degrees.push_back(Interval{ 'M', 3 });
+			degrees.push_back(Interval{ 'P', 4 });
+			degrees.push_back(Interval{ 'P', 5 });
+			degrees.push_back(Interval{ 'm', 6 });
+			degrees.push_back(Interval{ 'm', 7 });
+			break;
 		}
 	}
 

@@ -2094,6 +2094,7 @@ void PluginEditor::paint (Graphics& g)
                     Justification::centred, true);
     }*/
 
+    /*
     {
         int x = 220, y = 716, width = 588, height = 5;
         Colour fillColour = Colours::black;
@@ -2101,67 +2102,7 @@ void PluginEditor::paint (Graphics& g)
         //[/UserPaintCustomArguments]
         g.setColour (fillColour);
         g.fillRect (x, y, width, height);
-    }
-
-    {
-        int x = 324, y = 724, width = 44, height = 30;
-        String text (TRANS("3"));
-        Colour fillColour = Colours::black;
-        //[UserPaintCustomArguments] Customize the painting arguments here..
-        //[/UserPaintCustomArguments]
-        g.setColour (fillColour);
-        g.setFont (Font ("Arca Majora 3", 15.00f, Font::plain));
-        g.drawText (text, x, y, width, height,
-                    Justification::centred, true);
-    }
-
-    {
-        int x = 420, y = 724, width = 44, height = 30;
-        String text (TRANS("5"));
-        Colour fillColour = Colours::black;
-        //[UserPaintCustomArguments] Customize the painting arguments here..
-        //[/UserPaintCustomArguments]
-        g.setColour (fillColour);
-        g.setFont (Font ("Arca Majora 3", 15.00f, Font::plain));
-        g.drawText (text, x, y, width, height,
-                    Justification::centred, true);
-    }
-
-    {
-        int x = 524, y = 724, width = 44, height = 30;
-        String text (TRANS("7"));
-        Colour fillColour = Colours::black;
-        //[UserPaintCustomArguments] Customize the painting arguments here..
-        //[/UserPaintCustomArguments]
-        g.setColour (fillColour);
-        g.setFont (Font ("Arca Majora 3", 15.00f, Font::plain));
-        g.drawText (text, x, y, width, height,
-                    Justification::centred, true);
-    }
-
-    {
-        int x = 612, y = 724, width = 44, height = 30;
-        String text (TRANS("9"));
-        Colour fillColour = Colours::black;
-        //[UserPaintCustomArguments] Customize the painting arguments here..
-        //[/UserPaintCustomArguments]
-        g.setColour (fillColour);
-        g.setFont (Font ("Arca Majora 3", 15.00f, Font::plain));
-        g.drawText (text, x, y, width, height,
-                    Justification::centred, true);
-    }
-
-    {
-        int x = 756, y = 724, width = 44, height = 30;
-        String text (TRANS("12"));
-        Colour fillColour = Colours::black;
-        //[UserPaintCustomArguments] Customize the painting arguments here..
-        //[/UserPaintCustomArguments]
-        g.setColour (fillColour);
-        g.setFont (Font ("Arca Majora 3", 15.00f, Font::plain));
-        g.drawText (text, x, y, width, height,
-                    Justification::centred, true);
-    }
+    }*/
 
     /*
     {
@@ -2217,7 +2158,7 @@ void PluginEditor::paint (Graphics& g)
     }
     */
     {
-        int x = 146, y = 361, width = 48, height = 30;
+        int x = 146, y = 363, width = 48, height = 30;
         String text (TRANS("3"));
         Colour fillColour = Colours::white;
         //[UserPaintCustomArguments] Customize the painting arguments here..
@@ -2229,7 +2170,7 @@ void PluginEditor::paint (Graphics& g)
     }
 
     {
-        int x = 264, y = 361, width = 40, height = 30;
+        int x = 264, y = 363, width = 40, height = 30;
         String text (TRANS("5"));
         Colour fillColour = Colours::white;
         //[UserPaintCustomArguments] Customize the painting arguments here..
@@ -2241,7 +2182,7 @@ void PluginEditor::paint (Graphics& g)
     }
 
     {
-        int x = 365, y = 361, width = 51, height = 30;
+        int x = 365, y = 363, width = 51, height = 30;
         String text (TRANS("7"));
         Colour fillColour = Colours::white;
         //[UserPaintCustomArguments] Customize the painting arguments here..
@@ -2253,7 +2194,7 @@ void PluginEditor::paint (Graphics& g)
     }
 
     {
-        int x = 470, y = 361, width = 43, height = 30;
+        int x = 470, y = 363, width = 43, height = 30;
         String text (TRANS("9"));
         Colour fillColour = Colours::white;
         //[UserPaintCustomArguments] Customize the painting arguments here..
@@ -2265,7 +2206,7 @@ void PluginEditor::paint (Graphics& g)
     }
 
     {
-        int x = 614, y = 361, width = 43, height = 30;
+        int x = 614, y = 363, width = 43, height = 30;
         String text (TRANS("12"));
         Colour fillColour = Colours::white;
         //[UserPaintCustomArguments] Customize the painting arguments here..
@@ -2277,7 +2218,7 @@ void PluginEditor::paint (Graphics& g)
     }
 
     {
-        int x = 742, y = 361, width = 51, height = 30;
+        int x = 742, y = 363, width = 51, height = 30;
         String text (TRANS("15"));
         Colour fillColour = Colours::white;
         //[UserPaintCustomArguments] Customize the painting arguments here..
@@ -2289,7 +2230,7 @@ void PluginEditor::paint (Graphics& g)
     }
 
     {
-        int x = 829, y = 361, width = 43, height = 30;
+        int x = 829, y = 363, width = 43, height = 30;
         String text (TRANS("17"));
         Colour fillColour = Colours::white;
         //[UserPaintCustomArguments] Customize the painting arguments here..
@@ -2301,7 +2242,7 @@ void PluginEditor::paint (Graphics& g)
     }
 
     {
-        int x = 901, y = 362, width = 51, height = 30;
+        int x = 901, y = 363, width = 51, height = 30;
         String text (TRANS("19"));
         Colour fillColour = Colours::white;
         //[UserPaintCustomArguments] Customize the painting arguments here..

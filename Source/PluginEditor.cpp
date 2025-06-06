@@ -167,8 +167,9 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     infoText->setScrollbarsShown (true);
     infoText->setCaretVisible (true);
     infoText->setPopupMenuEnabled (true);
-    infoText->setColour (TextEditor::backgroundColourId, Colour (0xff508385));
-    infoText->setText (TRANS("write anything here ...\n"));
+   // infoText->setColour (TextEditor::backgroundColourId, Colour (0xff508385));
+    infoText->setColour (TextEditor::backgroundColourId, Colours::transparentWhite);
+    infoText->setText (TRANS(""));
 
     addAndMakeVisible (*(txtScale = std::make_unique<TextEditor> ("new text editor")));
     txtScale->setMultiLine (true);
@@ -177,7 +178,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     txtScale->setScrollbarsShown (false);
     txtScale->setCaretVisible (false);
     txtScale->setPopupMenuEnabled (false);
-    txtScale->setColour (TextEditor::backgroundColourId, Colours::cadetblue);
+    txtScale->setColour (TextEditor::backgroundColourId, Colours::transparentWhite);
     txtScale->setText (String());
 
     addAndMakeVisible (*(txtChord = std::make_unique<TextEditor> ("new text editor")));
@@ -187,7 +188,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     txtChord->setScrollbarsShown (false);
     txtChord->setCaretVisible (false);
     txtChord->setPopupMenuEnabled (false);
-    txtChord->setColour (TextEditor::backgroundColourId, Colours::cadetblue);
+    txtChord->setColour (TextEditor::backgroundColourId, Colours::transparentWhite);
     txtChord->setText (String());
 
     addAndMakeVisible (*(GS4 = std::make_unique<TextEditor> ("new text editor")));
@@ -2306,7 +2307,7 @@ void PluginEditor::resized()
     chordsComponent->setBounds (8, 8, 200, 75);
     chordRoot->setBounds (15, 25, 60, 24);
     chordType->setBounds (75, 25, 120, 24);
-    txtChord->setBounds (15, 50, 183, 25);
+    txtChord->setBounds (15, 50, 180, 25);
 
     scalesComponent->setBounds (208, 8, 200, 75);
     scaleKey->setBounds (215, 25, 60, 24);

@@ -227,7 +227,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     GS4->setCaretVisible (false);
     GS4->setPopupMenuEnabled (false);
     GS4->setColour (TextEditor::textColourId, Colours::black);
-    GS4->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
+    GS4->setColour (TextEditor::backgroundColourId, colorG);
     GS4->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
     GS4->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     GS4->setText (TRANS("G#"));
@@ -240,7 +240,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     DS3->setCaretVisible (false);
     DS3->setPopupMenuEnabled (false);
     DS3->setColour (TextEditor::textColourId, Colours::black);
-    DS3->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
+    DS3->setColour (TextEditor::backgroundColourId, colorDs);
     DS3->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
     DS3->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     DS3->setText (TRANS("D#"));
@@ -253,7 +253,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     AS2->setCaretVisible (false);
     AS2->setPopupMenuEnabled (false);
     AS2->setColour (TextEditor::textColourId, Colours::black);
-    AS2->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
+    AS2->setColour (TextEditor::backgroundColourId, colorAs);
     AS2->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
     AS2->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     AS2->setText (TRANS("A#"));
@@ -266,7 +266,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     F1->setCaretVisible (false);
     F1->setPopupMenuEnabled (false);
     F1->setColour (TextEditor::textColourId, Colours::black);
-    F1->setColour (TextEditor::backgroundColourId, Colour (0xff4d91a9));
+    F1->setColour (TextEditor::backgroundColourId, colorF);
     F1->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
     F1->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     F1->setText (TRANS("F"));
@@ -279,7 +279,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     C5->setCaretVisible (false);
     C5->setPopupMenuEnabled (false);
     C5->setColour (TextEditor::textColourId, Colours::black);
-    C5->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
+    C5->setColour (TextEditor::backgroundColourId, colorC);
     C5->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
     C5->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     C5->setText (TRANS("C"));
@@ -292,7 +292,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     F2->setCaretVisible (false);
     F2->setPopupMenuEnabled (false);
     F2->setColour (TextEditor::textColourId, Colours::black);
-    F2->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
+    F2->setColour (TextEditor::backgroundColourId, colorF);
     F2->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
     F2->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     F2->setText (TRANS("F"));
@@ -305,7 +305,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     A4->setCaretVisible (false);
     A4->setPopupMenuEnabled (false);
     A4->setColour (TextEditor::textColourId, Colours::black);
-    A4->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
+    A4->setColour (TextEditor::backgroundColourId, colorA);
     A4->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
     A4->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     A4->setText (TRANS("A"));
@@ -318,7 +318,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     E3->setCaretVisible (false);
     E3->setPopupMenuEnabled (false);
     E3->setColour (TextEditor::textColourId, Colours::black);
-    E3->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
+    E3->setColour (TextEditor::backgroundColourId, colorE);
     E3->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
     E3->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     E3->setText (TRANS("E"));
@@ -331,7 +331,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     B2->setCaretVisible (false);
     B2->setPopupMenuEnabled (false);
     B2->setColour (TextEditor::textColourId, Colours::black);
-    B2->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
+    B2->setColour (TextEditor::backgroundColourId, colorB);
     B2->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
     B2->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     B2->setText (TRANS("B"));
@@ -344,7 +344,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     FS->setCaretVisible (false);
     FS->setPopupMenuEnabled (false);
     FS->setColour (TextEditor::textColourId, Colours::black);
-    FS->setColour (TextEditor::backgroundColourId, Colour (0xff5681ab));
+    FS->setColour (TextEditor::backgroundColourId, colorF);
     FS->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
     FS->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     FS->setText (TRANS("F#"));
@@ -357,7 +357,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     CS5->setCaretVisible (false);
     CS5->setPopupMenuEnabled (false);
     CS5->setColour (TextEditor::textColourId, Colours::black);
-    CS5->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
+    CS5->setColour (TextEditor::backgroundColourId, colorCs);
     CS5->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
     CS5->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     CS5->setText (TRANS("C#"));
@@ -370,7 +370,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     FS6->setCaretVisible (false);
     FS6->setPopupMenuEnabled (false);
     FS6->setColour (TextEditor::textColourId, Colours::black);
-    FS6->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
+    FS6->setColour (TextEditor::backgroundColourId, colorFs);
     FS6->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
     FS6->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     FS6->setText (TRANS("F#"));
@@ -383,7 +383,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     AS4->setCaretVisible (false);
     AS4->setPopupMenuEnabled (false);
     AS4->setColour (TextEditor::textColourId, Colours::black);
-    AS4->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
+    AS4->setColour (TextEditor::backgroundColourId, colorAs);
     AS4->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
     AS4->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     AS4->setText (TRANS("A#"));
@@ -396,7 +396,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     F->setCaretVisible (false);
     F->setPopupMenuEnabled (false);
     F->setColour (TextEditor::textColourId, Colours::black);
-    F->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
+    F->setColour (TextEditor::backgroundColourId, colorF);
     F->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
     F->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     F->setText (TRANS("F"));
@@ -409,7 +409,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     C2->setCaretVisible (false);
     C2->setPopupMenuEnabled (false);
     C2->setColour (TextEditor::textColourId, Colours::black);
-    C2->setColour (TextEditor::backgroundColourId, Colour (0xd4ab1e1e));
+    C2->setColour (TextEditor::backgroundColourId, colorC);
     C2->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
     C2->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     C2->setText (TRANS("C"));
@@ -422,7 +422,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     G->setCaretVisible (false);
     G->setPopupMenuEnabled (false);
     G->setColour (TextEditor::textColourId, Colours::black);
-    G->setColour (TextEditor::backgroundColourId, Colour (0xff706ea1));
+    G->setColour (TextEditor::backgroundColourId, colorG);
     G->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
     G->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     G->setText (TRANS("G"));
@@ -435,7 +435,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     D5->setCaretVisible (false);
     D5->setPopupMenuEnabled (false);
     D5->setColour (TextEditor::textColourId, Colours::black);
-    D5->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
+    D5->setColour (TextEditor::backgroundColourId, colorD);
     D5->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
     D5->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     D5->setText (TRANS("D"));
@@ -448,7 +448,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     G6->setCaretVisible (false);
     G6->setPopupMenuEnabled (false);
     G6->setColour (TextEditor::textColourId, Colours::black);
-    G6->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
+    G6->setColour (TextEditor::backgroundColourId, colorG);
     G6->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
     G6->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     G6->setText (TRANS("G"));
@@ -461,7 +461,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     B4->setCaretVisible (false);
     B4->setPopupMenuEnabled (false);
     B4->setColour (TextEditor::textColourId, Colours::black);
-    B4->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
+    B4->setColour (TextEditor::backgroundColourId, colorB);
     B4->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
     B4->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     B4->setText (TRANS("B"));
@@ -474,7 +474,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     FS3->setCaretVisible (false);
     FS3->setPopupMenuEnabled (false);
     FS3->setColour (TextEditor::textColourId, Colours::black);
-    FS3->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
+    FS3->setColour (TextEditor::backgroundColourId, colorFs);
     FS3->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
     FS3->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     FS3->setText (TRANS("F#"));
@@ -487,7 +487,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     CS2->setCaretVisible (false);
     CS2->setPopupMenuEnabled (false);
     CS2->setColour (TextEditor::textColourId, Colours::black);
-    CS2->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
+    CS2->setColour (TextEditor::backgroundColourId, colorCs);
     CS2->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
     CS2->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     CS2->setText (TRANS("C#"));
@@ -500,7 +500,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     GS->setCaretVisible (false);
     GS->setPopupMenuEnabled (false);
     GS->setColour (TextEditor::textColourId, Colours::black);
-    GS->setColour (TextEditor::backgroundColourId, Colour (0xff885887));
+    GS->setColour (TextEditor::backgroundColourId, colorGs);
     GS->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
     GS->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     GS->setText (TRANS("G#"));
@@ -513,7 +513,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     DS5->setCaretVisible (false);
     DS5->setPopupMenuEnabled (false);
     DS5->setColour (TextEditor::textColourId, Colours::black);
-    DS5->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
+    DS5->setColour (TextEditor::backgroundColourId, colorDs);
     DS5->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
     DS5->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     DS5->setText (TRANS("D#"));
@@ -526,7 +526,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     GS6->setCaretVisible (false);
     GS6->setPopupMenuEnabled (false);
     GS6->setColour (TextEditor::textColourId, Colours::black);
-    GS6->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
+    GS6->setColour (TextEditor::backgroundColourId, colorGs);
     GS6->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
     GS6->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     GS6->setText (TRANS("G#"));
@@ -539,7 +539,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     C4->setCaretVisible (false);
     C4->setPopupMenuEnabled (false);
     C4->setColour (TextEditor::textColourId, Colours::black);
-    C4->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
+    C4->setColour (TextEditor::backgroundColourId, colorC);
     C4->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
     C4->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     C4->setText (TRANS("C"));
@@ -552,7 +552,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     G3->setCaretVisible (false);
     G3->setPopupMenuEnabled (false);
     G3->setColour (TextEditor::textColourId, Colours::black);
-    G3->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
+    G3->setColour (TextEditor::backgroundColourId, colorG);
     G3->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
     G3->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     G3->setText (TRANS("G"));
@@ -565,7 +565,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     D2->setCaretVisible (false);
     D2->setPopupMenuEnabled (false);
     D2->setColour (TextEditor::textColourId, Colours::black);
-    D2->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
+    D2->setColour (TextEditor::backgroundColourId, colorD);
     D2->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
     D2->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     D2->setText (TRANS("D"));
@@ -578,7 +578,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     A->setCaretVisible (false);
     A->setPopupMenuEnabled (false);
     A->setColour (TextEditor::textColourId, Colours::black);
-    A->setColour (TextEditor::backgroundColourId, Colour (0xff934561));
+    A->setColour (TextEditor::backgroundColourId, colorA);
     A->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
     A->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     A->setText (TRANS("A"));
@@ -591,7 +591,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     E5->setCaretVisible (false);
     E5->setPopupMenuEnabled (false);
     E5->setColour (TextEditor::textColourId, Colours::black);
-    E5->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
+    E5->setColour (TextEditor::backgroundColourId, colorE);
     E5->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
     E5->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     E5->setText (TRANS("E"));
@@ -604,7 +604,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     A6->setCaretVisible (false);
     A6->setPopupMenuEnabled (false);
     A6->setColour (TextEditor::textColourId, Colours::black);
-    A6->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
+    A6->setColour (TextEditor::backgroundColourId, colorA);
     A6->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
     A6->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     A6->setText (TRANS("A"));
@@ -617,7 +617,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     CS4->setCaretVisible (false);
     CS4->setPopupMenuEnabled (false);
     CS4->setColour (TextEditor::textColourId, Colours::black);
-    CS4->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
+    CS4->setColour (TextEditor::backgroundColourId, colorCs);
     CS4->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
     CS4->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     CS4->setText (TRANS("C#"));
@@ -630,7 +630,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     GS3->setCaretVisible (false);
     GS3->setPopupMenuEnabled (false);
     GS3->setColour (TextEditor::textColourId, Colours::black);
-    GS3->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
+    GS3->setColour (TextEditor::backgroundColourId, colorGs);
     GS3->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
     GS3->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     GS3->setText (TRANS("G#"));
@@ -643,7 +643,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     DS2->setCaretVisible (false);
     DS2->setPopupMenuEnabled (false);
     DS2->setColour (TextEditor::textColourId, Colours::black);
-    DS2->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
+    DS2->setColour (TextEditor::backgroundColourId, colorDs);
     DS2->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
     DS2->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     DS2->setText (TRANS("D#"));
@@ -656,7 +656,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     AS->setCaretVisible (false);
     AS->setPopupMenuEnabled (false);
     AS->setColour (TextEditor::textColourId, Colours::black);
-    AS->setColour (TextEditor::backgroundColourId, Colour (0xffbd5c63));
+    AS->setColour (TextEditor::backgroundColourId, colorAs);
     AS->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
     AS->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     AS->setText (TRANS("A#"));
@@ -669,7 +669,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     F5->setCaretVisible (false);
     F5->setPopupMenuEnabled (false);
     F5->setColour (TextEditor::textColourId, Colours::black);
-    F5->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
+    F5->setColour (TextEditor::backgroundColourId, colorF);
     F5->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
     F5->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     F5->setText (TRANS("F"));
@@ -682,7 +682,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     AS6->setCaretVisible (false);
     AS6->setPopupMenuEnabled (false);
     AS6->setColour (TextEditor::textColourId, Colours::black);
-    AS6->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
+    AS6->setColour (TextEditor::backgroundColourId, colorAs);
     AS6->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
     AS6->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     AS6->setText (TRANS("A#"));
@@ -695,7 +695,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     D4->setCaretVisible (false);
     D4->setPopupMenuEnabled (false);
     D4->setColour (TextEditor::textColourId, Colours::black);
-    D4->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
+    D4->setColour (TextEditor::backgroundColourId, colorD);
     D4->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
     D4->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     D4->setText (TRANS("D"));
@@ -708,7 +708,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     A3->setCaretVisible (false);
     A3->setPopupMenuEnabled (false);
     A3->setColour (TextEditor::textColourId, Colours::black);
-    A3->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
+    A3->setColour (TextEditor::backgroundColourId, colorA);
     A3->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
     A3->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     A3->setText (TRANS("A"));
@@ -721,7 +721,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     E2->setCaretVisible (false);
     E2->setPopupMenuEnabled (false);
     E2->setColour (TextEditor::textColourId, Colours::black);
-    E2->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
+    E2->setColour (TextEditor::backgroundColourId, colorE);
     E2->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
     E2->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     E2->setText (TRANS("E"));
@@ -734,7 +734,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     B->setCaretVisible (false);
     B->setPopupMenuEnabled (false);
     B->setColour (TextEditor::textColourId, Colours::black);
-    B->setColour (TextEditor::backgroundColourId, Colour (0xffdf7b60));
+    B->setColour (TextEditor::backgroundColourId, colorB);
     B->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
     B->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     B->setText (TRANS("B"));
@@ -747,7 +747,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     FS5->setCaretVisible (false);
     FS5->setPopupMenuEnabled (false);
     FS5->setColour (TextEditor::textColourId, Colours::black);
-    FS5->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
+    FS5->setColour (TextEditor::backgroundColourId, colorFs);
     FS5->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
     FS5->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     FS5->setText (TRANS("F#"));
@@ -760,7 +760,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     B6->setCaretVisible (false);
     B6->setPopupMenuEnabled (false);
     B6->setColour (TextEditor::textColourId, Colours::black);
-    B6->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
+    B6->setColour (TextEditor::backgroundColourId, colorB);
     B6->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
     B6->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     B6->setText (TRANS("B"));
@@ -773,7 +773,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     DS4->setCaretVisible (false);
     DS4->setPopupMenuEnabled (false);
     DS4->setColour (TextEditor::textColourId, Colours::black);
-    DS4->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
+    DS4->setColour (TextEditor::backgroundColourId, colorDs);
     DS4->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
     DS4->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     DS4->setText (TRANS("D#"));
@@ -786,7 +786,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     AS3->setCaretVisible (false);
     AS3->setPopupMenuEnabled (false);
     AS3->setColour (TextEditor::textColourId, Colours::black);
-    AS3->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
+    AS3->setColour (TextEditor::backgroundColourId, colorAs);
     AS3->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
     AS3->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     AS3->setText (TRANS("A#"));
@@ -799,7 +799,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     F3->setCaretVisible (false);
     F3->setPopupMenuEnabled (false);
     F3->setColour (TextEditor::textColourId, Colours::black);
-    F3->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
+    F3->setColour (TextEditor::backgroundColourId, colorF);
     F3->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
     F3->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     F3->setText (TRANS("F"));
@@ -812,7 +812,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     C->setCaretVisible (false);
     C->setPopupMenuEnabled (false);
     C->setColour (TextEditor::textColourId, Colours::black);
-    C->setColour (TextEditor::backgroundColourId, Colour (0xfffecb5f));
+    C->setColour (TextEditor::backgroundColourId, colorC);
     C->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
     C->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     C->setText (TRANS("C"));
@@ -825,7 +825,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     G5->setCaretVisible (false);
     G5->setPopupMenuEnabled (false);
     G5->setColour (TextEditor::textColourId, Colours::black);
-    G5->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
+    G5->setColour (TextEditor::backgroundColourId, colorG);
     G5->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
     G5->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     G5->setText (TRANS("G"));
@@ -838,7 +838,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     C6->setCaretVisible (false);
     C6->setPopupMenuEnabled (false);
     C6->setColour (TextEditor::textColourId, Colours::black);
-    C6->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
+    C6->setColour (TextEditor::backgroundColourId, colorC);
     C6->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
     C6->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     C6->setText (TRANS("C"));
@@ -851,7 +851,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     E4->setCaretVisible (false);
     E4->setPopupMenuEnabled (false);
     E4->setColour (TextEditor::textColourId, Colours::black);
-    E4->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
+    E4->setColour (TextEditor::backgroundColourId, colorE);
     E4->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
     E4->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     E4->setText (TRANS("E"));
@@ -864,7 +864,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     B3->setCaretVisible (false);
     B3->setPopupMenuEnabled (false);
     B3->setColour (TextEditor::textColourId, Colours::black);
-    B3->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
+    B3->setColour (TextEditor::backgroundColourId, colorB);
     B3->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
     B3->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     B3->setText (TRANS("B"));
@@ -877,7 +877,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     FS2->setCaretVisible (false);
     FS2->setPopupMenuEnabled (false);
     FS2->setColour (TextEditor::textColourId, Colours::black);
-    FS2->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
+    FS2->setColour (TextEditor::backgroundColourId, colorFs);
     FS2->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
     FS2->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     FS2->setText (TRANS("F#"));
@@ -890,7 +890,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     CS->setCaretVisible (false);
     CS->setPopupMenuEnabled (false);
     CS->setColour (TextEditor::textColourId, Colours::black);
-    CS->setColour (TextEditor::backgroundColourId, Colour (0xffc1be4f));
+    CS->setColour (TextEditor::backgroundColourId, colorCs);
     CS->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
     CS->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     CS->setText (TRANS("C#"));
@@ -903,7 +903,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     GS5->setCaretVisible (false);
     GS5->setPopupMenuEnabled (false);
     GS5->setColour (TextEditor::textColourId, Colours::black);
-    GS5->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
+    GS5->setColour (TextEditor::backgroundColourId, colorGs);
     GS5->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
     GS5->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     GS5->setText (TRANS("G#"));
@@ -916,7 +916,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     CS6->setCaretVisible (false);
     CS6->setPopupMenuEnabled (false);
     CS6->setColour (TextEditor::textColourId, Colours::black);
-    CS6->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
+    CS6->setColour (TextEditor::backgroundColourId, colorCs);
     CS6->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
     CS6->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     CS6->setText (TRANS("C#"));
@@ -929,7 +929,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     F4->setCaretVisible (false);
     F4->setPopupMenuEnabled (false);
     F4->setColour (TextEditor::textColourId, Colours::black);
-    F4->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
+    F4->setColour (TextEditor::backgroundColourId, colorF);
     F4->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
     F4->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     F4->setText (TRANS("F"));
@@ -942,7 +942,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     C3->setCaretVisible (false);
     C3->setPopupMenuEnabled (false);
     C3->setColour (TextEditor::textColourId, Colours::black);
-    C3->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
+    C3->setColour (TextEditor::backgroundColourId,colorC);
     C3->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
     C3->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     C3->setText (TRANS("C"));
@@ -955,7 +955,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     G2->setCaretVisible (false);
     G2->setPopupMenuEnabled (false);
     G2->setColour (TextEditor::textColourId, Colours::black);
-    G2->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
+    G2->setColour (TextEditor::backgroundColourId, colorG);
     G2->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
     G2->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     G2->setText (TRANS("G"));
@@ -968,7 +968,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     D->setCaretVisible (false);
     D->setPopupMenuEnabled (false);
     D->setColour (TextEditor::textColourId, Colours::black);
-    D->setColour (TextEditor::backgroundColourId, Colour (0xff86af4d));
+    D->setColour (TextEditor::backgroundColourId, colorD);
     D->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
     D->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     D->setText (TRANS("D"));
@@ -981,7 +981,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     A5->setCaretVisible (false);
     A5->setPopupMenuEnabled (false);
     A5->setColour (TextEditor::textColourId, Colours::black);
-    A5->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
+    A5->setColour (TextEditor::backgroundColourId, colorA);
     A5->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
     A5->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     A5->setText (TRANS("A"));
@@ -994,7 +994,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     D6->setCaretVisible (false);
     D6->setPopupMenuEnabled (false);
     D6->setColour (TextEditor::textColourId, Colours::black);
-    D6->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
+    D6->setColour (TextEditor::backgroundColourId, colorD);
     D6->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
     D6->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     D6->setText (TRANS("D"));
@@ -1007,7 +1007,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     FS4->setCaretVisible (false);
     FS4->setPopupMenuEnabled (false);
     FS4->setColour (TextEditor::textColourId, Colours::black);
-    FS4->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
+    FS4->setColour (TextEditor::backgroundColourId, colorFs);
     FS4->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
     FS4->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     FS4->setText (TRANS("F#"));
@@ -1020,7 +1020,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     CS3->setCaretVisible (false);
     CS3->setPopupMenuEnabled (false);
     CS3->setColour (TextEditor::textColourId, Colours::black);
-    CS3->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
+    CS3->setColour (TextEditor::backgroundColourId, colorCs);
     CS3->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
     CS3->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     CS3->setText (TRANS("C#"));
@@ -1033,7 +1033,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     GS2->setCaretVisible (false);
     GS2->setPopupMenuEnabled (false);
     GS2->setColour (TextEditor::textColourId, Colours::black);
-    GS2->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
+    GS2->setColour (TextEditor::backgroundColourId, colorGs);
     GS2->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
     GS2->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     GS2->setText (TRANS("G#"));
@@ -1046,7 +1046,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     DS->setCaretVisible (false);
     DS->setPopupMenuEnabled (false);
     DS->setColour (TextEditor::textColourId, Colours::black);
-    DS->setColour (TextEditor::backgroundColourId, Colour (0xff499b53));
+    DS->setColour (TextEditor::backgroundColourId, colorDs);
     DS->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
     DS->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     DS->setText (TRANS("D#"));
@@ -1059,7 +1059,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     AS5->setCaretVisible (false);
     AS5->setPopupMenuEnabled (false);
     AS5->setColour (TextEditor::textColourId, Colours::black);
-    AS5->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
+    AS5->setColour (TextEditor::backgroundColourId, colorAs);
     AS5->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
     AS5->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     AS5->setText (TRANS("A#"));
@@ -1072,7 +1072,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     DS6->setCaretVisible (false);
     DS6->setPopupMenuEnabled (false);
     DS6->setColour (TextEditor::textColourId, Colours::black);
-    DS6->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
+    DS6->setColour (TextEditor::backgroundColourId, colorDs);
     DS6->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
     DS6->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     DS6->setText (TRANS("D#"));
@@ -1085,7 +1085,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     G4->setCaretVisible (false);
     G4->setPopupMenuEnabled (false);
     G4->setColour (TextEditor::textColourId, Colours::black);
-    G4->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
+    G4->setColour (TextEditor::backgroundColourId, colorG);
     G4->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
     G4->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     G4->setText (TRANS("G"));
@@ -1098,7 +1098,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     D3->setCaretVisible (false);
     D3->setPopupMenuEnabled (false);
     D3->setColour (TextEditor::textColourId, Colours::black);
-    D3->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
+    D3->setColour (TextEditor::backgroundColourId, colorD);
     D3->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
     D3->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     D3->setText (TRANS("D"));
@@ -1111,7 +1111,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     A2->setCaretVisible (false);
     A2->setPopupMenuEnabled (false);
     A2->setColour (TextEditor::textColourId, Colours::black);
-    A2->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
+    A2->setColour (TextEditor::backgroundColourId, colorA);
     A2->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
     A2->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     A2->setText (TRANS("A"));
@@ -1124,7 +1124,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     E->setCaretVisible (false);
     E->setPopupMenuEnabled (false);
     E->setColour (TextEditor::textColourId, Colours::black);
-    E->setColour (TextEditor::backgroundColourId, Colour (0xff007062));
+    E->setColour (TextEditor::backgroundColourId, colorE);
     E->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
     E->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     E->setText (TRANS("E"));
@@ -1137,7 +1137,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     B5->setCaretVisible (false);
     B5->setPopupMenuEnabled (false);
     B5->setColour (TextEditor::textColourId, Colours::black);
-    B5->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
+    B5->setColour (TextEditor::backgroundColourId, colorB);
     B5->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
     B5->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     B5->setText (TRANS("B"));
@@ -1150,7 +1150,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     E6->setCaretVisible (false);
     E6->setPopupMenuEnabled (false);
     E6->setColour (TextEditor::textColourId, Colours::black);
-    E6->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
+    E6->setColour (TextEditor::backgroundColourId, colorE);
     E6->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
     E6->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     E6->setText (TRANS("E"));
@@ -1163,7 +1163,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     GS7->setCaretVisible (false);
     GS7->setPopupMenuEnabled (false);
     GS7->setColour (TextEditor::textColourId, Colours::black);
-    GS7->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
+    GS7->setColour (TextEditor::backgroundColourId, colorG);
     GS7->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
     GS7->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     GS7->setText (TRANS("G#"));
@@ -1176,7 +1176,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     DS7->setCaretVisible (false);
     DS7->setPopupMenuEnabled (false);
     DS7->setColour (TextEditor::textColourId, Colours::black);
-    DS7->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
+    DS7->setColour (TextEditor::backgroundColourId, colorDs);
     DS7->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
     DS7->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     DS7->setText (TRANS("D#"));
@@ -1189,7 +1189,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     AS7->setCaretVisible (false);
     AS7->setPopupMenuEnabled (false);
     AS7->setColour (TextEditor::textColourId, Colours::black);
-    AS7->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
+    AS7->setColour (TextEditor::backgroundColourId, colorAs);
     AS7->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
     AS7->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     AS7->setText (TRANS("A#"));
@@ -1202,7 +1202,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     F6->setCaretVisible (false);
     F6->setPopupMenuEnabled (false);
     F6->setColour (TextEditor::textColourId, Colours::black);
-    F6->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
+    F6->setColour (TextEditor::backgroundColourId, colorF);
     F6->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
     F6->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     F6->setText (TRANS("F"));
@@ -1215,7 +1215,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     C7->setCaretVisible (false);
     C7->setPopupMenuEnabled (false);
     C7->setColour (TextEditor::textColourId, Colours::black);
-    C7->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
+    C7->setColour (TextEditor::backgroundColourId, colorC);
     C7->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
     C7->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     C7->setText (TRANS("C"));
@@ -1228,7 +1228,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     F7->setCaretVisible (false);
     F7->setPopupMenuEnabled (false);
     F7->setColour (TextEditor::textColourId, Colours::black);
-    F7->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
+    F7->setColour (TextEditor::backgroundColourId, colorF);
     F7->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
     F7->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     F7->setText (TRANS("F"));
@@ -1241,7 +1241,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     A7->setCaretVisible (false);
     A7->setPopupMenuEnabled (false);
     A7->setColour (TextEditor::textColourId, Colours::black);
-    A7->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
+    A7->setColour (TextEditor::backgroundColourId, colorA);
     A7->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
     A7->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     A7->setText (TRANS("A"));
@@ -1254,7 +1254,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     E7->setCaretVisible (false);
     E7->setPopupMenuEnabled (false);
     E7->setColour (TextEditor::textColourId, Colours::black);
-    E7->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
+    E7->setColour (TextEditor::backgroundColourId, colorE);
     E7->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
     E7->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     E7->setText (TRANS("E"));
@@ -1267,7 +1267,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     B7->setCaretVisible (false);
     B7->setPopupMenuEnabled (false);
     B7->setColour (TextEditor::textColourId, Colours::black);
-    B7->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
+    B7->setColour (TextEditor::backgroundColourId, colorB);
     B7->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
     B7->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     B7->setText (TRANS("B"));
@@ -1280,7 +1280,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     FS7->setCaretVisible (false);
     FS7->setPopupMenuEnabled (false);
     FS7->setColour (TextEditor::textColourId, Colours::black);
-    FS7->setColour (TextEditor::backgroundColourId, Colour (0xff5681ab));
+    FS7->setColour (TextEditor::backgroundColourId, colorFs);
     FS7->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
     FS7->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     FS7->setText (TRANS("F#"));
@@ -1293,7 +1293,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     CS7->setCaretVisible (false);
     CS7->setPopupMenuEnabled (false);
     CS7->setColour (TextEditor::textColourId, Colours::black);
-    CS7->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
+    CS7->setColour (TextEditor::backgroundColourId, colorCs);
     CS7->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
     CS7->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     CS7->setText (TRANS("C#"));
@@ -1306,7 +1306,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     FS8->setCaretVisible (false);
     FS8->setPopupMenuEnabled (false);
     FS8->setColour (TextEditor::textColourId, Colours::black);
-    FS8->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
+    FS8->setColour (TextEditor::backgroundColourId, colorFs);
     FS8->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
     FS8->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     FS8->setText (TRANS("F#"));
@@ -1319,7 +1319,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     AS8->setCaretVisible (false);
     AS8->setPopupMenuEnabled (false);
     AS8->setColour (TextEditor::textColourId, Colours::black);
-    AS8->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
+    AS8->setColour (TextEditor::backgroundColourId, colorAs);
     AS8->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
     AS8->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     AS8->setText (TRANS("A#"));
@@ -1332,7 +1332,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     F8->setCaretVisible (false);
     F8->setPopupMenuEnabled (false);
     F8->setColour (TextEditor::textColourId, Colours::black);
-    F8->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
+    F8->setColour (TextEditor::backgroundColourId, colorF);
     F8->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
     F8->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     F8->setText (TRANS("F"));
@@ -1345,7 +1345,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     C8->setCaretVisible (false);
     C8->setPopupMenuEnabled (false);
     C8->setColour (TextEditor::textColourId, Colours::black);
-    C8->setColour (TextEditor::backgroundColourId, Colour (0xd4ab1e1e));
+    C8->setColour (TextEditor::backgroundColourId, colorC);
     C8->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
     C8->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     C8->setText (TRANS("C"));
@@ -1358,7 +1358,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     G7->setCaretVisible (false);
     G7->setPopupMenuEnabled (false);
     G7->setColour (TextEditor::textColourId, Colours::black);
-    G7->setColour (TextEditor::backgroundColourId, Colour (0xff706ea1));
+    G7->setColour (TextEditor::backgroundColourId, colorG);
     G7->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
     G7->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     G7->setText (TRANS("G"));
@@ -1371,7 +1371,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     D7->setCaretVisible (false);
     D7->setPopupMenuEnabled (false);
     D7->setColour (TextEditor::textColourId, Colours::black);
-    D7->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
+    D7->setColour (TextEditor::backgroundColourId, colorD);
     D7->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
     D7->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     D7->setText (TRANS("D"));
@@ -1384,7 +1384,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     G8->setCaretVisible (false);
     G8->setPopupMenuEnabled (false);
     G8->setColour (TextEditor::textColourId, Colours::black);
-    G8->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
+    G8->setColour (TextEditor::backgroundColourId, colorG);
     G8->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
     G8->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     G8->setText (TRANS("G"));
@@ -1397,7 +1397,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     B8->setCaretVisible (false);
     B8->setPopupMenuEnabled (false);
     B8->setColour (TextEditor::textColourId, Colours::black);
-    B8->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
+    B8->setColour (TextEditor::backgroundColourId, colorB);
     B8->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
     B8->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     B8->setText (TRANS("B"));
@@ -1410,7 +1410,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     FS9->setCaretVisible (false);
     FS9->setPopupMenuEnabled (false);
     FS9->setColour (TextEditor::textColourId, Colours::black);
-    FS9->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
+    FS9->setColour (TextEditor::backgroundColourId, colorFs);
     FS9->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
     FS9->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     FS9->setText (TRANS("F#"));
@@ -1423,7 +1423,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     CS8->setCaretVisible (false);
     CS8->setPopupMenuEnabled (false);
     CS8->setColour (TextEditor::textColourId, Colours::black);
-    CS8->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
+    CS8->setColour (TextEditor::backgroundColourId, colorCs);
     CS8->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
     CS8->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     CS8->setText (TRANS("C#"));
@@ -1436,7 +1436,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     GS8->setCaretVisible (false);
     GS8->setPopupMenuEnabled (false);
     GS8->setColour (TextEditor::textColourId, Colours::black);
-    GS8->setColour (TextEditor::backgroundColourId, Colour (0xff885887));
+    GS8->setColour (TextEditor::backgroundColourId, colorGs);
     GS8->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
     GS8->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     GS8->setText (TRANS("G#"));
@@ -1449,7 +1449,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     DS8->setCaretVisible (false);
     DS8->setPopupMenuEnabled (false);
     DS8->setColour (TextEditor::textColourId, Colours::black);
-    DS8->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
+    DS8->setColour (TextEditor::backgroundColourId, colorDs);
     DS8->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
     DS8->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     DS8->setText (TRANS("D#"));
@@ -1462,7 +1462,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     GS9->setCaretVisible (false);
     GS9->setPopupMenuEnabled (false);
     GS9->setColour (TextEditor::textColourId, Colours::black);
-    GS9->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
+    GS9->setColour (TextEditor::backgroundColourId, colorGs);
     GS9->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
     GS9->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     GS9->setText (TRANS("G#"));
@@ -1475,7 +1475,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     C9->setCaretVisible (false);
     C9->setPopupMenuEnabled (false);
     C9->setColour (TextEditor::textColourId, Colours::black);
-    C9->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
+    C9->setColour (TextEditor::backgroundColourId, colorC);
     C9->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
     C9->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     C9->setText (TRANS("C"));
@@ -1488,7 +1488,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     G9->setCaretVisible (false);
     G9->setPopupMenuEnabled (false);
     G9->setColour (TextEditor::textColourId, Colours::black);
-    G9->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
+    G9->setColour (TextEditor::backgroundColourId, colorG);
     G9->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
     G9->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     G9->setText (TRANS("G"));
@@ -1501,7 +1501,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     D8->setCaretVisible (false);
     D8->setPopupMenuEnabled (false);
     D8->setColour (TextEditor::textColourId, Colours::black);
-    D8->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
+    D8->setColour (TextEditor::backgroundColourId, colorD);
     D8->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
     D8->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     D8->setText (TRANS("D"));
@@ -1514,7 +1514,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     A8->setCaretVisible (false);
     A8->setPopupMenuEnabled (false);
     A8->setColour (TextEditor::textColourId, Colours::black);
-    A8->setColour (TextEditor::backgroundColourId, Colour (0xff934561));
+    A8->setColour (TextEditor::backgroundColourId, colorA);
     A8->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
     A8->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     A8->setText (TRANS("A"));
@@ -1527,7 +1527,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     E8->setCaretVisible (false);
     E8->setPopupMenuEnabled (false);
     E8->setColour (TextEditor::textColourId, Colours::black);
-    E8->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
+    E8->setColour (TextEditor::backgroundColourId, colorE);
     E8->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
     E8->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     E8->setText (TRANS("E"));
@@ -1540,7 +1540,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     A9->setCaretVisible (false);
     A9->setPopupMenuEnabled (false);
     A9->setColour (TextEditor::textColourId, Colours::black);
-    A9->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
+    A9->setColour (TextEditor::backgroundColourId, colorA);
     A9->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
     A9->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     A9->setText (TRANS("A"));
@@ -1553,7 +1553,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     CS9->setCaretVisible (false);
     CS9->setPopupMenuEnabled (false);
     CS9->setColour (TextEditor::textColourId, Colours::black);
-    CS9->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
+    CS9->setColour (TextEditor::backgroundColourId, colorCs);
     CS9->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
     CS9->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     CS9->setText (TRANS("C#"));
@@ -1566,7 +1566,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     GS10->setCaretVisible (false);
     GS10->setPopupMenuEnabled (false);
     GS10->setColour (TextEditor::textColourId, Colours::black);
-    GS10->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
+    GS10->setColour (TextEditor::backgroundColourId, colorGs);
     GS10->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
     GS10->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     GS10->setText (TRANS("G#"));
@@ -1579,7 +1579,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     DS9->setCaretVisible (false);
     DS9->setPopupMenuEnabled (false);
     DS9->setColour (TextEditor::textColourId, Colours::black);
-    DS9->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
+    DS9->setColour (TextEditor::backgroundColourId, colorDs);
     DS9->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
     DS9->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     DS9->setText (TRANS("D#"));
@@ -1592,7 +1592,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     AS9->setCaretVisible (false);
     AS9->setPopupMenuEnabled (false);
     AS9->setColour (TextEditor::textColourId, Colours::black);
-    AS9->setColour (TextEditor::backgroundColourId, Colour (0xffbd5c63));
+    AS9->setColour (TextEditor::backgroundColourId, colorAs);
     AS9->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
     AS9->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     AS9->setText (TRANS("A#"));
@@ -1605,7 +1605,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     F9->setCaretVisible (false);
     F9->setPopupMenuEnabled (false);
     F9->setColour (TextEditor::textColourId, Colours::black);
-    F9->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
+    F9->setColour (TextEditor::backgroundColourId, colorF);
     F9->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
     F9->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     F9->setText (TRANS("F"));
@@ -1618,7 +1618,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     AS10->setCaretVisible (false);
     AS10->setPopupMenuEnabled (false);
     AS10->setColour (TextEditor::textColourId, Colours::black);
-    AS10->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
+    AS10->setColour (TextEditor::backgroundColourId, colorAs);
     AS10->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
     AS10->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     AS10->setText (TRANS("A#"));
@@ -1631,7 +1631,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     D9->setCaretVisible (false);
     D9->setPopupMenuEnabled (false);
     D9->setColour (TextEditor::textColourId, Colours::black);
-    D9->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
+    D9->setColour (TextEditor::backgroundColourId, colorD);
     D9->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
     D9->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     D9->setText (TRANS("D"));
@@ -1644,7 +1644,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     A10->setCaretVisible (false);
     A10->setPopupMenuEnabled (false);
     A10->setColour (TextEditor::textColourId, Colours::black);
-    A10->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
+    A10->setColour (TextEditor::backgroundColourId, colorA);
     A10->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
     A10->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     A10->setText (TRANS("A"));
@@ -1657,7 +1657,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     E9->setCaretVisible (false);
     E9->setPopupMenuEnabled (false);
     E9->setColour (TextEditor::textColourId, Colours::black);
-    E9->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
+    E9->setColour (TextEditor::backgroundColourId, colorE);
     E9->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
     E9->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     E9->setText (TRANS("E"));
@@ -1670,7 +1670,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     B9->setCaretVisible (false);
     B9->setPopupMenuEnabled (false);
     B9->setColour (TextEditor::textColourId, Colours::black);
-    B9->setColour (TextEditor::backgroundColourId, Colour (0xffdf7b60));
+    B9->setColour (TextEditor::backgroundColourId, colorB);
     B9->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
     B9->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     B9->setText (TRANS("B"));
@@ -1683,7 +1683,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     FS10->setCaretVisible (false);
     FS10->setPopupMenuEnabled (false);
     FS10->setColour (TextEditor::textColourId, Colours::black);
-    FS10->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
+    FS10->setColour (TextEditor::backgroundColourId, colorFs);
     FS10->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
     FS10->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     FS10->setText (TRANS("F#"));
@@ -1696,7 +1696,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     B10->setCaretVisible (false);
     B10->setPopupMenuEnabled (false);
     B10->setColour (TextEditor::textColourId, Colours::black);
-    B10->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
+    B10->setColour (TextEditor::backgroundColourId, colorB);
     B10->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
     B10->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     B10->setText (TRANS("B"));
@@ -1709,7 +1709,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     DS10->setCaretVisible (false);
     DS10->setPopupMenuEnabled (false);
     DS10->setColour (TextEditor::textColourId, Colours::black);
-    DS10->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
+    DS10->setColour (TextEditor::backgroundColourId, colorDs);
     DS10->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
     DS10->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     DS10->setText (TRANS("D#"));
@@ -1722,7 +1722,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     AS11->setCaretVisible (false);
     AS11->setPopupMenuEnabled (false);
     AS11->setColour (TextEditor::textColourId, Colours::black);
-    AS11->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
+    AS11->setColour (TextEditor::backgroundColourId, colorAs);
     AS11->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
     AS11->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     AS11->setText (TRANS("A#"));
@@ -1735,7 +1735,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     F10->setCaretVisible (false);
     F10->setPopupMenuEnabled (false);
     F10->setColour (TextEditor::textColourId, Colours::black);
-    F10->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
+    F10->setColour (TextEditor::backgroundColourId, colorF);
     F10->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
     F10->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     F10->setText (TRANS("F"));
@@ -1748,7 +1748,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     C10->setCaretVisible (false);
     C10->setPopupMenuEnabled (false);
     C10->setColour (TextEditor::textColourId, Colours::black);
-    C10->setColour (TextEditor::backgroundColourId, Colour (0xfffecb5f));
+    C10->setColour (TextEditor::backgroundColourId, colorC);
     C10->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
     C10->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     C10->setText (TRANS("C"));
@@ -1761,7 +1761,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     G10->setCaretVisible (false);
     G10->setPopupMenuEnabled (false);
     G10->setColour (TextEditor::textColourId, Colours::black);
-    G10->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
+    G10->setColour (TextEditor::backgroundColourId, colorG);
     G10->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
     G10->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     G10->setText (TRANS("G"));
@@ -1774,7 +1774,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     C11->setCaretVisible (false);
     C11->setPopupMenuEnabled (false);
     C11->setColour (TextEditor::textColourId, Colours::black);
-    C11->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
+    C11->setColour (TextEditor::backgroundColourId, colorC);
     C11->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
     C11->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
     C11->setText (TRANS("C"));
@@ -2732,43 +2732,6 @@ void PluginEditor::resetGuitarNotes() {
 	for (int i = 0; i < guitarnotes.size(); ++i) {
 		guitarnotes.at(i)->setAlpha(1);
 		guitarnotes.at(i)->setVisible(true);
-
-		if (guitarnotes.at(i)->getText() == "F") {
-			guitarnotes.at(i)->setColour(TextEditor::backgroundColourId, colorF);
-		}
-		else if (guitarnotes.at(i)->getText() == "F#") {
-			guitarnotes.at(i)->setColour(TextEditor::backgroundColourId, colorFs);
-		}
-		else if (guitarnotes.at(i)->getText() == "G") {
-			guitarnotes.at(i)->setColour(TextEditor::backgroundColourId, colorG);
-		}
-		else if (guitarnotes.at(i)->getText() == "G#") {
-			guitarnotes.at(i)->setColour(TextEditor::backgroundColourId, colorGs);
-		}
-		else if (guitarnotes.at(i)->getText() == "A") {
-			guitarnotes.at(i)->setColour(TextEditor::backgroundColourId, colorA);
-		}
-		else if (guitarnotes.at(i)->getText() == "A#") {
-			guitarnotes.at(i)->setColour(TextEditor::backgroundColourId, colorAs);
-		}
-		else if (guitarnotes.at(i)->getText() == "B") {
-			guitarnotes.at(i)->setColour(TextEditor::backgroundColourId, colorB);
-		}
-		else if (guitarnotes.at(i)->getText() == "C") {
-			guitarnotes.at(i)->setColour(TextEditor::backgroundColourId, colorC);
-		}
-		else if (guitarnotes.at(i)->getText() == "C#") {
-			guitarnotes.at(i)->setColour(TextEditor::backgroundColourId, colorCs);
-		}
-		else if (guitarnotes.at(i)->getText() == "D") {
-			guitarnotes.at(i)->setColour(TextEditor::backgroundColourId, colorD);
-		}
-		else if (guitarnotes.at(i)->getText() == "D#") {
-			guitarnotes.at(i)->setColour(TextEditor::backgroundColourId, colorDs);
-		}
-		else if (guitarnotes.at(i)->getText() == "E") {
-			guitarnotes.at(i)->setColour(TextEditor::backgroundColourId, colorE);
-		}
 	}
 }
 

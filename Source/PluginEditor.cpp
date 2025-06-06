@@ -190,12 +190,21 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     txtChord->setPopupMenuEnabled (false);
     txtChord->setColour (TextEditor::backgroundColourId, Colours::transparentWhite);
     txtChord->setText (String());
-    
-    /*
+
+    addAndMakeVisible (*(viewAll = std::make_unique<ToggleButton> ("new toggle button")));
+    viewAll->setButtonText("All");
+    viewAll->setClickingTogglesState (true);
+    viewAll->onClick = [this]() { selectButton(1); };
+
     addAndMakeVisible (*(viewScale = std::make_unique<ToggleButton> ("new toggle button")));
     viewScale->setButtonText("Scale");
     viewScale->setClickingTogglesState (true);
-    viewScale->onClick = [this]() { selectButton(1); };*/
+    viewScale->onClick = [this]() { selectButton(2); };
+
+    addAndMakeVisible (*(viewChord = std::make_unique<ToggleButton> ("new toggle button")));
+    viewChord->setButtonText("Chord");
+    viewChord->setClickingTogglesState (true);
+    viewChord->onClick = [this]() { selectButton(3); };
 
     addAndMakeVisible (*(buttonColour = std::make_unique<TextButton> ("new toggle button")));
     buttonColour->setButtonText("theme");
@@ -2208,97 +2217,97 @@ void PluginEditor::paint (Graphics& g)
     }
     */
     {
-        int x = 144, y = 544, width = 48, height = 30;
+        int x = 146, y = 361, width = 48, height = 30;
         String text (TRANS("3"));
-        Colour fillColour = Colours::black;
+        Colour fillColour = Colours::white;
         //[UserPaintCustomArguments] Customize the painting arguments here..
         //[/UserPaintCustomArguments]
         g.setColour (fillColour);
-        g.setFont (Font ("Arca Majora 3", 15.00f, Font::plain).withTypefaceStyle ("Bold"));
+        g.setFont (11.0f);
         g.drawText (text, x, y, width, height,
                     Justification::centred, true);
     }
 
     {
-        int x = 264, y = 544, width = 40, height = 30;
+        int x = 264, y = 361, width = 40, height = 30;
         String text (TRANS("5"));
-        Colour fillColour = Colours::black;
+        Colour fillColour = Colours::white;
         //[UserPaintCustomArguments] Customize the painting arguments here..
         //[/UserPaintCustomArguments]
         g.setColour (fillColour);
-        g.setFont (Font ("Arca Majora 3", 15.00f, Font::plain).withTypefaceStyle ("Bold"));
+        g.setFont (11.0f);
         g.drawText (text, x, y, width, height,
                     Justification::centred, true);
     }
 
     {
-        int x = 365, y = 544, width = 51, height = 30;
+        int x = 365, y = 361, width = 51, height = 30;
         String text (TRANS("7"));
-        Colour fillColour = Colours::black;
+        Colour fillColour = Colours::white;
         //[UserPaintCustomArguments] Customize the painting arguments here..
         //[/UserPaintCustomArguments]
         g.setColour (fillColour);
-        g.setFont (Font ("Arca Majora 3", 15.00f, Font::plain).withTypefaceStyle ("Bold"));
+        g.setFont (11.0f);
         g.drawText (text, x, y, width, height,
                     Justification::centred, true);
     }
 
     {
-        int x = 469, y = 544, width = 43, height = 30;
+        int x = 470, y = 361, width = 43, height = 30;
         String text (TRANS("9"));
-        Colour fillColour = Colours::black;
+        Colour fillColour = Colours::white;
         //[UserPaintCustomArguments] Customize the painting arguments here..
         //[/UserPaintCustomArguments]
         g.setColour (fillColour);
-        g.setFont (Font ("Arca Majora 3", 15.00f, Font::plain).withTypefaceStyle ("Bold"));
+        g.setFont (11.0f);
         g.drawText (text, x, y, width, height,
                     Justification::centred, true);
     }
 
     {
-        int x = 613, y = 544, width = 43, height = 30;
+        int x = 614, y = 361, width = 43, height = 30;
         String text (TRANS("12"));
-        Colour fillColour = Colours::black;
+        Colour fillColour = Colours::white;
         //[UserPaintCustomArguments] Customize the painting arguments here..
         //[/UserPaintCustomArguments]
         g.setColour (fillColour);
-        g.setFont (Font ("Arca Majora 3", 15.00f, Font::plain).withTypefaceStyle ("Bold"));
+        g.setFont (11.0f);
         g.drawText (text, x, y, width, height,
                     Justification::centred, true);
     }
 
     {
-        int x = 741, y = 544, width = 51, height = 30;
+        int x = 742, y = 361, width = 51, height = 30;
         String text (TRANS("15"));
-        Colour fillColour = Colours::black;
+        Colour fillColour = Colours::white;
         //[UserPaintCustomArguments] Customize the painting arguments here..
         //[/UserPaintCustomArguments]
         g.setColour (fillColour);
-        g.setFont (Font ("Arca Majora 3", 15.00f, Font::plain).withTypefaceStyle ("Bold"));
+        g.setFont(11.00f);
         g.drawText (text, x, y, width, height,
                     Justification::centred, true);
     }
 
     {
-        int x = 829, y = 544, width = 43, height = 30;
+        int x = 829, y = 361, width = 43, height = 30;
         String text (TRANS("17"));
-        Colour fillColour = Colours::black;
+        Colour fillColour = Colours::white;
         //[UserPaintCustomArguments] Customize the painting arguments here..
         //[/UserPaintCustomArguments]
+        g.setFont(11.0f);
         g.setColour (fillColour);
-        g.setFont (Font ("Arca Majora 3", 15.00f, Font::plain).withTypefaceStyle ("Bold"));
         g.drawText (text, x, y, width, height,
                     Justification::centred, true);
     }
 
     {
-        int x = 901, y = 544, width = 51, height = 30;
+        int x = 901, y = 362, width = 51, height = 30;
         String text (TRANS("19"));
-        Colour fillColour = Colours::black;
+        Colour fillColour = Colours::white;
         //[UserPaintCustomArguments] Customize the painting arguments here..
         //[/UserPaintCustomArguments]
         g.setColour (fillColour);
-        g.setFont (Font ("Arca Majora 3", 15.00f, Font::plain).withTypefaceStyle ("Bold"));
+        g.setFont (11.0f);
         g.drawText (text, x, y, width, height,
                     Justification::centred, true);
     }
@@ -2329,9 +2338,12 @@ void PluginEditor::resized()
     infoText->setBounds (415, 25, 570, 50);
 
     guitarComponent->setBounds (8, 90, 985, 300);
-    modeComponent->setBounds (24, 107, 150, 24);
-
-  //  viewScale->setBounds (50, 107, 150, 24);
+    
+    //modeComponent->setBounds (24, 107, 150, 24);
+    viewAll->setBounds (15, 110, 50, 24);
+    viewScale->setBounds (65, 110, 75, 24);
+    viewChord->setBounds (130, 110, 75, 24);
+    
     buttonColour->setBounds (900, 107, 75, 24);
 
     GS4->setBounds (24, 222, 56, 24);
@@ -2477,7 +2489,80 @@ void PluginEditor::switchColour()
     repaint();
 }
 
+void PluginEditor::selectButton(int index)
+{
+    if(index == 2) {
+        std::string scalekeystr = scaleKey->getText().toStdString();
+        root = scalekeystr[0];
+        char scalekeychar = scalekeystr[0];
 
+        int offset = 0;
+        if (scalekeystr[1] != '\0') {
+            offset = 1;
+            root += "#";
+        }
+
+        scaleroot = Note{ scalekeychar, offset,4 };
+        
+        std::string scalemodestr = scaleMode->getText().toStdString();
+        
+            if (scalemodestr == "Major") {
+                scaletype = BasicScale{ BasicScale::Major };
+            }
+            else if (scalemodestr == "Minor") {
+                scaletype = BasicScale{ BasicScale::Minor };
+            }
+            else if (scalemodestr == "Harmonic Minor") {
+                scaletype = BasicScale{ BasicScale::HarmonicMinor };
+            }
+            else if (scalemodestr == "Minor Pentatonic") {
+                scaletype = BasicScale{ BasicScale::MinorPentatonic };
+            }
+            else if (scalemodestr == "Major Pentatonic") {
+                scaletype = BasicScale{ BasicScale::MajorPentatonic };
+            }
+            else if (scalemodestr == "Blues") {
+                scaletype = BasicScale{ BasicScale::Blues };
+            }
+            else if (scalemodestr == "Dorian") {
+                scaletype = BasicScale{ BasicScale::Dorian };
+            }
+            else if (scalemodestr == "Lydian") {
+                scaletype = BasicScale{ BasicScale::Lydian};
+            }
+            else if (scalemodestr == "Mixolydian") {
+                scaletype = BasicScale{ BasicScale::Mixolydian };
+            }
+            else if (scalemodestr == "Phrygian") {
+                scaletype = BasicScale{ BasicScale::Phrygian};
+            }
+            else if (scalemodestr == "Aeolian") {
+                scaletype = BasicScale{ BasicScale::Aeolian };
+            }
+            else if (scalemodestr == "Ionian") {
+                scaletype = BasicScale{ BasicScale::Ionian};
+            }
+            else if (scalemodestr == "Locrian") {
+                scaletype = BasicScale{ BasicScale::Locrian};
+            }
+            else if (scalemodestr == "Metallica") {
+                scaletype = BasicScale{ BasicScale::Metallica };
+            }
+            else if (scalemodestr == "PhrygianDominant") {
+                scaletype = BasicScale{ BasicScale::PhrygianDominant };
+            }
+            else {
+                txtScale->setText(TRANS("invalid scale type"));
+            }
+
+            std::ostringstream stream;
+            stream << Scale(scaleroot, scaletype) << std::endl;
+            std::string scalestr = stream.str();
+            juce::String jscalestr = simplifyNotes(scalestr);
+            txtScale->setText(jscalestr);
+            updateGuitarNeckScales();
+    }
+}
 
 void PluginEditor::comboBoxChanged (ComboBox* comboBoxThatHasChanged)
 {
@@ -2684,10 +2769,7 @@ void PluginEditor::updateScale() {
 	std::string scalestr = stream.str();
 	juce::String jscalestr = simplifyNotes(scalestr);
 	txtScale->setText(jscalestr);
-
-	if (modeComponent->getText() == "Scales") {
-		updateGuitarNeckScales();
-	}
+	updateGuitarNeckScales();
 }
 
 void PluginEditor::updateChord() {
@@ -2696,10 +2778,7 @@ void PluginEditor::updateChord() {
 	std::string chordstr = stream.str();
 	juce::String jchordstr = simplifyNotes(chordstr);
     txtChord->setText(jchordstr);
-    
-	if (modeComponent->getText() == "Chords") {
-		updateGuitarNeckChords();
-	}
+	updateGuitarNeckChords();
 }
 
 juce::String PluginEditor::simplifyNotes(std::string str) {

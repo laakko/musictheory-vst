@@ -81,16 +81,16 @@ private:
     //[/UserVariables]
 
     //==============================================================================
-    std::unique_ptr<GroupComponent> groupComponent;
-    std::unique_ptr<GroupComponent> groupComponent4;
-    std::unique_ptr<GroupComponent> groupComponent3;
-    std::unique_ptr<GroupComponent> groupComponent2;
+    std::unique_ptr<GroupComponent> guitarComponent;
+    std::unique_ptr<GroupComponent> scalesComponent;
+    std::unique_ptr<GroupComponent> infoComponent;
+    std::unique_ptr<GroupComponent> chordsComponent;
     std::unique_ptr<ComboBox> scaleKey;
-    std::unique_ptr<ComboBox> comboBox2;
+    std::unique_ptr<ComboBox> modeComponent;
     std::unique_ptr<ComboBox> scaleMode;
     std::unique_ptr<ComboBox> chordRoot;
     std::unique_ptr<ComboBox> chordType;
-    std::unique_ptr<TextEditor> textEditor2;
+    std::unique_ptr<TextEditor> infoText;
     std::unique_ptr<TextEditor> txtScale;
     std::unique_ptr<TextEditor> txtChord;
     std::unique_ptr<TextEditor> GS4;

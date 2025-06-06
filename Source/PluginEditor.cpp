@@ -57,26 +57,26 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
 
     //[/Constructor_pre]
 
-    addAndMakeVisible (*(groupComponent = std::make_unique<GroupComponent> ("new group",
+    addAndMakeVisible (*(guitarComponent = std::make_unique<GroupComponent> ("new group",
                                                             TRANS("guitar"))));
-    groupComponent->setColour (GroupComponent::outlineColourId, Colours::aquamarine);
+    guitarComponent->setColour (GroupComponent::outlineColourId, Colours::aquamarine);
 
-    addAndMakeVisible (*(groupComponent4 = std::make_unique<GroupComponent> ("new group",
+    addAndMakeVisible (*(scalesComponent = std::make_unique<GroupComponent> ("new group",
                                                              TRANS("scales"))));
-    groupComponent4->setColour (GroupComponent::outlineColourId, Colours::aquamarine);
+    scalesComponent->setColour (GroupComponent::outlineColourId, Colours::aquamarine);
 
-    addAndMakeVisible (*(groupComponent3 = std::make_unique<GroupComponent> ("new group",
-                                                             TRANS("notepad"))));
-    groupComponent3->setColour (GroupComponent::outlineColourId, Colours::aquamarine);
+    addAndMakeVisible (*(infoComponent = std::make_unique<GroupComponent> ("new group",
+                                                             TRANS("information"))));
+    infoComponent->setColour (GroupComponent::outlineColourId, Colours::aquamarine);
 
-    addAndMakeVisible (*(groupComponent2 = std::make_unique<GroupComponent> ("new group",
+    addAndMakeVisible (*(chordsComponent = std::make_unique<GroupComponent> ("new group",
                                                              TRANS("chords"))));
-    groupComponent2->setColour (GroupComponent::outlineColourId, Colours::aquamarine);
+    chordsComponent->setColour (GroupComponent::outlineColourId, Colours::aquamarine);
 
     addAndMakeVisible (*(scaleKey = std::make_unique<ComboBox> ("new combo box")));
     scaleKey->setEditableText (false);
     scaleKey->setJustificationType (Justification::centredLeft);
-    scaleKey->setTextWhenNothingSelected (TRANS("none"));
+    scaleKey->setTextWhenNothingSelected (TRANS("key"));
     scaleKey->setTextWhenNoChoicesAvailable (TRANS("(no choices)"));
     scaleKey->addItem (TRANS("C"), 1);
     scaleKey->addItem (TRANS("C#"), 2);
@@ -92,20 +92,20 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     scaleKey->addItem (TRANS("B"), 12);
     scaleKey->addListener (this);
 
-    addAndMakeVisible (*(comboBox2 = std::make_unique<ComboBox> ("new combo box")));
-    comboBox2->setEditableText (false);
-    comboBox2->setJustificationType (Justification::centredLeft);
-    comboBox2->setTextWhenNothingSelected (TRANS("Notes"));
-    comboBox2->setTextWhenNoChoicesAvailable (TRANS("(no choices)"));
-    comboBox2->addItem (TRANS("Notes"), 1);
-    comboBox2->addItem (TRANS("Scales"), 2);
-    comboBox2->addItem (TRANS("Chords"), 3);
-    comboBox2->addListener (this);
+    addAndMakeVisible (*(modeComponent = std::make_unique<ComboBox> ("new combo box")));
+    modeComponent->setEditableText (false);
+    modeComponent->setJustificationType (Justification::centredLeft);
+    modeComponent->setTextWhenNothingSelected (TRANS("Notes"));
+    modeComponent->setTextWhenNoChoicesAvailable (TRANS("(no choices)"));
+    modeComponent->addItem (TRANS("Notes"), 1);
+    modeComponent->addItem (TRANS("Scales"), 2);
+    modeComponent->addItem (TRANS("Chords"), 3);
+    modeComponent->addListener (this);
 
     addAndMakeVisible (*(scaleMode = std::make_unique<ComboBox> ("new combo box")));
     scaleMode->setEditableText (false);
     scaleMode->setJustificationType (Justification::centredLeft);
-    scaleMode->setTextWhenNothingSelected (TRANS("none"));
+    scaleMode->setTextWhenNothingSelected (TRANS("scale"));
     scaleMode->setTextWhenNoChoicesAvailable (TRANS("(no choices)"));
     scaleMode->addItem (TRANS("Major"), 1);
     scaleMode->addItem (TRANS("Minor"), 2);
@@ -149,26 +149,26 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     chordType->addItem (TRANS("M"), 2);
     chordType->addItem (TRANS("aug"), 3);
     chordType->addItem (TRANS("dim"), 4);
-    chordType->addItem (TRANS("M7"), 5);
-    chordType->addItem (TRANS("m7"), 6);
-    chordType->addItem (TRANS("dom7"), 7);
-    chordType->addItem (TRANS("m6"), 8);
-    chordType->addItem (TRANS("M6"), 9);
-    chordType->addItem (TRANS("min_maj7"), 10);
     chordType->addItem (TRANS("sus2"), 11);
     chordType->addItem (TRANS("sus4"), 12);
+    chordType->addItem (TRANS("m6"), 8);
+    chordType->addItem (TRANS("M6"), 9);
+    chordType->addItem (TRANS("m7"), 5);
+    chordType->addItem (TRANS("M7"), 6);
+    chordType->addItem (TRANS("dom7"), 7);
+    chordType->addItem (TRANS("min_maj7"), 10);
     chordType->addItem (TRANS("hendrix"), 13);
     chordType->addListener (this);
 
-    addAndMakeVisible (*(textEditor2 = std::make_unique<TextEditor> ("new text editor")));
-    textEditor2->setMultiLine (true);
-    textEditor2->setReturnKeyStartsNewLine (true);
-    textEditor2->setReadOnly (false);
-    textEditor2->setScrollbarsShown (true);
-    textEditor2->setCaretVisible (true);
-    textEditor2->setPopupMenuEnabled (true);
-    textEditor2->setColour (TextEditor::backgroundColourId, Colour (0xff508385));
-    textEditor2->setText (TRANS("write anything here ...\n"));
+    addAndMakeVisible (*(infoText = std::make_unique<TextEditor> ("new text editor")));
+    infoText->setMultiLine (true);
+    infoText->setReturnKeyStartsNewLine (true);
+    infoText->setReadOnly (false);
+    infoText->setScrollbarsShown (true);
+    infoText->setCaretVisible (true);
+    infoText->setPopupMenuEnabled (true);
+    infoText->setColour (TextEditor::backgroundColourId, Colour (0xff508385));
+    infoText->setText (TRANS("write anything here ...\n"));
 
     addAndMakeVisible (*(txtScale = std::make_unique<TextEditor> ("new text editor")));
     txtScale->setMultiLine (true);
@@ -1254,8 +1254,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     FS7->setColour (TextEditor::backgroundColourId, Colour (0xff5681ab));
     FS7->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
     FS7->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
-    FS7->setText (TRANS("\n"
-    "F#\n"));
+    FS7->setText (TRANS("F#"));
 
     addAndMakeVisible (*(CS7 = std::make_unique<TextEditor> ("new text editor")));
     CS7->setMultiLine (true);
@@ -1756,7 +1755,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     //[UserPreSize]
     //[/UserPreSize]
 
-    setSize (1000, 600);
+    setSize (1000, 400);
 
 
     //[Constructor] You can add your own custom stuff here..
@@ -1903,16 +1902,16 @@ PluginEditor::~PluginEditor()
     //[Destructor_pre]. You can add your own custom destruction code here..
     //[/Destructor_pre]
 
-    groupComponent = nullptr;
-    groupComponent4 = nullptr;
-    groupComponent3 = nullptr;
-    groupComponent2 = nullptr;
+    guitarComponent = nullptr;
+    scalesComponent = nullptr;
+    infoComponent = nullptr;
+    chordsComponent = nullptr;
     scaleKey = nullptr;
-    comboBox2 = nullptr;
+    modeComponent = nullptr;
     scaleMode = nullptr;
     chordRoot = nullptr;
     chordType = nullptr;
-    textEditor2 = nullptr;
+    infoText = nullptr;
     txtScale = nullptr;
     txtChord = nullptr;
     GS4 = nullptr;
@@ -2050,7 +2049,7 @@ void PluginEditor::paint (Graphics& g)
     g.fillAll (Colours::cadetblue);
 
     {
-        int x = 16, y = 328, width = 968, height = 212;
+        int x = 16, y = 150, width = 968, height = 212;
         //[UserPaintCustomArguments] Customize the painting arguments here..
         //[/UserPaintCustomArguments]
         g.setColour (Colours::black);
@@ -2059,17 +2058,8 @@ void PluginEditor::paint (Graphics& g)
                      0, 0, cachedImage_gneck_inverted_png_1->getWidth(), cachedImage_gneck_inverted_png_1->getHeight());
     }
 
-    {
-        int x = 13, y = 168, width = 109, height = 30;
-        String text (TRANS("KEY"));
-        Colour fillColour = Colours::black;
-        //[UserPaintCustomArguments] Customize the painting arguments here..
-        //[/UserPaintCustomArguments]
-        g.setColour (fillColour);
-        g.setFont (Font ("Arca Majora 3", 26.40f, Font::plain).withTypefaceStyle ("Bold"));
-        g.drawText (text, x, y, width, height,
-                    Justification::centred, true);
-    }
+    /*
+
 
     {
         int x = 341, y = 0, width = 411, height = 72;
@@ -2081,7 +2071,7 @@ void PluginEditor::paint (Graphics& g)
         g.setFont (Font ("Arca Majora 3", 67.30f, Font::plain).withTypefaceStyle ("Bold"));
         g.drawText (text, x, y, width, height,
                     Justification::centred, true);
-    }
+    }*/
 
     {
         int x = 220, y = 716, width = 588, height = 5;
@@ -2152,9 +2142,22 @@ void PluginEditor::paint (Graphics& g)
                     Justification::centred, true);
     }
 
+    /*
     {
         int x = 93, y = 168, width = 200, height = 30;
         String text (TRANS("MODE/SCALE"));
+        Colour fillColour = Colours::black;
+        //[UserPaintCustomArguments] Customize the painting arguments here..
+        //[/UserPaintCustomArguments]
+        g.setColour (fillColour);
+        g.setFont (Font ("Arca Majora 3", 26.40f, Font::plain).withTypefaceStyle ("Bold"));
+        g.drawText (text, x, y, width, height,
+                    Justification::centred, true);
+    }
+
+    {
+        int x = 13, y = 168, width = 109, height = 30;
+        String text (TRANS("KEY"));
         Colour fillColour = Colours::black;
         //[UserPaintCustomArguments] Customize the painting arguments here..
         //[/UserPaintCustomArguments]
@@ -2176,6 +2179,10 @@ void PluginEditor::paint (Graphics& g)
                     Justification::centred, true);
     }
 
+
+
+
+
     {
         int x = 445, y = 48, width = 200, height = 30;
         String text (TRANS("MusicTheoryHelperVST"));
@@ -2183,11 +2190,11 @@ void PluginEditor::paint (Graphics& g)
         //[UserPaintCustomArguments] Customize the painting arguments here..
         //[/UserPaintCustomArguments]
         g.setColour (fillColour);
-        g.setFont (Font ("Arca Majora 3", 15.00f, Font::plain).withTypefaceStyle ("Bold"));
+        g.setFont (Font ("Arca Majora 3", 20.00f, Font::plain).withTypefaceStyle ("Bold"));
         g.drawText (text, x, y, width, height,
                     Justification::centred, true);
     }
-
+    */
     {
         int x = 144, y = 544, width = 48, height = 30;
         String text (TRANS("3"));
@@ -2293,138 +2300,145 @@ void PluginEditor::resized()
     //[UserPreResize] Add your own custom resize code here..
     //[/UserPreResize]
 
-    groupComponent->setBounds (8, 264, 985, 320);
-    groupComponent4->setBounds (8, 136, 272, 128);
-    groupComponent3->setBounds (288, 72, 704, 192);
-    groupComponent2->setBounds (8, 8, 272, 128);
-    scaleKey->setBounds (40, 200, 64, 24);
-    comboBox2->setBounds (24, 288, 150, 24);
-    scaleMode->setBounds (120, 200, 152, 24);
-    chordRoot->setBounds (56, 56, 64, 24);
-    chordType->setBounds (144, 56, 88, 24);
-    textEditor2->setBounds (304, 96, 680, 160);
-    txtScale->setBounds (32, 224, 224, 32);
-    txtChord->setBounds (16, 90, 256, 32);
-    GS4->setBounds (24, 400, 56, 24);
-    DS3->setBounds (24, 440, 56, 24);
-    AS2->setBounds (24, 480, 56, 24);
-    F1->setBounds (24, 525, 56, 24);
-    C5->setBounds (24, 360, 56, 24);
-    F2->setBounds (24, 317, 56, 24);
-    A4->setBounds (84, 400, 56, 24);
-    E3->setBounds (84, 440, 56, 24);
-    B2->setBounds (84, 480, 56, 24);
-    FS->setBounds (84, 525, 56, 24);
-    CS5->setBounds (84, 360, 56, 24);
-    FS6->setBounds (84, 317, 56, 24);
-    AS4->setBounds (145, 400, 52, 24);
-    F->setBounds (145, 440, 52, 24);
-    C2->setBounds (145, 480, 52, 24);
-    G->setBounds (145, 525, 52, 24);
-    D5->setBounds (145, 360, 52, 24);
-    G6->setBounds (145, 317, 52, 24);
-    B4->setBounds (202, 400, 52, 24);
-    FS3->setBounds (202, 440, 52, 24);
-    CS2->setBounds (202, 480, 52, 24);
-    GS->setBounds (202, 525, 52, 24);
-    DS5->setBounds (202, 360, 52, 24);
-    GS6->setBounds (202, 317, 52, 24);
-    C4->setBounds (257, 400, 52, 24);
-    G3->setBounds (257, 440, 52, 24);
-    D2->setBounds (257, 480, 52, 24);
-    A->setBounds (257, 525, 52, 24);
-    E5->setBounds (257, 360, 52, 24);
-    A6->setBounds (257, 317, 52, 24);
-    CS4->setBounds (312, 400, 51, 24);
-    GS3->setBounds (312, 440, 51, 24);
-    DS2->setBounds (312, 480, 51, 24);
-    AS->setBounds (312, 525, 51, 24);
-    F5->setBounds (312, 360, 51, 24);
-    AS6->setBounds (312, 317, 51, 24);
-    D4->setBounds (367, 400, 48, 24);
-    A3->setBounds (367, 440, 48, 24);
-    E2->setBounds (367, 480, 48, 24);
-    B->setBounds (367, 525, 48, 24);
-    FS5->setBounds (367, 360, 48, 24);
-    B6->setBounds (367, 317, 48, 24);
-    DS4->setBounds (420, 400, 46, 24);
-    AS3->setBounds (420, 440, 46, 24);
-    F3->setBounds (420, 480, 46, 24);
-    C->setBounds (420, 525, 46, 24);
-    G5->setBounds (420, 360, 46, 24);
-    C6->setBounds (420, 317, 46, 24);
-    E4->setBounds (471, 400, 44, 24);
-    B3->setBounds (471, 440, 44, 24);
-    FS2->setBounds (471, 480, 44, 24);
-    CS->setBounds (471, 525, 44, 24);
-    GS5->setBounds (471, 360, 44, 24);
-    CS6->setBounds (471, 317, 44, 24);
-    F4->setBounds (520, 400, 44, 24);
-    C3->setBounds (520, 440, 44, 24);
-    G2->setBounds (520, 480, 44, 24);
-    D->setBounds (520, 525, 44, 24);
-    A5->setBounds (520, 360, 44, 24);
-    D6->setBounds (520, 317, 44, 24);
-    FS4->setBounds (569, 400, 43, 24);
-    CS3->setBounds (569, 440, 43, 24);
-    GS2->setBounds (569, 480, 43, 24);
-    DS->setBounds (569, 525, 43, 24);
-    AS5->setBounds (569, 360, 43, 24);
-    DS6->setBounds (569, 317, 43, 24);
-    G4->setBounds (616, 400, 42, 24);
-    D3->setBounds (616, 440, 42, 24);
-    A2->setBounds (616, 480, 42, 24);
-    E->setBounds (616, 525, 42, 24);
-    B5->setBounds (616, 360, 42, 24);
-    E6->setBounds (616, 317, 42, 24);
-    GS7->setBounds (664, 400, 39, 24);
-    DS7->setBounds (664, 440, 39, 24);
-    AS7->setBounds (664, 480, 39, 24);
-    F6->setBounds (664, 525, 39, 24);
-    C7->setBounds (664, 360, 39, 24);
-    F7->setBounds (664, 317, 39, 24);
-    A7->setBounds (708, 400, 38, 24);
-    E7->setBounds (708, 440, 38, 24);
-    B7->setBounds (708, 480, 38, 24);
-    FS7->setBounds (708, 525, 38, 24);
-    CS7->setBounds (708, 360, 38, 24);
-    FS8->setBounds (708, 317, 38, 24);
-    AS8->setBounds (751, 400, 36, 24);
-    F8->setBounds (751, 440, 36, 24);
-    C8->setBounds (751, 480, 36, 24);
-    G7->setBounds (751, 525, 36, 24);
-    D7->setBounds (751, 360, 36, 24);
-    G8->setBounds (751, 317, 36, 24);
-    B8->setBounds (792, 400, 36, 24);
-    FS9->setBounds (792, 440, 36, 24);
-    CS8->setBounds (792, 480, 36, 24);
-    GS8->setBounds (792, 525, 36, 24);
-    DS8->setBounds (792, 360, 36, 24);
-    GS9->setBounds (792, 317, 36, 24);
-    C9->setBounds (834, 400, 34, 24);
-    G9->setBounds (834, 440, 34, 24);
-    D8->setBounds (834, 480, 34, 24);
-    A8->setBounds (834, 525, 34, 24);
-    E8->setBounds (834, 360, 34, 24);
-    A9->setBounds (834, 317, 34, 24);
-    CS9->setBounds (873, 400, 32, 24);
-    GS10->setBounds (873, 440, 32, 24);
-    DS9->setBounds (873, 480, 32, 24);
-    AS9->setBounds (873, 525, 32, 24);
-    F9->setBounds (873, 360, 32, 24);
-    AS10->setBounds (873, 317, 32, 24);
-    D9->setBounds (911, 400, 32, 24);
-    A10->setBounds (911, 440, 32, 24);
-    E9->setBounds (911, 480, 32, 24);
-    B9->setBounds (911, 525, 32, 24);
-    FS10->setBounds (911, 360, 32, 24);
-    B10->setBounds (911, 317, 32, 24);
-    DS10->setBounds (949, 400, 30, 24);
-    AS11->setBounds (949, 440, 30, 24);
-    F10->setBounds (949, 480, 30, 24);
-    C10->setBounds (949, 525, 30, 24);
-    G10->setBounds (949, 360, 30, 24);
-    C11->setBounds (949, 317, 30, 24);
+    // x,y,width,height
+    // full size: 1000, 600
+    
+    chordsComponent->setBounds (8, 8, 200, 75);
+    chordRoot->setBounds (15, 25, 60, 24);
+    chordType->setBounds (75, 25, 120, 24);
+    txtChord->setBounds (15, 50, 183, 25);
+
+    scalesComponent->setBounds (208, 8, 200, 75);
+    scaleKey->setBounds (215, 25, 60, 24);
+    scaleMode->setBounds (275, 25, 125, 24);
+    txtScale->setBounds (217, 50, 183, 25);
+
+    infoComponent->setBounds (408, 8, 584, 75);
+    infoText->setBounds (415, 25, 570, 50);
+
+    guitarComponent->setBounds (8, 90, 985, 300);
+    modeComponent->setBounds (24, 107, 150, 24);
+
+    GS4->setBounds (24, 222, 56, 24);
+    DS3->setBounds (24, 262, 56, 24);
+    AS2->setBounds (24, 302, 56, 24);
+    F1->setBounds (24, 347, 56, 24);
+    C5->setBounds (24, 182, 56, 24);
+    F2->setBounds (24, 139, 56, 24);
+    A4->setBounds (84, 222, 56, 24);
+    E3->setBounds (84, 262, 56, 24);
+    B2->setBounds (84, 302, 56, 24);
+    FS->setBounds (84, 347, 56, 24);
+    CS5->setBounds (84, 182, 56, 24);
+    FS6->setBounds (84, 139, 56, 24);
+    AS4->setBounds (145, 222, 52, 24);
+    F->setBounds (145, 262, 52, 24);
+    C2->setBounds (145, 302, 52, 24);
+    G->setBounds (145, 347, 52, 24);
+    D5->setBounds (145, 182, 52, 24);
+    G6->setBounds (145, 139, 52, 24);
+    B4->setBounds (202, 222, 52, 24);
+    FS3->setBounds (202, 262, 52, 24);
+    CS2->setBounds (202, 302, 52, 24);
+    GS->setBounds (202, 347, 52, 24);
+    DS5->setBounds (202, 182, 52, 24);
+    GS6->setBounds (202, 139, 52, 24);
+    C4->setBounds (257, 222, 52, 24);
+    G3->setBounds (257, 262, 52, 24);
+    D2->setBounds (257, 302, 52, 24);
+    A->setBounds (257, 347, 52, 24);
+    E5->setBounds (257, 182, 52, 24);
+    A6->setBounds (257, 139, 52, 24);
+    CS4->setBounds (312, 222, 51, 24);
+    GS3->setBounds (312, 262, 51, 24);
+    DS2->setBounds (312, 302, 51, 24);
+    AS->setBounds (312, 347, 51, 24);
+    F5->setBounds (312, 182, 51, 24);
+    AS6->setBounds (312, 139, 51, 24);
+    D4->setBounds (367, 222, 48, 24);
+    A3->setBounds (367, 262, 48, 24);
+    E2->setBounds (367, 302, 48, 24);
+    B->setBounds (367, 347, 48, 24);
+    FS5->setBounds (367, 182, 48, 24);
+    B6->setBounds (367, 139, 48, 24);
+    DS4->setBounds (420, 222, 46, 24);
+    AS3->setBounds (420, 262, 46, 24);
+    F3->setBounds (420, 302, 46, 24);
+    C->setBounds (420, 347, 46, 24);
+    G5->setBounds (420, 182, 46, 24);
+    C6->setBounds (420, 139, 46, 24);
+    E4->setBounds (471, 222, 44, 24);
+    B3->setBounds (471, 262, 44, 24);
+    FS2->setBounds (471, 302, 44, 24);
+    CS->setBounds (471, 347, 44, 24);
+    GS5->setBounds (471, 182, 44, 24);
+    CS6->setBounds (471, 139, 44, 24);
+    F4->setBounds (520, 222, 44, 24);
+    C3->setBounds (520, 262, 44, 24);
+    G2->setBounds (520, 302, 44, 24);
+    D->setBounds (520, 347, 44, 24);
+    A5->setBounds (520, 182, 44, 24);
+    D6->setBounds (520, 139, 44, 24);
+    FS4->setBounds (569, 222, 43, 24);
+    CS3->setBounds (569, 262, 43, 24);
+    GS2->setBounds (569, 302, 43, 24);
+    DS->setBounds (569, 347, 43, 24);
+    AS5->setBounds (569, 182, 43, 24);
+    DS6->setBounds (569, 139, 43, 24);
+    G4->setBounds (616, 222, 42, 24);
+    D3->setBounds (616, 262, 42, 24);
+    A2->setBounds (616, 302, 42, 24);
+    E->setBounds (616, 347, 42, 24);
+    B5->setBounds (616, 182, 42, 24);
+    E6->setBounds (616, 139, 42, 24);
+    GS7->setBounds (664, 222, 39, 24);
+    DS7->setBounds (664, 262, 39, 24);
+    AS7->setBounds (664, 302, 39, 24);
+    F6->setBounds (664, 347, 39, 24);
+    C7->setBounds (664, 182, 39, 24);
+    F7->setBounds (664, 139, 39, 24);
+    A7->setBounds (708, 222, 38, 24);
+    E7->setBounds (708, 262, 38, 24);
+    B7->setBounds (708, 302, 38, 24);
+    FS7->setBounds (708, 347, 38, 24);
+    CS7->setBounds (708, 182, 38, 24);
+    FS8->setBounds (708, 139, 38, 24);
+    AS8->setBounds (751, 222, 36, 24);
+    F8->setBounds (751, 262, 36, 24);
+    C8->setBounds (751, 302, 36, 24);
+    G7->setBounds (751, 347, 36, 24);
+    D7->setBounds (751, 182, 36, 24);
+    G8->setBounds (751, 139, 36, 24);
+    B8->setBounds (792, 222, 36, 24);
+    FS9->setBounds (792, 262, 36, 24);
+    CS8->setBounds (792, 302, 36, 24);
+    GS8->setBounds (792, 347, 36, 24);
+    DS8->setBounds (792, 182, 36, 24);
+    GS9->setBounds (792, 139, 36, 24);
+    C9->setBounds (834, 222, 34, 24);
+    G9->setBounds (834, 262, 34, 24);
+    D8->setBounds (834, 302, 34, 24);
+    A8->setBounds (834, 347, 34, 24);
+    E8->setBounds (834, 182, 34, 24);
+    A9->setBounds (834, 139, 34, 24);
+    CS9->setBounds (873, 222, 32, 24);
+    GS10->setBounds (873, 262, 32, 24);
+    DS9->setBounds (873, 302, 32, 24);
+    AS9->setBounds (873, 347, 32, 24);
+    F9->setBounds (873, 182, 32, 24);
+    AS10->setBounds (873, 139, 32, 24);
+    D9->setBounds (911, 222, 32, 24);
+    A10->setBounds (911, 262, 32, 24);
+    E9->setBounds (911, 302, 32, 24);
+    B9->setBounds (911, 347, 32, 24);
+    FS10->setBounds (911, 182, 32, 24);
+    B10->setBounds (911, 139, 32, 24);
+    DS10->setBounds (949, 222, 30, 24);
+    AS11->setBounds (949, 262, 30, 24);
+    F10->setBounds (949, 302, 30, 24);
+    C10->setBounds (949, 347, 30, 24);
+    G10->setBounds (949, 182, 30, 24);
+    C11->setBounds (949, 139, 30, 24);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -2453,23 +2467,23 @@ void PluginEditor::comboBoxChanged (ComboBox* comboBoxThatHasChanged)
 
         //[/UserComboBoxCode_scaleKey]
     }
-    else if (comboBoxThatHasChanged == comboBox2.get())
+    else if (comboBoxThatHasChanged == modeComponent.get())
     {
-        //[UserComboBoxCode_comboBox2] -- add your combo box handling code here..
-		if (comboBox2->getText() == "Scales") {
+        //[UserComboBoxCode_modeComponent] -- add your combo box handling code here..
+		if (modeComponent->getText() == "Scales") {
 			// Show only notes that are in the chosen scale
 			updateGuitarNeckScales();
 		}
-		else if (comboBox2->getText() == "Chords") {
+		else if (modeComponent->getText() == "Chords") {
 			// Show only notes that are in the chosen chords
 			updateGuitarNeckChords();
 		}
 
-		else if (comboBox2->getText() == "Notes") {
+		else if (modeComponent->getText() == "Notes") {
 			// Show all notes
 			resetGuitarNotes();
 		}
-        //[/UserComboBoxCode_comboBox2]
+        //[/UserComboBoxCode_modeComponent]
     }
     else if (comboBoxThatHasChanged == scaleMode.get())
     {
@@ -2635,7 +2649,7 @@ void PluginEditor::updateScale() {
 	juce::String jscalestr = simplifyNotes(scalestr);
 	txtScale->setText(jscalestr);
 
-	if (comboBox2->getText() == "Scales") {
+	if (modeComponent->getText() == "Scales") {
 		updateGuitarNeckScales();
 	}
 }
@@ -2647,7 +2661,7 @@ void PluginEditor::updateChord() {
 	juce::String jchordstr = simplifyNotes(chordstr);
     txtChord->setText(jchordstr);
     
-	if (comboBox2->getText() == "Chords") {
+	if (modeComponent->getText() == "Chords") {
 		updateGuitarNeckChords();
 	}
 }
@@ -2838,23 +2852,23 @@ BEGIN_JUCER_METADATA
           fontname="Arca Majora 3" fontsize="15" kerning="0" bold="1" italic="0"
           justification="36" typefaceStyle="Bold"/>
   </BACKGROUND>
-  <GROUPCOMPONENT name="new group" id="d3e9a3eb7c3fc20b" memberName="groupComponent"
+  <GROUPCOMPONENT name="new group" id="d3e9a3eb7c3fc20b" memberName="guitarComponent"
                   virtualName="" explicitFocusOrder="0" pos="8 264 985 320" outlinecol="ff7fffd4"
                   title="guitar"/>
-  <GROUPCOMPONENT name="new group" id="d6a80f42cd589941" memberName="groupComponent4"
+  <GROUPCOMPONENT name="new group" id="d6a80f42cd589941" memberName="scalesComponent"
                   virtualName="" explicitFocusOrder="0" pos="8 136 272 128" outlinecol="ff7fffd4"
                   title="scales"/>
-  <GROUPCOMPONENT name="new group" id="870f042dcaa691d" memberName="groupComponent3"
+  <GROUPCOMPONENT name="new group" id="870f042dcaa691d" memberName="infoComponent"
                   virtualName="" explicitFocusOrder="0" pos="288 72 704 192" outlinecol="ff7fffd4"
                   title="notepad"/>
-  <GROUPCOMPONENT name="new group" id="8bfcb5af8d4d4e7a" memberName="groupComponent2"
+  <GROUPCOMPONENT name="new group" id="8bfcb5af8d4d4e7a" memberName="chordsComponent"
                   virtualName="" explicitFocusOrder="0" pos="8 8 272 128" outlinecol="ff7fffd4"
                   title="chords"/>
   <COMBOBOX name="new combo box" id="d0bac3320deb23bb" memberName="scaleKey"
             virtualName="" explicitFocusOrder="0" pos="40 192 64 24" editable="0"
             layout="33" items="C&#10;C#&#10;D&#10;D#&#10;E&#10;F&#10;F#&#10;G&#10;G#&#10;A&#10;A#&#10;B"
             textWhenNonSelected="none" textWhenNoItems="(no choices)"/>
-  <COMBOBOX name="new combo box" id="28c57b6ee300da4c" memberName="comboBox2"
+  <COMBOBOX name="new combo box" id="28c57b6ee300da4c" memberName="modeComponent"
             virtualName="" explicitFocusOrder="0" pos="24 288 150 24" editable="0"
             layout="33" items="Notes&#10;Scales&#10;Chords" textWhenNonSelected="Notes"
             textWhenNoItems="(no choices)"/>
@@ -2870,7 +2884,7 @@ BEGIN_JUCER_METADATA
             virtualName="" explicitFocusOrder="0" pos="144 56 88 24" editable="0"
             layout="33" items="m&#10;M&#10;aug&#10;M7&#10;m7" textWhenNonSelected="type"
             textWhenNoItems="(no choices)"/>
-  <TEXTEDITOR name="new text editor" id="61e50ec73da81d20" memberName="textEditor2"
+  <TEXTEDITOR name="new text editor" id="61e50ec73da81d20" memberName="infoText"
               virtualName="" explicitFocusOrder="0" pos="304 96 680 160" bkgcol="ff508385"
               initialText="write anything here ...&#10;" multiline="1" retKeyStartsLine="1"
               readonly="0" scrollbars="1" caret="1" popupmenu="1"/>

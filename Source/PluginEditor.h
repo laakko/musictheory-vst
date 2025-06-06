@@ -66,6 +66,10 @@ public:
     void resized() override;
     void comboBoxChanged (ComboBox* comboBoxThatHasChanged) override;
 
+    void selectButton(int index);
+    void switchColour();
+
+
     // Binary resources:
     static const char* screenshot_20190321Blank20Pdf_png;
     static const int screenshot_20190321Blank20Pdf_pngSize;
@@ -77,6 +81,20 @@ private:
     //[UserVariables]   -- You can add your own custom variables in this section.
 	std::vector<std::unique_ptr<juce::TextEditor>> texteditors;
 	std::vector<std::unique_ptr<juce::TextEditor>> guitarnotes; // Vector to store guitar neck notes
+    std::unique_ptr<juce::ToggleButton> viewScale;
+    std::unique_ptr<juce::ToggleButton> viewAll;
+    std::unique_ptr<juce::ToggleButton> viewMidi;
+    std::unique_ptr<juce::ToggleButton> viewChord;
+    std::unique_ptr<juce::TextButton> buttonColour;
+
+
+    enum class ColourThemes
+    {
+        CadetBlue,
+        TransparentBlack
+    };
+    ColourThemes currentColourState = ColourThemes::CadetBlue;
+    juce::Colour backgroundColour = juce::Colours::cadetblue;
 
     //[/UserVariables]
 

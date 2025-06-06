@@ -190,6 +190,17 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     txtChord->setPopupMenuEnabled (false);
     txtChord->setColour (TextEditor::backgroundColourId, Colours::transparentWhite);
     txtChord->setText (String());
+    
+    /*
+    addAndMakeVisible (*(viewScale = std::make_unique<ToggleButton> ("new toggle button")));
+    viewScale->setButtonText("Scale");
+    viewScale->setClickingTogglesState (true);
+    viewScale->onClick = [this]() { selectButton(1); };*/
+
+    addAndMakeVisible (*(buttonColour = std::make_unique<TextButton> ("new toggle button")));
+    buttonColour->setButtonText("theme");
+    buttonColour->setClickingTogglesState (true);
+    buttonColour->onClick = [this]() { switchColour(); };
 
     addAndMakeVisible (*(GS4 = std::make_unique<TextEditor> ("new text editor")));
     GS4->setMultiLine (true);
@@ -2047,7 +2058,7 @@ void PluginEditor::paint (Graphics& g)
     //[UserPrePaint] Add your own custom painting code here..
     //[/UserPrePaint]
 
-    g.fillAll (Colours::cadetblue);
+    g.fillAll (backgroundColour);
 
     {
         int x = 16, y = 150, width = 968, height = 212;
@@ -2312,13 +2323,16 @@ void PluginEditor::resized()
     scalesComponent->setBounds (208, 8, 200, 75);
     scaleKey->setBounds (215, 25, 60, 24);
     scaleMode->setBounds (275, 25, 125, 24);
-    txtScale->setBounds (217, 50, 183, 25);
+    txtScale->setBounds (215, 50, 183, 25);
 
     infoComponent->setBounds (408, 8, 584, 75);
     infoText->setBounds (415, 25, 570, 50);
 
     guitarComponent->setBounds (8, 90, 985, 300);
     modeComponent->setBounds (24, 107, 150, 24);
+
+  //  viewScale->setBounds (50, 107, 150, 24);
+    buttonColour->setBounds (900, 107, 75, 24);
 
     GS4->setBounds (24, 222, 56, 24);
     DS3->setBounds (24, 262, 56, 24);
@@ -2443,6 +2457,27 @@ void PluginEditor::resized()
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
+
+void PluginEditor::switchColour()
+{
+    // Cycle through the color states
+    switch (currentColourState)
+    {
+        case ColourThemes::CadetBlue:
+            currentColourState = ColourThemes::TransparentBlack;
+            backgroundColour = Colours::transparentBlack;
+            break;
+
+        case ColourThemes::TransparentBlack:
+            currentColourState = ColourThemes::CadetBlue;
+            backgroundColour = Colours::cadetblue;
+            break;
+    }
+
+    repaint();
+}
+
+
 
 void PluginEditor::comboBoxChanged (ComboBox* comboBoxThatHasChanged)
 {

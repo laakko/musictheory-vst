@@ -1923,6 +1923,12 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
 	guitarnotes.push_back(std::move(B10));
 
 	resetGuitarNotes();
+
+    for(const auto& note : guitarnotes)
+    {
+        note->setName(note->getText());
+    }
+
     //[/Constructor]
 }
 
@@ -2696,15 +2702,15 @@ void PluginEditor::updateGuitarNeckScales() {
 	resetGuitarNotes();
 	for (int i = 0; i < guitarnotes.size(); ++i) {
 		guitarnotes.at(i)->setAlpha(0.7);
-		if (!(txtScale->getText().contains(guitarnotes.at(i)->getText() + " "))) {
+		if (!(txtScale->getText().contains(guitarnotes.at(i)->getName() + " "))) {
 			guitarnotes.at(i)->setVisible(false);
 		}
-		if (txtScale->getText().getLastCharacters(3).trim() == guitarnotes.at(i)->getText()) {
+		if (txtScale->getText().getLastCharacters(3).trim() == guitarnotes.at(i)->getName()) {
 			guitarnotes.at(i)->setVisible(true);
 		}
 
 		// Make root note distinct
-		if (guitarnotes.at(i)->getText() == String(root.c_str())) {
+		if (guitarnotes.at(i)->getName() == String(root.c_str())) {
 			guitarnotes.at(i)->setAlpha(1);
 		}
 	}
@@ -2714,15 +2720,15 @@ void PluginEditor::updateGuitarNeckChords() {
     resetGuitarNotes();
     for (int i = 0; i < guitarnotes.size(); ++i) {
         guitarnotes.at(i)->setAlpha(0.7);
-        if (!(txtChord->getText().contains(guitarnotes.at(i)->getText() + " "))) {
+        if (!(txtChord->getText().contains(guitarnotes.at(i)->getName() + " "))) {
             guitarnotes.at(i)->setVisible(false);
         }
-        if (txtChord->getText().getLastCharacters(3).trim() == guitarnotes.at(i)->getText()) {
+        if (txtChord->getText().getLastCharacters(3).trim() == guitarnotes.at(i)->getName()) {
             guitarnotes.at(i)->setVisible(true);
         }
 
    		// Make root note distinct
-        if (guitarnotes.at(i)->getText() == chordRoot->getText()) {
+        if (guitarnotes.at(i)->getName() == chordRoot->getText()) {
             guitarnotes.at(i)->setAlpha(1);
         }
     }

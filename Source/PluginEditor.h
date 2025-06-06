@@ -66,7 +66,7 @@ public:
     void resized() override;
     void comboBoxChanged (ComboBox* comboBoxThatHasChanged) override;
 
-    void selectButton(int index);
+    void selectButton(const std::string & function);
     void switchColour();
 
 
@@ -86,6 +86,7 @@ private:
     std::unique_ptr<juce::ToggleButton> viewMidi;
     std::unique_ptr<juce::ToggleButton> viewChord;
     std::unique_ptr<juce::TextButton> buttonColour;
+    std::unique_ptr<juce::TextButton> buttonView;
 
 
     enum class ColourThemes
@@ -104,7 +105,6 @@ private:
     std::unique_ptr<GroupComponent> infoComponent;
     std::unique_ptr<GroupComponent> chordsComponent;
     std::unique_ptr<ComboBox> scaleKey;
-    std::unique_ptr<ComboBox> modeComponent;
     std::unique_ptr<ComboBox> scaleMode;
     std::unique_ptr<ComboBox> chordRoot;
     std::unique_ptr<ComboBox> chordType;

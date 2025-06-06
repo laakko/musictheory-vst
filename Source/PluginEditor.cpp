@@ -90,17 +90,8 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     scaleKey->addItem (TRANS("A"), 10);
     scaleKey->addItem (TRANS("A#"), 11);
     scaleKey->addItem (TRANS("B"), 12);
+    scaleKey->setSelectedId (1, dontSendNotification);
     scaleKey->addListener (this);
-
-    addAndMakeVisible (*(modeComponent = std::make_unique<ComboBox> ("new combo box")));
-    modeComponent->setEditableText (false);
-    modeComponent->setJustificationType (Justification::centredLeft);
-    modeComponent->setTextWhenNothingSelected (TRANS("Notes"));
-    modeComponent->setTextWhenNoChoicesAvailable (TRANS("(no choices)"));
-    modeComponent->addItem (TRANS("Notes"), 1);
-    modeComponent->addItem (TRANS("Scales"), 2);
-    modeComponent->addItem (TRANS("Chords"), 3);
-    modeComponent->addListener (this);
 
     addAndMakeVisible (*(scaleMode = std::make_unique<ComboBox> ("new combo box")));
     scaleMode->setEditableText (false);
@@ -119,6 +110,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     scaleMode->addItem (TRANS("Phrygian"), 10);
     scaleMode->addItem (TRANS("PhrygianDominant"), 11);
     scaleMode->addItem (TRANS("Metallica"), 12);
+    scaleMode->setSelectedId (1, dontSendNotification);
     scaleMode->addListener (this);
 
     addAndMakeVisible (*(chordRoot = std::make_unique<ComboBox> ("new combo box")));
@@ -138,6 +130,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     chordRoot->addItem (TRANS("A"), 10);
     chordRoot->addItem (TRANS("A#"), 11);
     chordRoot->addItem (TRANS("B"), 12);
+    chordRoot->setSelectedId (1, dontSendNotification);
     chordRoot->addListener (this);
 
     addAndMakeVisible (*(chordType = std::make_unique<ComboBox> ("new combo box")));
@@ -158,6 +151,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     chordType->addItem (TRANS("dom7"), 7);
     chordType->addItem (TRANS("min_maj7"), 10);
     chordType->addItem (TRANS("hendrix"), 13);
+    chordType->setSelectedId (2, dontSendNotification);
     chordType->addListener (this);
 
     addAndMakeVisible (*(infoText = std::make_unique<TextEditor> ("new text editor")));
@@ -179,7 +173,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     txtScale->setCaretVisible (false);
     txtScale->setPopupMenuEnabled (false);
     txtScale->setColour (TextEditor::backgroundColourId, Colours::transparentWhite);
-    txtScale->setText (String());
+    txtScale->setText ("C D E F G A B");
 
     addAndMakeVisible (*(txtChord = std::make_unique<TextEditor> ("new text editor")));
     txtChord->setMultiLine (true);
@@ -189,27 +183,41 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     txtChord->setCaretVisible (false);
     txtChord->setPopupMenuEnabled (false);
     txtChord->setColour (TextEditor::backgroundColourId, Colours::transparentWhite);
-    txtChord->setText (String());
+    txtChord->setText ("C E G");
 
     addAndMakeVisible (*(viewAll = std::make_unique<ToggleButton> ("new toggle button")));
     viewAll->setButtonText("All");
     viewAll->setClickingTogglesState (true);
-    viewAll->onClick = [this]() { selectButton(1); };
+    viewAll->setToggleState (true, dontSendNotification);
+    viewAll->onClick = [this]() { selectButton("All"); };
 
     addAndMakeVisible (*(viewScale = std::make_unique<ToggleButton> ("new toggle button")));
     viewScale->setButtonText("Scale");
     viewScale->setClickingTogglesState (true);
-    viewScale->onClick = [this]() { selectButton(2); };
+    viewScale->setToggleState (false, dontSendNotification);
+    viewScale->onClick = [this]() { selectButton("Scale"); };
 
     addAndMakeVisible (*(viewChord = std::make_unique<ToggleButton> ("new toggle button")));
     viewChord->setButtonText("Chord");
     viewChord->setClickingTogglesState (true);
-    viewChord->onClick = [this]() { selectButton(3); };
+    viewChord->setToggleState (false, dontSendNotification);
+    viewChord->onClick = [this]() { selectButton("Chord"); };
+
+    addAndMakeVisible (*(viewMidi = std::make_unique<ToggleButton> ("new toggle button")));
+    viewMidi->setButtonText("Midi");
+    viewMidi->setClickingTogglesState (true);
+    viewMidi->setToggleState (false, dontSendNotification);
+    viewMidi->onClick = [this]() { selectButton("Midi"); };
 
     addAndMakeVisible (*(buttonColour = std::make_unique<TextButton> ("new toggle button")));
     buttonColour->setButtonText("theme");
     buttonColour->setClickingTogglesState (true);
     buttonColour->onClick = [this]() { switchColour(); };
+
+    addAndMakeVisible (*(buttonView = std::make_unique<TextButton> ("new toggle button")));
+    buttonView->setButtonText("view");
+    buttonView->setClickingTogglesState (true);
+    //buttonView->onClick = [this]() { switchColour(); };
 
     addAndMakeVisible (*(GS4 = std::make_unique<TextEditor> ("new text editor")));
     GS4->setMultiLine (true);
@@ -1928,7 +1936,6 @@ PluginEditor::~PluginEditor()
     infoComponent = nullptr;
     chordsComponent = nullptr;
     scaleKey = nullptr;
-    modeComponent = nullptr;
     scaleMode = nullptr;
     chordRoot = nullptr;
     chordType = nullptr;
@@ -2280,12 +2287,13 @@ void PluginEditor::resized()
 
     guitarComponent->setBounds (8, 90, 985, 300);
     
-    //modeComponent->setBounds (24, 107, 150, 24);
     viewAll->setBounds (15, 110, 50, 24);
     viewScale->setBounds (65, 110, 75, 24);
     viewChord->setBounds (130, 110, 75, 24);
+    viewMidi->setBounds (200, 110, 75, 24);
     
-    buttonColour->setBounds (900, 107, 75, 24);
+    buttonColour->setBounds (910, 107, 75, 24);
+    buttonView->setBounds (830, 107, 75, 24);
 
     GS4->setBounds (24, 222, 56, 24);
     DS3->setBounds (24, 262, 56, 24);
@@ -2430,78 +2438,31 @@ void PluginEditor::switchColour()
     repaint();
 }
 
-void PluginEditor::selectButton(int index)
+void PluginEditor::selectButton(const std::string & function)
 {
-    if(index == 2) {
-        std::string scalekeystr = scaleKey->getText().toStdString();
-        root = scalekeystr[0];
-        char scalekeychar = scalekeystr[0];
-
-        int offset = 0;
-        if (scalekeystr[1] != '\0') {
-            offset = 1;
-            root += "#";
-        }
-
-        scaleroot = Note{ scalekeychar, offset,4 };
-        
-        std::string scalemodestr = scaleMode->getText().toStdString();
-        
-            if (scalemodestr == "Major") {
-                scaletype = BasicScale{ BasicScale::Major };
-            }
-            else if (scalemodestr == "Minor") {
-                scaletype = BasicScale{ BasicScale::Minor };
-            }
-            else if (scalemodestr == "Harmonic Minor") {
-                scaletype = BasicScale{ BasicScale::HarmonicMinor };
-            }
-            else if (scalemodestr == "Minor Pentatonic") {
-                scaletype = BasicScale{ BasicScale::MinorPentatonic };
-            }
-            else if (scalemodestr == "Major Pentatonic") {
-                scaletype = BasicScale{ BasicScale::MajorPentatonic };
-            }
-            else if (scalemodestr == "Blues") {
-                scaletype = BasicScale{ BasicScale::Blues };
-            }
-            else if (scalemodestr == "Dorian") {
-                scaletype = BasicScale{ BasicScale::Dorian };
-            }
-            else if (scalemodestr == "Lydian") {
-                scaletype = BasicScale{ BasicScale::Lydian};
-            }
-            else if (scalemodestr == "Mixolydian") {
-                scaletype = BasicScale{ BasicScale::Mixolydian };
-            }
-            else if (scalemodestr == "Phrygian") {
-                scaletype = BasicScale{ BasicScale::Phrygian};
-            }
-            else if (scalemodestr == "Aeolian") {
-                scaletype = BasicScale{ BasicScale::Aeolian };
-            }
-            else if (scalemodestr == "Ionian") {
-                scaletype = BasicScale{ BasicScale::Ionian};
-            }
-            else if (scalemodestr == "Locrian") {
-                scaletype = BasicScale{ BasicScale::Locrian};
-            }
-            else if (scalemodestr == "Metallica") {
-                scaletype = BasicScale{ BasicScale::Metallica };
-            }
-            else if (scalemodestr == "PhrygianDominant") {
-                scaletype = BasicScale{ BasicScale::PhrygianDominant };
-            }
-            else {
-                txtScale->setText(TRANS("invalid scale type"));
-            }
-
-            std::ostringstream stream;
-            stream << Scale(scaleroot, scaletype) << std::endl;
-            std::string scalestr = stream.str();
-            juce::String jscalestr = simplifyNotes(scalestr);
-            txtScale->setText(jscalestr);
-            updateGuitarNeckScales();
+    if(function == "All") {
+        viewScale->setToggleState(false, dontSendNotification);
+        viewChord->setToggleState(false, dontSendNotification);
+        viewMidi->setToggleState(false, dontSendNotification);
+        resetGuitarNotes();
+    }
+    else if(function == "Scale") {
+        viewAll->setToggleState(false, dontSendNotification);
+        viewChord->setToggleState(false, dontSendNotification);
+        viewMidi->setToggleState(false, dontSendNotification);
+        updateGuitarNeckScales();
+    }
+    else if(function == "Chord") {
+        viewAll->setToggleState(false, dontSendNotification);
+        viewScale->setToggleState(false, dontSendNotification);
+        viewMidi->setToggleState(false, dontSendNotification);
+        updateGuitarNeckChords();
+    }
+    else if(function == "Midi") {
+        viewAll->setToggleState(false, dontSendNotification);
+        viewScale->setToggleState(false, dontSendNotification);
+        viewChord->setToggleState(false, dontSendNotification);
+        resetGuitarNotes(); // TODO live midi feature
     }
 }
 
@@ -2526,26 +2487,11 @@ void PluginEditor::comboBoxChanged (ComboBox* comboBoxThatHasChanged)
 
 		scaleroot = Note{ scalekeychar, offset,4 };
 		updateScale();
+        if(viewScale->getToggleState()) {
+            updateGuitarNeckScales();
+        }
 
         //[/UserComboBoxCode_scaleKey]
-    }
-    else if (comboBoxThatHasChanged == modeComponent.get())
-    {
-        //[UserComboBoxCode_modeComponent] -- add your combo box handling code here..
-		if (modeComponent->getText() == "Scales") {
-			// Show only notes that are in the chosen scale
-			updateGuitarNeckScales();
-		}
-		else if (modeComponent->getText() == "Chords") {
-			// Show only notes that are in the chosen chords
-			updateGuitarNeckChords();
-		}
-
-		else if (modeComponent->getText() == "Notes") {
-			// Show all notes
-			resetGuitarNotes();
-		}
-        //[/UserComboBoxCode_modeComponent]
     }
     else if (comboBoxThatHasChanged == scaleMode.get())
     {
@@ -2554,67 +2500,57 @@ void PluginEditor::comboBoxChanged (ComboBox* comboBoxThatHasChanged)
 
 		if (scalemodestr == "Major") {
 			scaletype = BasicScale{ BasicScale::Major };
-			updateScale();
 		}
 		else if (scalemodestr == "Minor") {
 			scaletype = BasicScale{ BasicScale::Minor };
-			updateScale();
 		}
 		else if (scalemodestr == "Harmonic Minor") {
 			scaletype = BasicScale{ BasicScale::HarmonicMinor };
-			updateScale();
 		}
 		else if (scalemodestr == "Minor Pentatonic") {
 			scaletype = BasicScale{ BasicScale::MinorPentatonic };
-			updateScale();
 		}
 		else if (scalemodestr == "Major Pentatonic") {
 			scaletype = BasicScale{ BasicScale::MajorPentatonic };
-			updateScale();
 		}
 		else if (scalemodestr == "Blues") {
 			scaletype = BasicScale{ BasicScale::Blues };
-			updateScale();
 		}
 		else if (scalemodestr == "Dorian") {
 			scaletype = BasicScale{ BasicScale::Dorian };
-			updateScale();
 		}
 		else if (scalemodestr == "Lydian") {
 			scaletype = BasicScale{ BasicScale::Lydian};
-			updateScale();
 		}
 		else if (scalemodestr == "Mixolydian") {
 			scaletype = BasicScale{ BasicScale::Mixolydian };
-			updateScale();
 		}
 		else if (scalemodestr == "Phrygian") {
 			scaletype = BasicScale{ BasicScale::Phrygian};
-			updateScale();
 		}
 		else if (scalemodestr == "Aeolian") {
 			scaletype = BasicScale{ BasicScale::Aeolian };
-			updateScale();
 		}
 		else if (scalemodestr == "Ionian") {
 			scaletype = BasicScale{ BasicScale::Ionian};
-			updateScale();
 		}
 		else if (scalemodestr == "Locrian") {
 			scaletype = BasicScale{ BasicScale::Locrian};
-			updateScale();
 		}
 		else if (scalemodestr == "Metallica") {
 			scaletype = BasicScale{ BasicScale::Metallica };
-			updateScale();
 		}
         else if (scalemodestr == "PhrygianDominant") {
             scaletype = BasicScale{ BasicScale::PhrygianDominant };
-            updateScale();
         }
 		else {
 			txtScale->setText(TRANS("invalid scale type"));
 		}
+
+        updateScale();
+        if(viewScale->getToggleState()) {
+            updateGuitarNeckScales();
+        }
 
         //[/UserComboBoxCode_scaleMode]
     }
@@ -2631,6 +2567,10 @@ void PluginEditor::comboBoxChanged (ComboBox* comboBoxThatHasChanged)
 
 		chordroot = Note{ chordkeychar, offset,4 };
 		updateChord();
+
+        if(viewChord->getToggleState()) {
+            updateGuitarNeckChords();
+        }
         //[/UserComboBoxCode_chordRoot]
     }
     else if (comboBoxThatHasChanged == chordType.get())
@@ -2694,13 +2634,16 @@ void PluginEditor::comboBoxChanged (ComboBox* comboBoxThatHasChanged)
 		else {
 			txtChord->setText(TRANS("Invalid chord type"));
 		}
+
+        if(viewChord->getToggleState()) {
+            updateGuitarNeckChords();
+        }
         //[/UserComboBoxCode_chordType]
     }
 
     //[UsercomboBoxChanged_Post]
     //[/UsercomboBoxChanged_Post]
 }
-
 
 
 //[MiscUserCode] You can add your own definitions of your custom methods or any other code here...
@@ -2710,7 +2653,6 @@ void PluginEditor::updateScale() {
 	std::string scalestr = stream.str();
 	juce::String jscalestr = simplifyNotes(scalestr);
 	txtScale->setText(jscalestr);
-	updateGuitarNeckScales();
 }
 
 void PluginEditor::updateChord() {
@@ -2719,7 +2661,6 @@ void PluginEditor::updateChord() {
 	std::string chordstr = stream.str();
 	juce::String jchordstr = simplifyNotes(chordstr);
     txtChord->setText(jchordstr);
-	updateGuitarNeckChords();
 }
 
 juce::String PluginEditor::simplifyNotes(std::string str) {

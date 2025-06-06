@@ -21,9 +21,13 @@ namespace acentric_core {
 		aug7 /* The augmented seventh chord; intervals M3 A5 m7 */,
 		dim7 /* The diminished seventh chord; intervals m3 d5 d7 */,
 		halfdim7 /* The half-diminished seventh chord; intervals m3 d5 m7 */,
-		min_maj7 /* The minor-major seventh chord; intervals m3 P5 M7 */ /*,
+		min_maj7 /* The minor-major seventh chord; intervals m3 P5 M7 */ ,
+		sus2, /* The suspended second chord; intervals P4 M6 */
+		sus4, /* The suspended fourth chord; intervals P5 M2 */
+		hendrix /* The Hendrix chord; intervals M3 P5 m7 a9 */
+		
+		/*
 		maj9,
-		hendrix,
 		dom9,
 		min_maj9,
 		min9,

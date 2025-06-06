@@ -148,8 +148,16 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     chordType->addItem (TRANS("m"), 1);
     chordType->addItem (TRANS("M"), 2);
     chordType->addItem (TRANS("aug"), 3);
-    chordType->addItem (TRANS("M7"), 4);
-    chordType->addItem (TRANS("m7"), 5);
+    chordType->addItem (TRANS("dim"), 4);
+    chordType->addItem (TRANS("M7"), 5);
+    chordType->addItem (TRANS("m7"), 6);
+    chordType->addItem (TRANS("dom7"), 7);
+    chordType->addItem (TRANS("m6"), 8);
+    chordType->addItem (TRANS("M6"), 9);
+    chordType->addItem (TRANS("min_maj7"), 10);
+    chordType->addItem (TRANS("sus2"), 11);
+    chordType->addItem (TRANS("sus4"), 12);
+    chordType->addItem (TRANS("hendrix"), 13);
     chordType->addListener (this);
 
     addAndMakeVisible (*(textEditor2 = std::make_unique<TextEditor> ("new text editor")));
@@ -2527,6 +2535,7 @@ void PluginEditor::comboBoxChanged (ComboBox* comboBoxThatHasChanged)
         else if (scalemodestr == "PhrygianDominant") {
             scaletype = BasicScale{ BasicScale::PhrygianDominant };
             updateScale();
+        }
 		else {
 			txtScale->setText(TRANS("invalid scale type"));
 		}
@@ -2569,10 +2578,43 @@ void PluginEditor::comboBoxChanged (ComboBox* comboBoxThatHasChanged)
 			chordtype = BasicChord{ BasicChord::min7 };
 			updateChord();
 		}
+        else if (chordtypestr == "dom7") {
+            chordtype = BasicChord{ BasicChord::dom7 };
+            updateChord();
+        }
 		else if (chordtypestr == "aug") {
 			chordtype = BasicChord{ BasicChord::aug };
 			updateChord();
 		}
+        else if (chordtypestr == "dim") {
+            chordtype = BasicChord{ BasicChord::dim };
+            updateChord();
+        }
+        else if (chordtypestr == "m6") {
+            chordtype = BasicChord{ BasicChord::min6 };
+            updateChord();
+        }
+        else if (chordtypestr == "M6") {
+            chordtype = BasicChord{ BasicChord::maj6 };
+            updateChord();
+        }
+        else if (chordtypestr == "min_maj7") {
+            chordtype = BasicChord{ BasicChord::min_maj7 };
+            updateChord();
+        }
+        else if (chordtypestr == "hendrix") {
+            chordtype = BasicChord{ BasicChord::hendrix };
+            updateChord();
+        }
+
+        else if (chordtypestr == "sus2") {
+            chordtype = BasicChord{ BasicChord::sus2 };
+            updateChord();
+        }
+        else if (chordtypestr == "sus4") {
+            chordtype = BasicChord{ BasicChord::sus4 };
+            updateChord();
+        }
 		else {
 			txtChord->setText(TRANS("Invalid chord type"));
 		}

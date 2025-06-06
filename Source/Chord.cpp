@@ -153,7 +153,26 @@ namespace acentric_core {
 			pitches.push_back(Interval{ 'P', 5 });
 			pitches.push_back(Interval{ 'M', 7 });
 			break;
+		
+			case BasicChord::sus2:
+			pitches.push_back(Interval{ 'P', 1 });
+			pitches.push_back(Interval{ 'M', 2 });
+			pitches.push_back(Interval{ 'P', 5 });
+			break;
 
+		case BasicChord::sus4:
+			pitches.push_back(Interval{ 'P', 1 });
+			pitches.push_back(Interval{ 'P', 4 });
+			pitches.push_back(Interval{ 'P', 5 });
+			break;
+
+		case BasicChord::hendrix:
+			pitches.push_back(Interval{ 'P', 1 });
+			pitches.push_back(Interval{ 'M', 3 });
+			pitches.push_back(Interval{ 'P', 5 });
+			pitches.push_back(Interval{ 'm', 7 });
+			pitches.push_back(Interval{ 'a', 9 });
+			break;
 		}
 
 		// TODO any reason to call cleanAndValidate() here? probably not

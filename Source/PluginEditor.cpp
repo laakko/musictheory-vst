@@ -30,7 +30,7 @@ Note scaleroot = Note{ BasicNote::C };
 Note chordroot = Note{ BasicNote::C };
 BasicScale scaletype = BasicScale{ BasicScale::Major };
 BasicChord chordtype = BasicChord{ BasicChord::maj };
-
+Chord currentChord = Chord(chordroot, chordtype);
 
 juce::Colour colorF = Colour(0xff4d91a9);
 juce::Colour colorFs = Colour(0xff5681ab);
@@ -44,8 +44,6 @@ juce::Colour colorCs = Colour(0xffc1be4f);
 juce::Colour colorD = Colour(0xff86af4d);
 juce::Colour colorDs = Colour(0xff499b53);
 juce::Colour colorE = Colour(0xff007062);
-
-
 
 //[/MiscUserDefs]
 
@@ -161,7 +159,6 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     infoText->setScrollbarsShown (true);
     infoText->setCaretVisible (true);
     infoText->setPopupMenuEnabled (true);
-   // infoText->setColour (TextEditor::backgroundColourId, Colour (0xff508385));
     infoText->setColour (TextEditor::backgroundColourId, Colours::transparentWhite);
     infoText->setText (TRANS(""));
 
@@ -217,7 +214,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     addAndMakeVisible (*(buttonView = std::make_unique<TextButton> ("new toggle button")));
     buttonView->setButtonText("view");
     buttonView->setClickingTogglesState (true);
-    //buttonView->onClick = [this]() { switchColour(); };
+    buttonView->onClick = [this]() { viewButton(); };
 
     addAndMakeVisible (*(GS4 = std::make_unique<TextEditor> ("new text editor")));
     GS4->setColour (TextEditor::backgroundColourId, colorG);
@@ -706,7 +703,6 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
 
     setSize (1000, 400);
 
-
     //[Constructor] You can add your own custom stuff here..
 
 	guitarnotes.push_back(std::move(C));
@@ -773,7 +769,6 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
 	guitarnotes.push_back(std::move(F8));
 	guitarnotes.push_back(std::move(F9));
 	guitarnotes.push_back(std::move(F10));
-
 
 	guitarnotes.push_back(std::move(FS));
 	guitarnotes.push_back(std::move(FS2));
@@ -842,8 +837,6 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
 	guitarnotes.push_back(std::move(B9));
 	guitarnotes.push_back(std::move(B10));
 
-	resetGuitarNotes();
-
     for(const auto& note : guitarnotes)
     {
         note->setName(note->getText());
@@ -859,7 +852,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
         note->setColour(TextEditor::textColourId, Colours::black);
         note->applyFontToAllText(note->getFont());
     }
-
+  	resetGuitarNotes();
     //[/Constructor]
 }
 
@@ -867,7 +860,6 @@ PluginEditor::~PluginEditor()
 {
     //[Destructor_pre]. You can add your own custom destruction code here..
     //[/Destructor_pre]
-
     guitarComponent = nullptr;
     scalesComponent = nullptr;
     infoComponent = nullptr;
@@ -999,8 +991,6 @@ PluginEditor::~PluginEditor()
     C10 = nullptr;
     G10 = nullptr;
     C11 = nullptr;
-
-
     //[Destructor]. You can add your own custom destruction code here..
     //[/Destructor]
 }
@@ -1022,85 +1012,6 @@ void PluginEditor::paint (Graphics& g)
                      x, y, width, height,
                      0, 0, cachedImage_gneck_inverted_png_1->getWidth(), cachedImage_gneck_inverted_png_1->getHeight());
     }
-
-    /*
-
-
-    {
-        int x = 341, y = 0, width = 411, height = 72;
-        String text (TRANS("MTHVST"));
-        Colour fillColour = Colours::black;
-        //[UserPaintCustomArguments] Customize the painting arguments here..
-        //[/UserPaintCustomArguments]
-        g.setColour (fillColour);
-        g.setFont (Font ("Arca Majora 3", 67.30f, Font::plain).withTypefaceStyle ("Bold"));
-        g.drawText (text, x, y, width, height,
-                    Justification::centred, true);
-    }*/
-
-    /*
-    {
-        int x = 220, y = 716, width = 588, height = 5;
-        Colour fillColour = Colours::black;
-        //[UserPaintCustomArguments] Customize the painting arguments here..
-        //[/UserPaintCustomArguments]
-        g.setColour (fillColour);
-        g.fillRect (x, y, width, height);
-    }*/
-
-    /*
-    {
-        int x = 93, y = 168, width = 200, height = 30;
-        String text (TRANS("MODE/SCALE"));
-        Colour fillColour = Colours::black;
-        //[UserPaintCustomArguments] Customize the painting arguments here..
-        //[/UserPaintCustomArguments]
-        g.setColour (fillColour);
-        g.setFont (Font ("Arca Majora 3", 26.40f, Font::plain).withTypefaceStyle ("Bold"));
-        g.drawText (text, x, y, width, height,
-                    Justification::centred, true);
-    }
-
-    {
-        int x = 13, y = 168, width = 109, height = 30;
-        String text (TRANS("KEY"));
-        Colour fillColour = Colours::black;
-        //[UserPaintCustomArguments] Customize the painting arguments here..
-        //[/UserPaintCustomArguments]
-        g.setColour (fillColour);
-        g.setFont (Font ("Arca Majora 3", 26.40f, Font::plain).withTypefaceStyle ("Bold"));
-        g.drawText (text, x, y, width, height,
-                    Justification::centred, true);
-    }
-
-    {
-        int x = 29, y = 24, width = 200, height = 30;
-        String text (TRANS("CHORD"));
-        Colour fillColour = Colours::black;
-        //[UserPaintCustomArguments] Customize the painting arguments here..
-        //[/UserPaintCustomArguments]
-        g.setColour (fillColour);
-        g.setFont (Font ("Arca Majora 3", 26.40f, Font::plain).withTypefaceStyle ("Bold"));
-        g.drawText (text, x, y, width, height,
-                    Justification::centred, true);
-    }
-
-
-
-
-
-    {
-        int x = 445, y = 48, width = 200, height = 30;
-        String text (TRANS("MusicTheoryHelperVST"));
-        Colour fillColour = Colours::black;
-        //[UserPaintCustomArguments] Customize the painting arguments here..
-        //[/UserPaintCustomArguments]
-        g.setColour (fillColour);
-        g.setFont (Font ("Arca Majora 3", 20.00f, Font::plain).withTypefaceStyle ("Bold"));
-        g.drawText (text, x, y, width, height,
-                    Justification::centred, true);
-    }
-    */
     {
         int x = 146, y = 363, width = 48, height = 30;
         String text (TRANS("3"));
@@ -1207,8 +1118,6 @@ void PluginEditor::resized()
     //[/UserPreResize]
 
     // x,y,width,height
-    // full size: 1000, 600
-    
     chordsComponent->setBounds (8, 8, 200, 75);
     chordRoot->setBounds (15, 25, 60, 24);
     chordType->setBounds (75, 25, 120, 24);
@@ -1358,7 +1267,6 @@ void PluginEditor::resized()
 
 void PluginEditor::switchColour()
 {
-    // Cycle through the color states
     switch (currentColourState)
     {
         case ColourThemes::CadetBlue:
@@ -1371,8 +1279,17 @@ void PluginEditor::switchColour()
             backgroundColour = Colours::cadetblue;
             break;
     }
-
     repaint();
+}
+
+void PluginEditor::viewButton()
+{
+    if(viewScale->getToggleState()) {
+        updateGuitarNeckScales();
+    }
+    else if(viewChord->getToggleState()) {
+        updateGuitarNeckChords();
+    }
 }
 
 void PluginEditor::selectButton(const std::string & function)
@@ -1405,17 +1322,11 @@ void PluginEditor::selectButton(const std::string & function)
 
 void PluginEditor::comboBoxChanged (ComboBox* comboBoxThatHasChanged)
 {
-    //[UsercomboBoxChanged_Pre]
-    //[/UsercomboBoxChanged_Pre]
-
     if (comboBoxThatHasChanged == scaleKey.get())
     {
-        //[UserComboBoxCode_scaleKey] -- add your combo box handling code here..
-
 		std::string scalekeystr = scaleKey->getText().toStdString();
 		root = scalekeystr[0];
 		char scalekeychar = scalekeystr[0];
-
 		int offset = 0;
 		if (scalekeystr[1] != '\0') {
 			offset = 1;
@@ -1427,12 +1338,9 @@ void PluginEditor::comboBoxChanged (ComboBox* comboBoxThatHasChanged)
         if(viewScale->getToggleState()) {
             updateGuitarNeckScales();
         }
-
-        //[/UserComboBoxCode_scaleKey]
     }
     else if (comboBoxThatHasChanged == scaleMode.get())
     {
-        //[UserComboBoxCode_scaleMode] -- add your combo box handling code here..
 		std::string scalemodestr = scaleMode->getText().toStdString();
 
 		if (scalemodestr == "Major") {
@@ -1488,31 +1396,20 @@ void PluginEditor::comboBoxChanged (ComboBox* comboBoxThatHasChanged)
         if(viewScale->getToggleState()) {
             updateGuitarNeckScales();
         }
-
-        //[/UserComboBoxCode_scaleMode]
     }
     else if (comboBoxThatHasChanged == chordRoot.get())
     {
-        //[UserComboBoxCode_chordRoot] -- add your combo box handling code here..
 		std::string chordkeystr = chordRoot->getText().toStdString();
 		char chordkeychar = chordkeystr[0];
-
-		int offset = 0;
-		if (chordkeystr[1] != '\0') {
-			offset = 1;
-		}
-
+		int offset = chordkeystr[1] != '\0' ? 1 : 0;
 		chordroot = Note{ chordkeychar, offset,4 };
 		updateChord();
-
         if(viewChord->getToggleState()) {
             updateGuitarNeckChords();
         }
-        //[/UserComboBoxCode_chordRoot]
     }
     else if (comboBoxThatHasChanged == chordType.get())
     {
-        //[UserComboBoxCode_chordType] -- add your combo box handling code here..
 		std::string chordtypestr = chordType->getText().toStdString();
 
 		if (chordtypestr == "M") {
@@ -1575,34 +1472,31 @@ void PluginEditor::comboBoxChanged (ComboBox* comboBoxThatHasChanged)
         if(viewChord->getToggleState()) {
             updateGuitarNeckChords();
         }
-        //[/UserComboBoxCode_chordType]
     }
-
-    //[UsercomboBoxChanged_Post]
-    //[/UsercomboBoxChanged_Post]
 }
-
 
 //[MiscUserCode] You can add your own definitions of your custom methods or any other code here...
 void PluginEditor::updateScale() {
 	std::ostringstream stream;
 	stream << Scale(scaleroot, scaletype) << std::endl;
 	std::string scalestr = stream.str();
+    scalestr += " ";
 	juce::String jscalestr = simplifyNotes(scalestr);
 	txtScale->setText(jscalestr);
 }
 
 void PluginEditor::updateChord() {
 	std::ostringstream stream;
-	stream << Chord(chordroot, chordtype) << std::endl;
+    currentChord = Chord(chordroot, chordtype);
+	stream << currentChord << std::endl;
 	std::string chordstr = stream.str();
+    chordstr += " ";
 	juce::String jchordstr = simplifyNotes(chordstr);
     txtChord->setText(jchordstr);
 }
 
-juce::String PluginEditor::simplifyNotes(std::string str) {
+juce::String PluginEditor::simplifyNotes(const std::string & str) {
 	// This is a bit stupid but works
-
 	juce::String jscalestr = str;
 
 	jscalestr = jscalestr.replace("B#", "C");
@@ -1624,23 +1518,20 @@ juce::String PluginEditor::simplifyNotes(std::string str) {
 	jscalestr = jscalestr.replace("A##", "B");
 	jscalestr = jscalestr.replace("B##", "C#");
 
-
 	return jscalestr;
 }
 
 
 void PluginEditor::updateGuitarNeckScales() {
 	resetGuitarNotes();
+    juce::StringArray notesToMatch = juce::StringArray::fromTokens(txtScale->getText().trim(), " ", "");
+
 	for (int i = 0; i < guitarnotes.size(); ++i) {
 		guitarnotes.at(i)->setAlpha(0.7);
-		if (!(txtScale->getText().contains(guitarnotes.at(i)->getName() + " "))) {
-			guitarnotes.at(i)->setVisible(false);
-		}
-		if (txtScale->getText().getLastCharacters(3).trim() == guitarnotes.at(i)->getName()) {
-			guitarnotes.at(i)->setVisible(true);
-		}
+        if (!(notesToMatch.contains(guitarnotes.at(i)->getName()))) {
+            guitarnotes.at(i)->setVisible(false);
+        }
 
-		// Make root note distinct
 		if (guitarnotes.at(i)->getName() == String(root.c_str())) {
 			guitarnotes.at(i)->setAlpha(1);
 		}
@@ -1649,16 +1540,23 @@ void PluginEditor::updateGuitarNeckScales() {
 
 void PluginEditor::updateGuitarNeckChords() {
     resetGuitarNotes();
+    juce::StringArray notesToMatch = juce::StringArray::fromTokens(txtChord->getText().trim(), " ", "");
+
     for (int i = 0; i < guitarnotes.size(); ++i) {
         guitarnotes.at(i)->setAlpha(0.7);
-        if (!(txtChord->getText().contains(guitarnotes.at(i)->getName() + " "))) {
+        if (!(notesToMatch.contains(guitarnotes.at(i)->getName()))) {
             guitarnotes.at(i)->setVisible(false);
         }
-        if (txtChord->getText().getLastCharacters(3).trim() == guitarnotes.at(i)->getName()) {
-            guitarnotes.at(i)->setVisible(true);
+
+        if(buttonView->getToggleState()) {
+            std::string notetext = guitarnotes.at(i)->getName().toStdString();
+            int offset = notetext[1] != '\0' ? 1 : 0;
+            std::string intervaltxt = currentChord.getIntervalString(Note(notetext[0], offset));
+            guitarnotes.at(i)->setText(intervaltxt);
+        } else {
+            guitarnotes.at(i)->setText(guitarnotes.at(i)->getName());
         }
 
-   		// Make root note distinct
         if (guitarnotes.at(i)->getName() == chordRoot->getText()) {
             guitarnotes.at(i)->setAlpha(1);
         }
@@ -1669,735 +1567,9 @@ void PluginEditor::resetGuitarNotes() {
 	for (int i = 0; i < guitarnotes.size(); ++i) {
 		guitarnotes.at(i)->setAlpha(1);
 		guitarnotes.at(i)->setVisible(true);
+        guitarnotes.at(i)->setText(guitarnotes.at(i)->getName());
 	}
 }
-
-
-//[/MiscUserCode]
-
-
-//==============================================================================
-#if 0
-/*  -- Projucer information section --
-
-    This is where the Projucer stores the metadata that describe this GUI layout, so
-    make changes in here at your peril!
-
-BEGIN_JUCER_METADATA
-
-<JUCER_COMPONENT documentType="Component" className="PluginEditor" componentName=""
-                 parentClasses="public AudioProcessorEditor" constructorParams="MusicTheoryAudioProcessor&amp; p"
-                 variableInitialisers="AudioProcessorEditor (&amp;p), processor (p)"
-                 snapPixels="8" snapActive="1" snapShown="1" overlayOpacity="0.330"
-                 fixedSize="1" initialWidth="1000" initialHeight="600">
-  <BACKGROUND backgroundColour="ff5f9ea0">
-    <IMAGE pos="16 328 968 212" resource="gneck_inverted_png" opacity="1"
-           mode="0"/>
-    <TEXT pos="13 168 109 30" fill="solid: ff000000" hasStroke="0" text="KEY"
-          fontname="Arca Majora 3" fontsize="26.399999999999998579" kerning="0"
-          bold="1" italic="0" justification="36" typefaceStyle="Bold"/>
-    <TEXT pos="341 0 411 72" fill="solid: ff000000" hasStroke="0" text="MTHVST"
-          fontname="Arca Majora 3" fontsize="67.299999999999997158" kerning="0"
-          bold="1" italic="0" justification="36" typefaceStyle="Bold"/>
-    <RECT pos="220 716 588 5" fill="solid: ff000000" hasStroke="0"/>
-    <TEXT pos="324 724 44 30" fill="solid: ff000000" hasStroke="0" text="3"
-          fontname="Arca Majora 3" fontsize="15" kerning="0" bold="0" italic="0"
-          justification="36"/>
-    <TEXT pos="420 724 44 30" fill="solid: ff000000" hasStroke="0" text="5"
-          fontname="Arca Majora 3" fontsize="15" kerning="0" bold="0" italic="0"
-          justification="36"/>
-    <TEXT pos="524 724 44 30" fill="solid: ff000000" hasStroke="0" text="7"
-          fontname="Arca Majora 3" fontsize="15" kerning="0" bold="0" italic="0"
-          justification="36"/>
-    <TEXT pos="612 724 44 30" fill="solid: ff000000" hasStroke="0" text="9"
-          fontname="Arca Majora 3" fontsize="15" kerning="0" bold="0" italic="0"
-          justification="36"/>
-    <TEXT pos="756 724 44 30" fill="solid: ff000000" hasStroke="0" text="12"
-          fontname="Arca Majora 3" fontsize="15" kerning="0" bold="0" italic="0"
-          justification="36"/>
-    <TEXT pos="93 168 200 30" fill="solid: ff000000" hasStroke="0" text="MODE/SCALE"
-          fontname="Arca Majora 3" fontsize="26.399999999999998579" kerning="0"
-          bold="1" italic="0" justification="36" typefaceStyle="Bold"/>
-    <TEXT pos="29 24 200 30" fill="solid: ff000000" hasStroke="0" text="CHORD"
-          fontname="Arca Majora 3" fontsize="26.399999999999998579" kerning="0"
-          bold="1" italic="0" justification="36" typefaceStyle="Bold"/>
-    <TEXT pos="445 48 200 30" fill="solid: ff000000" hasStroke="0" text="MusicTheoryHelperVST"
-          fontname="Arca Majora 3" fontsize="15" kerning="0" bold="1" italic="0"
-          justification="36" typefaceStyle="Bold"/>
-    <TEXT pos="144 544 48 30" fill="solid: ff000000" hasStroke="0" text="3"
-          fontname="Arca Majora 3" fontsize="15" kerning="0" bold="1" italic="0"
-          justification="36" typefaceStyle="Bold"/>
-    <TEXT pos="264 544 40 30" fill="solid: ff000000" hasStroke="0" text="5"
-          fontname="Arca Majora 3" fontsize="15" kerning="0" bold="1" italic="0"
-          justification="36" typefaceStyle="Bold"/>
-    <TEXT pos="365 544 51 30" fill="solid: ff000000" hasStroke="0" text="7"
-          fontname="Arca Majora 3" fontsize="15" kerning="0" bold="1" italic="0"
-          justification="36" typefaceStyle="Bold"/>
-    <TEXT pos="469 544 43 30" fill="solid: ff000000" hasStroke="0" text="9"
-          fontname="Arca Majora 3" fontsize="15" kerning="0" bold="1" italic="0"
-          justification="36" typefaceStyle="Bold"/>
-    <TEXT pos="613 544 43 30" fill="solid: ff000000" hasStroke="0" text="12"
-          fontname="Arca Majora 3" fontsize="15" kerning="0" bold="1" italic="0"
-          justification="36" typefaceStyle="Bold"/>
-    <TEXT pos="741 544 51 30" fill="solid: ff000000" hasStroke="0" text="15"
-          fontname="Arca Majora 3" fontsize="15" kerning="0" bold="1" italic="0"
-          justification="36" typefaceStyle="Bold"/>
-    <TEXT pos="829 544 43 30" fill="solid: ff000000" hasStroke="0" text="17"
-          fontname="Arca Majora 3" fontsize="15" kerning="0" bold="1" italic="0"
-          justification="36" typefaceStyle="Bold"/>
-    <TEXT pos="901 544 51 30" fill="solid: ff000000" hasStroke="0" text="19"
-          fontname="Arca Majora 3" fontsize="15" kerning="0" bold="1" italic="0"
-          justification="36" typefaceStyle="Bold"/>
-  </BACKGROUND>
-  <GROUPCOMPONENT name="new group" id="d3e9a3eb7c3fc20b" memberName="guitarComponent"
-                  virtualName="" explicitFocusOrder="0" pos="8 264 985 320" outlinecol="ff7fffd4"
-                  title="guitar"/>
-  <GROUPCOMPONENT name="new group" id="d6a80f42cd589941" memberName="scalesComponent"
-                  virtualName="" explicitFocusOrder="0" pos="8 136 272 128" outlinecol="ff7fffd4"
-                  title="scales"/>
-  <GROUPCOMPONENT name="new group" id="870f042dcaa691d" memberName="infoComponent"
-                  virtualName="" explicitFocusOrder="0" pos="288 72 704 192" outlinecol="ff7fffd4"
-                  title="notepad"/>
-  <GROUPCOMPONENT name="new group" id="8bfcb5af8d4d4e7a" memberName="chordsComponent"
-                  virtualName="" explicitFocusOrder="0" pos="8 8 272 128" outlinecol="ff7fffd4"
-                  title="chords"/>
-  <COMBOBOX name="new combo box" id="d0bac3320deb23bb" memberName="scaleKey"
-            virtualName="" explicitFocusOrder="0" pos="40 192 64 24" editable="0"
-            layout="33" items="C&#10;C#&#10;D&#10;D#&#10;E&#10;F&#10;F#&#10;G&#10;G#&#10;A&#10;A#&#10;B"
-            textWhenNonSelected="none" textWhenNoItems="(no choices)"/>
-  <COMBOBOX name="new combo box" id="28c57b6ee300da4c" memberName="modeComponent"
-            virtualName="" explicitFocusOrder="0" pos="24 288 150 24" editable="0"
-            layout="33" items="Notes&#10;Scales&#10;Chords" textWhenNonSelected="Notes"
-            textWhenNoItems="(no choices)"/>
-  <COMBOBOX name="new combo box" id="1c5c8e2cb3a97fca" memberName="scaleMode"
-            virtualName="" explicitFocusOrder="0" pos="120 192 152 24" editable="0"
-            layout="33" items="Major&#10;Minor&#10;Harmonic Minor&#10;Blues&#10;Minor Pentatonic&#10;Major Pentatonic&#10;Dorian&#10;Lydian&#10;Mixolydian&#10;Phrygian"
-            textWhenNonSelected="none" textWhenNoItems="(no choices)"/>
-  <COMBOBOX name="new combo box" id="5df79c76e34b7dfe" memberName="chordRoot"
-            virtualName="" explicitFocusOrder="0" pos="56 56 64 24" editable="0"
-            layout="33" items="C&#10;C#&#10;D&#10;D#&#10;E&#10;F&#10;F#&#10;G&#10;G#&#10;A&#10;A#&#10;B"
-            textWhenNonSelected="root" textWhenNoItems="(no choices)"/>
-  <COMBOBOX name="new combo box" id="f1a298a1b78330af" memberName="chordType"
-            virtualName="" explicitFocusOrder="0" pos="144 56 88 24" editable="0"
-            layout="33" items="m&#10;M&#10;aug&#10;M7&#10;m7" textWhenNonSelected="type"
-            textWhenNoItems="(no choices)"/>
-  <TEXTEDITOR name="new text editor" id="61e50ec73da81d20" memberName="infoText"
-              virtualName="" explicitFocusOrder="0" pos="304 96 680 160" bkgcol="ff508385"
-              initialText="write anything here ...&#10;" multiline="1" retKeyStartsLine="1"
-              readonly="0" scrollbars="1" caret="1" popupmenu="1"/>
-  <TEXTEDITOR name="new text editor" id="f01c2b8f289a8b31" memberName="txtScale"
-              virtualName="" explicitFocusOrder="0" pos="32 224 224 32" bkgcol="ff5f9ea0"
-              initialText="" multiline="1" retKeyStartsLine="0" readonly="1"
-              scrollbars="0" caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="e8c8a7592443a9c8" memberName="txtChord"
-              virtualName="" explicitFocusOrder="0" pos="16 96 256 32" bkgcol="ff5f9ea0"
-              initialText="" multiline="1" retKeyStartsLine="0" readonly="1"
-              scrollbars="0" caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="c47feac105422dee" memberName="GS4"
-              virtualName="" explicitFocusOrder="0" pos="24 400 56 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="G#"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="8c65bc6efcc4c953" memberName="DS3"
-              virtualName="" explicitFocusOrder="0" pos="24 440 56 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="D#"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="11e8748facae5482" memberName="AS2"
-              virtualName="" explicitFocusOrder="0" pos="24 480 56 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="A#"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="38889325be6cdf59" memberName="F1"
-              virtualName="" explicitFocusOrder="0" pos="24 525 56 24" textcol="ff000000"
-              bkgcol="ff4d91a9" outlinecol="522d2d" shadowcol="c12323" initialText="F"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="256b55a354c61630" memberName="C5"
-              virtualName="" explicitFocusOrder="0" pos="24 360 56 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="C"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="ee66443517e5cc2a" memberName="F2"
-              virtualName="" explicitFocusOrder="0" pos="24 317 56 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="F"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="1150582751d8f554" memberName="A4"
-              virtualName="" explicitFocusOrder="0" pos="84 400 56 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="A"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="48d1d426ce401fa7" memberName="E3"
-              virtualName="" explicitFocusOrder="0" pos="84 440 56 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="E"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="85bf0d6659d292cf" memberName="B2"
-              virtualName="" explicitFocusOrder="0" pos="84 480 56 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="B"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="248c44bfea1f4b03" memberName="FS"
-              virtualName="" explicitFocusOrder="0" pos="84 525 56 24" textcol="ff000000"
-              bkgcol="ff5681ab" outlinecol="522d2d" shadowcol="c12323" initialText="&#10;F#&#10;"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="9e3372e35d461be6" memberName="CS5"
-              virtualName="" explicitFocusOrder="0" pos="84 360 56 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="C#"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="1446fd17a02ce952" memberName="FS6"
-              virtualName="" explicitFocusOrder="0" pos="84 317 56 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="F#"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="d6412f64c5d61ed9" memberName="AS4"
-              virtualName="" explicitFocusOrder="0" pos="145 400 52 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="A#"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="6b6a95ce76a43e78" memberName="F" virtualName=""
-              explicitFocusOrder="0" pos="145 440 52 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="F"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="845fa63053d672b7" memberName="C2"
-              virtualName="" explicitFocusOrder="0" pos="145 480 52 24" textcol="ff000000"
-              bkgcol="d4ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="C"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="51298939a8a19acd" memberName="G" virtualName=""
-              explicitFocusOrder="0" pos="145 525 52 24" textcol="ff000000"
-              bkgcol="ff706ea1" outlinecol="522d2d" shadowcol="c12323" initialText="G"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="7a2cca9782229d3c" memberName="D5"
-              virtualName="" explicitFocusOrder="0" pos="145 360 52 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="D"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="3b60e4e31b65c698" memberName="G6"
-              virtualName="" explicitFocusOrder="0" pos="145 317 52 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="G"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="f2d240f22b9509ad" memberName="B4"
-              virtualName="" explicitFocusOrder="0" pos="202 400 52 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="B"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="db1be30023af9b5d" memberName="FS3"
-              virtualName="" explicitFocusOrder="0" pos="202 440 52 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="F#"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="b2f7b9627635e43e" memberName="CS2"
-              virtualName="" explicitFocusOrder="0" pos="202 480 52 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="C#"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="3c29dcee22064d9f" memberName="GS"
-              virtualName="" explicitFocusOrder="0" pos="202 525 52 24" textcol="ff000000"
-              bkgcol="ff885887" outlinecol="522d2d" shadowcol="c12323" initialText="G#"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="fe43304bd428c553" memberName="DS5"
-              virtualName="" explicitFocusOrder="0" pos="202 360 52 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="D#"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="63533c6138e94925" memberName="GS6"
-              virtualName="" explicitFocusOrder="0" pos="202 317 52 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="G#"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="2a65236799f11be3" memberName="C4"
-              virtualName="" explicitFocusOrder="0" pos="257 400 52 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="C"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="bef9f3ce5b8183c3" memberName="G3"
-              virtualName="" explicitFocusOrder="0" pos="257 440 52 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="G"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="541ba0a7b0dcda21" memberName="D2"
-              virtualName="" explicitFocusOrder="0" pos="257 480 52 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="D"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="709c3ff69cde455a" memberName="A" virtualName=""
-              explicitFocusOrder="0" pos="257 525 52 24" textcol="ff000000"
-              bkgcol="ff934561" outlinecol="522d2d" shadowcol="c12323" initialText="A"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="f4c7f8a29ae2686d" memberName="E5"
-              virtualName="" explicitFocusOrder="0" pos="257 360 52 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="E"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="9e062d3865c3a6d6" memberName="A6"
-              virtualName="" explicitFocusOrder="0" pos="257 317 52 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="A"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="afb5bca316e5cc6e" memberName="CS4"
-              virtualName="" explicitFocusOrder="0" pos="312 400 51 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="C#"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="678d85789080f749" memberName="GS3"
-              virtualName="" explicitFocusOrder="0" pos="312 440 51 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="G#"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="13f02da8033a15fa" memberName="DS2"
-              virtualName="" explicitFocusOrder="0" pos="312 480 51 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="D#"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="17541f8aa0e0c16f" memberName="AS"
-              virtualName="" explicitFocusOrder="0" pos="312 525 51 24" textcol="ff000000"
-              bkgcol="ffbd5c63" outlinecol="522d2d" shadowcol="c12323" initialText="A#"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="d34dddb5bda2afc8" memberName="F5"
-              virtualName="" explicitFocusOrder="0" pos="312 360 51 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="F"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="9541c70a1c430578" memberName="AS6"
-              virtualName="" explicitFocusOrder="0" pos="312 317 51 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="A#"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="36d89d85d2491463" memberName="D4"
-              virtualName="" explicitFocusOrder="0" pos="367 400 48 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="D"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="f56d4450a66f4d65" memberName="A3"
-              virtualName="" explicitFocusOrder="0" pos="367 440 48 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="A"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="be86533ab2c0f36e" memberName="E2"
-              virtualName="" explicitFocusOrder="0" pos="367 480 48 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="E"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="2298f80f641b190d" memberName="B" virtualName=""
-              explicitFocusOrder="0" pos="367 525 48 24" textcol="ff000000"
-              bkgcol="ffdf7b60" outlinecol="522d2d" shadowcol="c12323" initialText="B"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="a50cf62188f318cc" memberName="FS5"
-              virtualName="" explicitFocusOrder="0" pos="367 360 48 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="F#"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="c5aa0440900f2b14" memberName="B6"
-              virtualName="" explicitFocusOrder="0" pos="367 317 48 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="B"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="8b11edbbb6b93a3d" memberName="DS4"
-              virtualName="" explicitFocusOrder="0" pos="420 400 46 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="D#"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="35663d800eb06fe" memberName="AS3"
-              virtualName="" explicitFocusOrder="0" pos="420 440 46 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="A#"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="82bdd472cd349cf9" memberName="F3"
-              virtualName="" explicitFocusOrder="0" pos="420 480 46 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="F"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="49bda9d59f9250c9" memberName="C" virtualName=""
-              explicitFocusOrder="0" pos="420 525 46 24" textcol="ff000000"
-              bkgcol="fffecb5f" outlinecol="522d2d" shadowcol="c12323" initialText="C"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="d2a1e2d6e4ec8efc" memberName="G5"
-              virtualName="" explicitFocusOrder="0" pos="420 360 46 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="G"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="ad744b27041092fe" memberName="C6"
-              virtualName="" explicitFocusOrder="0" pos="420 317 46 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="C"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="527437bcdc447b1d" memberName="E4"
-              virtualName="" explicitFocusOrder="0" pos="471 400 44 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="E"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="ce62bba04be5dd5b" memberName="B3"
-              virtualName="" explicitFocusOrder="0" pos="471 440 44 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="B"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="f652d10509ebe94b" memberName="FS2"
-              virtualName="" explicitFocusOrder="0" pos="471 480 44 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="F#"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="e0f6882bcc88dd0b" memberName="CS"
-              virtualName="" explicitFocusOrder="0" pos="471 525 44 24" textcol="ff000000"
-              bkgcol="ffc1be4f" outlinecol="522d2d" shadowcol="c12323" initialText="C#"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="683dc1af36244b1c" memberName="GS5"
-              virtualName="" explicitFocusOrder="0" pos="471 360 44 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="G#"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="9f5df1efa442c0c3" memberName="CS6"
-              virtualName="" explicitFocusOrder="0" pos="471 317 44 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="C#"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="aec7cefcf70eec10" memberName="F4"
-              virtualName="" explicitFocusOrder="0" pos="520 400 44 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="F"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="5aecebb3ce5a6274" memberName="C3"
-              virtualName="" explicitFocusOrder="0" pos="520 440 44 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="C"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="cdc65c06f224bb35" memberName="G2"
-              virtualName="" explicitFocusOrder="0" pos="520 480 44 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="G"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="37bc7174c5d9f43b" memberName="D" virtualName=""
-              explicitFocusOrder="0" pos="520 525 44 24" textcol="ff000000"
-              bkgcol="ff86af4d" outlinecol="522d2d" shadowcol="c12323" initialText="D"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="711cb79dd815b051" memberName="A5"
-              virtualName="" explicitFocusOrder="0" pos="520 360 44 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="A"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="a9fa6acc8204956f" memberName="D6"
-              virtualName="" explicitFocusOrder="0" pos="520 317 44 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="D"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="eaaa77e97e97c2dc" memberName="FS4"
-              virtualName="" explicitFocusOrder="0" pos="569 400 43 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="F#"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="a7db4ff38469c8c2" memberName="CS3"
-              virtualName="" explicitFocusOrder="0" pos="569 440 43 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="C#"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="2648f4d1b0918a9d" memberName="GS2"
-              virtualName="" explicitFocusOrder="0" pos="569 480 43 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="G#"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="e0a2f56fdc20e35b" memberName="DS"
-              virtualName="" explicitFocusOrder="0" pos="569 525 43 24" textcol="ff000000"
-              bkgcol="ff499b53" outlinecol="522d2d" shadowcol="c12323" initialText="D#"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="ab71d96f3affec99" memberName="AS5"
-              virtualName="" explicitFocusOrder="0" pos="569 360 43 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="A#"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="f202c01a1c02b479" memberName="DS6"
-              virtualName="" explicitFocusOrder="0" pos="569 317 43 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="D#"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="7e5131977f911f5b" memberName="G4"
-              virtualName="" explicitFocusOrder="0" pos="616 400 42 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="G"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="1b61964a64e39cd7" memberName="D3"
-              virtualName="" explicitFocusOrder="0" pos="616 440 42 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="D"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="9d98dce091c93330" memberName="A2"
-              virtualName="" explicitFocusOrder="0" pos="616 480 42 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="A"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="c976fc24f6659c21" memberName="E" virtualName=""
-              explicitFocusOrder="0" pos="616 525 42 24" textcol="ff000000"
-              bkgcol="ff007062" outlinecol="522d2d" shadowcol="c12323" initialText="E"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="78566031c387cffd" memberName="B5"
-              virtualName="" explicitFocusOrder="0" pos="616 360 42 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="B"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="5f4415d59eaada7f" memberName="E6"
-              virtualName="" explicitFocusOrder="0" pos="616 317 42 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="E"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="6a4e8ecf68a67b8f" memberName="GS7"
-              virtualName="" explicitFocusOrder="0" pos="664 400 39 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="G#"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="e76aab8d5c26d98c" memberName="DS7"
-              virtualName="" explicitFocusOrder="0" pos="664 440 39 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="D#"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="ca01491146053d39" memberName="AS7"
-              virtualName="" explicitFocusOrder="0" pos="664 480 39 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="A#"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="f804716a51416b47" memberName="F6"
-              virtualName="" explicitFocusOrder="0" pos="664 525 39 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="F"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="39cd5f30a8579f6e" memberName="C7"
-              virtualName="" explicitFocusOrder="0" pos="664 360 39 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="C"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="8b2ae6fc1aa6bb19" memberName="F7"
-              virtualName="" explicitFocusOrder="0" pos="664 317 39 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="F"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="813bc65bf4cc13b1" memberName="A7"
-              virtualName="" explicitFocusOrder="0" pos="708 400 38 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="A"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="c751671410e9b16d" memberName="E7"
-              virtualName="" explicitFocusOrder="0" pos="708 440 38 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="E"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="f76cba3b6e845220" memberName="B7"
-              virtualName="" explicitFocusOrder="0" pos="708 480 38 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="B"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="3be7532decf1ec47" memberName="FS7"
-              virtualName="" explicitFocusOrder="0" pos="708 525 38 24" textcol="ff000000"
-              bkgcol="ff5681ab" outlinecol="522d2d" shadowcol="c12323" initialText="&#10;F#&#10;"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="fa7344c71665a69d" memberName="CS7"
-              virtualName="" explicitFocusOrder="0" pos="708 360 38 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="C#"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="4f1b58bd90216f08" memberName="FS8"
-              virtualName="" explicitFocusOrder="0" pos="708 317 38 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="F#"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="2fc9142567c7d22f" memberName="AS8"
-              virtualName="" explicitFocusOrder="0" pos="751 400 36 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="A#"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="c2ad20cbf7074689" memberName="F8"
-              virtualName="" explicitFocusOrder="0" pos="751 440 36 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="F"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="d265f4ad8ef157c2" memberName="C8"
-              virtualName="" explicitFocusOrder="0" pos="751 480 36 24" textcol="ff000000"
-              bkgcol="d4ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="C"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="5905c54918f4638a" memberName="G7"
-              virtualName="" explicitFocusOrder="0" pos="751 525 36 24" textcol="ff000000"
-              bkgcol="ff706ea1" outlinecol="522d2d" shadowcol="c12323" initialText="G"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="6734dca45d7272a5" memberName="D7"
-              virtualName="" explicitFocusOrder="0" pos="751 360 36 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="D"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="deacafc969b4dd68" memberName="G8"
-              virtualName="" explicitFocusOrder="0" pos="751 317 36 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="G"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="1a3233b14b075b02" memberName="B8"
-              virtualName="" explicitFocusOrder="0" pos="792 400 36 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="B"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="760083f33f8090fa" memberName="FS9"
-              virtualName="" explicitFocusOrder="0" pos="792 440 36 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="F#"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="25dc2468cff9a323" memberName="CS8"
-              virtualName="" explicitFocusOrder="0" pos="792 480 36 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="C#"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="b49227e3554e39fa" memberName="GS8"
-              virtualName="" explicitFocusOrder="0" pos="792 525 36 24" textcol="ff000000"
-              bkgcol="ff885887" outlinecol="522d2d" shadowcol="c12323" initialText="G#"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="69770d0e9306bae" memberName="DS8"
-              virtualName="" explicitFocusOrder="0" pos="792 360 36 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="D#"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="630a74800b89eed0" memberName="GS9"
-              virtualName="" explicitFocusOrder="0" pos="792 317 36 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="G#"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="ef3a7c27764f4c60" memberName="C9"
-              virtualName="" explicitFocusOrder="0" pos="834 400 34 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="C"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="c63ff8a25a654b15" memberName="G9"
-              virtualName="" explicitFocusOrder="0" pos="834 440 34 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="G"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="fce36c5d506942a0" memberName="D8"
-              virtualName="" explicitFocusOrder="0" pos="834 480 34 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="D"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="276b467bf37aaf95" memberName="A8"
-              virtualName="" explicitFocusOrder="0" pos="834 525 34 24" textcol="ff000000"
-              bkgcol="ff934561" outlinecol="522d2d" shadowcol="c12323" initialText="A"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="346cf5aa5e8328b3" memberName="E8"
-              virtualName="" explicitFocusOrder="0" pos="834 360 34 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="E"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="a7fd9daa59e61cf1" memberName="A9"
-              virtualName="" explicitFocusOrder="0" pos="834 317 34 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="A"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="f50004115de09a61" memberName="CS9"
-              virtualName="" explicitFocusOrder="0" pos="873 400 32 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="C#"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="b343afe4af32edd8" memberName="GS10"
-              virtualName="" explicitFocusOrder="0" pos="873 440 32 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="G#"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="c624556af48185b1" memberName="DS9"
-              virtualName="" explicitFocusOrder="0" pos="873 480 32 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="D#"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="bb127f86d163652f" memberName="AS9"
-              virtualName="" explicitFocusOrder="0" pos="873 525 32 24" textcol="ff000000"
-              bkgcol="ffbd5c63" outlinecol="522d2d" shadowcol="c12323" initialText="A#"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="3698e08d1bd3a134" memberName="F9"
-              virtualName="" explicitFocusOrder="0" pos="873 360 32 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="F"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="49687131b28c55c9" memberName="AS10"
-              virtualName="" explicitFocusOrder="0" pos="873 317 32 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="A#"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="a3735da997fc7382" memberName="D9"
-              virtualName="" explicitFocusOrder="0" pos="911 400 32 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="D"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="81e3046a31ae1f3b" memberName="A10"
-              virtualName="" explicitFocusOrder="0" pos="911 440 32 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="A"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="df21a3524a6a8415" memberName="E9"
-              virtualName="" explicitFocusOrder="0" pos="911 480 32 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="E"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="9b85bd427f4c501c" memberName="B9"
-              virtualName="" explicitFocusOrder="0" pos="911 525 32 24" textcol="ff000000"
-              bkgcol="ffdf7b60" outlinecol="522d2d" shadowcol="c12323" initialText="B"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="a7b339ce729013f4" memberName="FS10"
-              virtualName="" explicitFocusOrder="0" pos="911 360 32 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="F#"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="100c0673289ac95" memberName="B10"
-              virtualName="" explicitFocusOrder="0" pos="911 317 32 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="B"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="b74717f7ff7f84a8" memberName="DS10"
-              virtualName="" explicitFocusOrder="0" pos="949 400 30 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="D#"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="1c3f6bbaeaee26a2" memberName="AS11"
-              virtualName="" explicitFocusOrder="0" pos="949 440 30 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="A#"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="d304d2073a4648d8" memberName="F10"
-              virtualName="" explicitFocusOrder="0" pos="949 480 30 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="F"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="a347f501b552d8d2" memberName="C10"
-              virtualName="" explicitFocusOrder="0" pos="949 525 30 24" textcol="ff000000"
-              bkgcol="fffecb5f" outlinecol="522d2d" shadowcol="c12323" initialText="C"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="1461e3a30095cada" memberName="G10"
-              virtualName="" explicitFocusOrder="0" pos="949 360 30 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="G"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="8a36f1d76d71d77b" memberName="C11"
-              virtualName="" explicitFocusOrder="0" pos="949 317 30 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="C"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-</JUCER_COMPONENT>
-
-END_JUCER_METADATA
-*/
-#endif
 
 //==============================================================================
 // Binary resources - be careful not to edit any of these sections!

@@ -214,6 +214,45 @@ namespace acentric_core {
 		this->cleanAndValidate();
 	}
 
+	std::string Chord::getIntervalsString() const {
+		if (pitches.empty()) {
+			return "";
+		}
+		
+		std::ostringstream ss;
+		
+		// Append the first interval
+		ss << pitches[0];
+		
+		// Append the rest of the intervals with commas
+		for (size_t i = 1; i < pitches.size(); i++) {
+			ss << ", " << pitches[i];
+		}
+		
+		return ss.str();
+	}
+
+	Interval Chord::getInterval(Note note) const {
+		// Calculate the interval between the root and the given note
+		Interval targetInterval = root.getInterval(note);
+		
+		// Check if this interval exists in our chord's pitches
+		for (const Interval& interval : pitches) {
+			if (interval.getSemitones() == targetInterval.getSemitones()) {
+				return interval;
+			}
+		}
+		
+		// If the note is not found in the chord, return Interval(0)
+		return Interval{'P', 1}; // Perfect unison represents "not found"
+	}
+
+	std::string Chord::getIntervalString(Note note) const {
+		std::ostringstream ss;
+		ss << getInterval(note);
+		return ss.str();
+	}
+
 	std::ostream & operator<<(std::ostream & os, const Chord & chord)
 	{
 		// TODO add functionality for recognizing standard chords and their inversions

@@ -59,7 +59,7 @@ public:
 	void updateGuitarNeckChords();
 	void resetGuitarNotes();
 
-	juce::String simplifyNotes(std::string str);
+	juce::String simplifyNotes(const std::string & str);
     //[/UserMethods]
 
     void paint (Graphics& g) override;
@@ -67,6 +67,7 @@ public:
     void comboBoxChanged (ComboBox* comboBoxThatHasChanged) override;
 
     void selectButton(const std::string & function);
+    void viewButton();
     void switchColour();
 
 

@@ -39,11 +39,7 @@ const String MusicTheoryAudioProcessor::getName() const
 
 bool MusicTheoryAudioProcessor::acceptsMidi() const
 {
-   #if JucePlugin_WantsMidiInput
-    return true;
-   #else
-    return false;
-   #endif
+   return true;
 }
 
 bool MusicTheoryAudioProcessor::producesMidi() const
@@ -132,6 +128,11 @@ bool MusicTheoryAudioProcessor::isBusesLayoutSupported (const BusesLayout& layou
 
 void MusicTheoryAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer& midiMessages)
 {
+    activeMidiNotes.clear();
+    if(midiMessages.isEmpty()) {
+        return;
+    }
+
     ScopedNoDenormals noDenormals;
     const int totalNumInputChannels  = getTotalNumInputChannels();
     const int totalNumOutputChannels = getTotalNumOutputChannels();
@@ -150,7 +151,18 @@ void MusicTheoryAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuf
     for (int channel = 0; channel < totalNumInputChannels; ++channel)
     {
         float* channelData = buffer.getWritePointer (channel);
-
+        for (const MidiMessageMetadata metadata : midiMessages)
+        {
+            const MidiMessage& message = metadata.getMessage();
+    
+            if (message.isNoteOn())
+            {
+                // Store the note number to use in the editor
+                String midiNote = MidiMessage::getMidiNoteName(message.getNoteNumber(), true, false, 4);
+                std::cout << "Note On: " << midiNote << std::endl;
+                activeMidiNotes.push_back(midiNote);
+            }
+        }
         // ..do something to the data...
     }
 }

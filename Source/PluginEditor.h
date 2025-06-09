@@ -57,6 +57,7 @@ public:
 	void updateChord();
 	void updateGuitarNeckScales();
 	void updateGuitarNeckChords();
+    void updateGuitarNeckMidi(const String & midinotes);
 	void resetGuitarNotes();
 
 	juce::String simplifyNotes(const std::string & str);
@@ -89,6 +90,7 @@ private:
     std::unique_ptr<juce::TextButton> buttonColour;
     std::unique_ptr<juce::TextButton> buttonView;
 
+    MusicTheoryAudioProcessor& processor;
 
     enum class ColourThemes
     {

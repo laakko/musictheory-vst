@@ -11,6 +11,7 @@
 #pragma once
 
 #include "../JuceLibraryCode/JuceHeader.h"
+#include <mutex>
 
 
 //==============================================================================
@@ -57,9 +58,10 @@ public:
     void setStateInformation (const void* data, int sizeInBytes) override;
 
     //==============================================================================
-    std::vector<String> activeMidiNotes; // Store MIDI note names for use in the editor
-
+    std::vector<String> getActiveMidiNotes();
 private:
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MusicTheoryAudioProcessor)
+    std::vector<String> activeMidiNotes; // Store MIDI note names for use in the editor
+    std::mutex midiNotesMutex; // Mutex to protect access to activeMidiNotes
 };

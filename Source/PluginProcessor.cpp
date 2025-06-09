@@ -128,6 +128,7 @@ bool MusicTheoryAudioProcessor::isBusesLayoutSupported (const BusesLayout& layou
 
 void MusicTheoryAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer& midiMessages)
 {
+    std::lock_guard<std::mutex> lock(midiNotesMutex);
     activeMidiNotes.clear();
     if(midiMessages.isEmpty()) {
         return;
@@ -159,8 +160,11 @@ void MusicTheoryAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuf
             {
                 // Store the note number to use in the editor
                 String midiNote = MidiMessage::getMidiNoteName(message.getNoteNumber(), true, false, 4);
-                std::cout << "Note On: " << midiNote << std::endl;
-                activeMidiNotes.push_back(midiNote);
+                if (std::find(activeMidiNotes.begin(), activeMidiNotes.end(), midiNote) == activeMidiNotes.end())
+                {
+                    std::cout << "Note On: " << midiNote << std::endl;
+                    activeMidiNotes.push_back(midiNote);
+                }
             }
         }
         // ..do something to the data...
@@ -190,6 +194,13 @@ void MusicTheoryAudioProcessor::setStateInformation (const void* data, int sizeI
 {
     // You should use this method to restore your parameters from this memory block,
     // whose contents will have been created by the getStateInformation() call.
+}
+
+std::vector<String> MusicTheoryAudioProcessor::getActiveMidiNotes()
+{
+    std::lock_guard<std::mutex> lock(midiNotesMutex);
+    // Return copy of the active MIDI notes for use in the editor
+    return activeMidiNotes;
 }
 
 //==============================================================================

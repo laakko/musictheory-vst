@@ -49,7 +49,7 @@ juce::Colour colorE = Colour(0xff007062);
 
 //==============================================================================
 PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
-    : AudioProcessorEditor (&p)
+    : AudioProcessorEditor (&p), processor (p)
 {
     //[Constructor_pre] You can add your own custom stuff here..
 
@@ -1316,7 +1316,19 @@ void PluginEditor::selectButton(const std::string & function)
         viewAll->setToggleState(false, dontSendNotification);
         viewScale->setToggleState(false, dontSendNotification);
         viewChord->setToggleState(false, dontSendNotification);
-        resetGuitarNotes(); // TODO live midi feature
+        auto midiNotes = processor.getActiveMidiNotes();
+        String midiNotesStr;
+        for (const auto& note : midiNotes) {
+            midiNotesStr += note + " ";
+        }
+        String infostr;
+        if(midiNotes.empty()) {
+            infostr = "No active MIDI notes.\nPlayback MIDI in the plugin's track to see active notes on the fretboard.";
+        } else {
+            infostr = "Active MIDI Notes: " + midiNotesStr;
+        }
+        infoText->setText(infostr, dontSendNotification);
+        updateGuitarNeckMidi(midiNotesStr);
     }
 }
 
@@ -1559,6 +1571,18 @@ void PluginEditor::updateGuitarNeckChords() {
 
         if (guitarnotes.at(i)->getName() == chordRoot->getText()) {
             guitarnotes.at(i)->setAlpha(1);
+        }
+    }
+}
+
+void PluginEditor::updateGuitarNeckMidi(const String & midinotes) {
+    resetGuitarNotes();
+    juce::StringArray notesToMatch = juce::StringArray::fromTokens(midinotes, " ", "");
+
+    for (int i = 0; i < guitarnotes.size(); ++i) {
+        guitarnotes.at(i)->setAlpha(1.0);
+        if (!(notesToMatch.contains(guitarnotes.at(i)->getName()))) {
+            guitarnotes.at(i)->setVisible(false);
         }
     }
 }

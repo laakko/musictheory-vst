@@ -172,485 +172,145 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     buttonView->setClickingTogglesState (true);
     buttonView->onClick = [this]() { viewButton(); };
 
-    addAndMakeVisible (*(GS4 = std::make_unique<TextEditor> ("new text editor")));
-    GS4->setColour (TextEditor::backgroundColourId, colorG);
-    GS4->setText (TRANS("G#"));
 
-    addAndMakeVisible (*(DS3 = std::make_unique<TextEditor> ("new text editor")));
-    DS3->setColour (TextEditor::backgroundColourId, colorDs);
-    DS3->setText (TRANS("D#"));
-
-    addAndMakeVisible (*(AS2 = std::make_unique<TextEditor> ("new text editor")));
-    AS2->setColour (TextEditor::backgroundColourId, colorAs);
-    AS2->setText (TRANS("A#"));
-
-    addAndMakeVisible (*(F1 = std::make_unique<TextEditor> ("new text editor")));
-    F1->setColour (TextEditor::backgroundColourId, colorF);
-    F1->setText (TRANS("F"));
-
-    addAndMakeVisible (*(C5 = std::make_unique<TextEditor> ("new text editor")));
-    C5->setColour (TextEditor::backgroundColourId, colorC);
-    C5->setText (TRANS("C"));
-
-    addAndMakeVisible (*(F2 = std::make_unique<TextEditor> ("new text editor")));
-    F2->setColour (TextEditor::backgroundColourId, colorF);
-    F2->setText (TRANS("F"));
-
-    addAndMakeVisible (*(A4 = std::make_unique<TextEditor> ("new text editor")));
-    A4->setColour (TextEditor::backgroundColourId, colorA);
-    A4->setText (TRANS("A"));
-
-    addAndMakeVisible (*(E3 = std::make_unique<TextEditor> ("new text editor")));
-    E3->setColour (TextEditor::backgroundColourId, colorE);
-    E3->setText (TRANS("E"));
-
-    addAndMakeVisible (*(B2 = std::make_unique<TextEditor> ("new text editor")));
-    B2->setColour (TextEditor::backgroundColourId, colorB);
-    B2->setText (TRANS("B"));
-
-    addAndMakeVisible (*(FS = std::make_unique<TextEditor> ("new text editor")));
-    FS->setColour (TextEditor::backgroundColourId, colorF);
-    FS->setText (TRANS("F#"));
-
-    addAndMakeVisible (*(CS5 = std::make_unique<TextEditor> ("new text editor")));
-    CS5->setColour (TextEditor::backgroundColourId, colorCs);
-    CS5->setText (TRANS("C#"));
-
-    addAndMakeVisible (*(FS6 = std::make_unique<TextEditor> ("new text editor")));
-    FS6->setColour (TextEditor::backgroundColourId, colorFs);
-    FS6->setText (TRANS("F#"));
-
-    addAndMakeVisible (*(AS4 = std::make_unique<TextEditor> ("new text editor")));
-    AS4->setColour (TextEditor::backgroundColourId, colorAs);
-    AS4->setText (TRANS("A#"));
-
-    addAndMakeVisible (*(F = std::make_unique<TextEditor> ("new text editor")));
-    F->setColour (TextEditor::backgroundColourId, colorF);
-    F->setText (TRANS("F"));
-
-    addAndMakeVisible (*(C2 = std::make_unique<TextEditor> ("new text editor")));
-    C2->setColour (TextEditor::backgroundColourId, colorC);
-    C2->setText (TRANS("C"));
-
-    addAndMakeVisible (*(G = std::make_unique<TextEditor> ("new text editor")));
-    G->setColour (TextEditor::backgroundColourId, colorG);
-    G->setText (TRANS("G"));
-
-    addAndMakeVisible (*(D5 = std::make_unique<TextEditor> ("new text editor")));
-    D5->setColour (TextEditor::backgroundColourId, colorD);
-    D5->setText (TRANS("D"));
-
-    addAndMakeVisible (*(G6 = std::make_unique<TextEditor> ("new text editor")));
-    G6->setColour (TextEditor::backgroundColourId, colorG);
-    G6->setText (TRANS("G"));
-
-    addAndMakeVisible (*(B4 = std::make_unique<TextEditor> ("new text editor")));
-    B4->setColour (TextEditor::backgroundColourId, colorB);
-    B4->setText (TRANS("B"));
-
-    addAndMakeVisible (*(FS3 = std::make_unique<TextEditor> ("new text editor")));
-    FS3->setColour (TextEditor::backgroundColourId, colorFs);
-    FS3->setText (TRANS("F#"));
-
-    addAndMakeVisible (*(CS2 = std::make_unique<TextEditor> ("new text editor")));
-    CS2->setColour (TextEditor::backgroundColourId, colorCs);
-    CS2->setText (TRANS("C#"));
-
-    addAndMakeVisible (*(GS = std::make_unique<TextEditor> ("new text editor")));
-    GS->setColour (TextEditor::backgroundColourId, colorGs);
-    GS->setText (TRANS("G#"));
-
-    addAndMakeVisible (*(DS5 = std::make_unique<TextEditor> ("new text editor")));
-    DS5->setColour (TextEditor::backgroundColourId, colorDs);
-    DS5->setText (TRANS("D#"));
-
-    addAndMakeVisible (*(GS6 = std::make_unique<TextEditor> ("new text editor")));
-    GS6->setColour (TextEditor::backgroundColourId, colorGs);
-    GS6->setText (TRANS("G#"));
-
-    addAndMakeVisible (*(C4 = std::make_unique<TextEditor> ("new text editor")));
-    C4->setColour (TextEditor::backgroundColourId, colorC);
-    C4->setText (TRANS("C"));
-
-    addAndMakeVisible (*(G3 = std::make_unique<TextEditor> ("new text editor")));
-    G3->setColour (TextEditor::backgroundColourId, colorG);
-    G3->setText (TRANS("G"));
-
-    addAndMakeVisible (*(D2 = std::make_unique<TextEditor> ("new text editor")));
-    D2->setColour (TextEditor::backgroundColourId, colorD);
-    D2->setText (TRANS("D"));
-
-    addAndMakeVisible (*(A = std::make_unique<TextEditor> ("new text editor")));
-    A->setColour (TextEditor::backgroundColourId, colorA);
-    A->setText (TRANS("A"));
-
-    addAndMakeVisible (*(E5 = std::make_unique<TextEditor> ("new text editor")));
-    E5->setColour (TextEditor::backgroundColourId, colorE);
-    E5->setText (TRANS("E"));
-
-    addAndMakeVisible (*(A6 = std::make_unique<TextEditor> ("new text editor")));
-    A6->setColour (TextEditor::backgroundColourId, colorA);
-    A6->setText (TRANS("A"));
-
-    addAndMakeVisible (*(CS4 = std::make_unique<TextEditor> ("new text editor")));
-    CS4->setColour (TextEditor::backgroundColourId, colorCs);
-    CS4->setText (TRANS("C#"));
-
-    addAndMakeVisible (*(GS3 = std::make_unique<TextEditor> ("new text editor")));
-    GS3->setColour (TextEditor::backgroundColourId, colorGs);
-    GS3->setText (TRANS("G#"));
-
-    addAndMakeVisible (*(DS2 = std::make_unique<TextEditor> ("new text editor")));
-    DS2->setColour (TextEditor::backgroundColourId, colorDs);
-    DS2->setText (TRANS("D#"));
-
-    addAndMakeVisible (*(AS = std::make_unique<TextEditor> ("new text editor")));
-    AS->setColour (TextEditor::backgroundColourId, colorAs);
-    AS->setText (TRANS("A#"));
-
-    addAndMakeVisible (*(F5 = std::make_unique<TextEditor> ("new text editor")));
-    F5->setColour (TextEditor::backgroundColourId, colorF);
-    F5->setText (TRANS("F"));
-
-    addAndMakeVisible (*(AS6 = std::make_unique<TextEditor> ("new text editor")));
-    AS6->setColour (TextEditor::backgroundColourId, colorAs);
-    AS6->setText (TRANS("A#"));
-
-    addAndMakeVisible (*(D4 = std::make_unique<TextEditor> ("new text editor")));
-    D4->setColour (TextEditor::backgroundColourId, colorD);
-    D4->setText (TRANS("D"));
-
-    addAndMakeVisible (*(A3 = std::make_unique<TextEditor> ("new text editor")));
-    A3->setColour (TextEditor::backgroundColourId, colorA);
-    A3->setText (TRANS("A"));
-
-    addAndMakeVisible (*(E2 = std::make_unique<TextEditor> ("new text editor")));
-    E2->setColour (TextEditor::backgroundColourId, colorE);
-    E2->setText (TRANS("E"));
-
-    addAndMakeVisible (*(B = std::make_unique<TextEditor> ("new text editor")));
-    B->setColour (TextEditor::backgroundColourId, colorB);
-    B->setText (TRANS("B"));
-
-    addAndMakeVisible (*(FS5 = std::make_unique<TextEditor> ("new text editor")));
-    FS5->setColour (TextEditor::backgroundColourId, colorFs);
-    FS5->setText (TRANS("F#"));
-
-    addAndMakeVisible (*(B6 = std::make_unique<TextEditor> ("new text editor")));
-    B6->setColour (TextEditor::backgroundColourId, colorB);
-    B6->setText (TRANS("B"));
-
-    addAndMakeVisible (*(DS4 = std::make_unique<TextEditor> ("new text editor")));
-    DS4->setColour (TextEditor::backgroundColourId, colorDs);
-    DS4->setText (TRANS("D#"));
-
-    addAndMakeVisible (*(AS3 = std::make_unique<TextEditor> ("new text editor")));
-    AS3->setColour (TextEditor::backgroundColourId, colorAs);
-    AS3->setText (TRANS("A#"));
-
-    addAndMakeVisible (*(F3 = std::make_unique<TextEditor> ("new text editor")));
-    F3->setColour (TextEditor::backgroundColourId, colorF);
-    F3->setText (TRANS("F"));
-
-    addAndMakeVisible (*(C = std::make_unique<TextEditor> ("new text editor")));
-    C->setColour (TextEditor::backgroundColourId, colorC);
-    C->setText (TRANS("C"));
-
-    addAndMakeVisible (*(G5 = std::make_unique<TextEditor> ("new text editor")));
-    G5->setColour (TextEditor::backgroundColourId, colorG);
-    G5->setText (TRANS("G"));
-
-    addAndMakeVisible (*(C6 = std::make_unique<TextEditor> ("new text editor")));
-    C6->setColour (TextEditor::backgroundColourId, colorC);
-    C6->setText (TRANS("C"));
-
-    addAndMakeVisible (*(E4 = std::make_unique<TextEditor> ("new text editor")));
-    E4->setColour (TextEditor::backgroundColourId, colorE);
-    E4->setText (TRANS("E"));
-
-    addAndMakeVisible (*(B3 = std::make_unique<TextEditor> ("new text editor")));
-    B3->setColour (TextEditor::backgroundColourId, colorB);
-    B3->setText (TRANS("B"));
-
-    addAndMakeVisible (*(FS2 = std::make_unique<TextEditor> ("new text editor")));
-    FS2->setColour (TextEditor::backgroundColourId, colorFs);
-    FS2->setText (TRANS("F#"));
-
-    addAndMakeVisible (*(CS = std::make_unique<TextEditor> ("new text editor")));
-    CS->setColour (TextEditor::backgroundColourId, colorCs);
-    CS->setText (TRANS("C#"));
-
-    addAndMakeVisible (*(GS5 = std::make_unique<TextEditor> ("new text editor")));
-    GS5->setColour (TextEditor::backgroundColourId, colorGs);
-    GS5->setText (TRANS("G#"));
-
-    addAndMakeVisible (*(CS6 = std::make_unique<TextEditor> ("new text editor")));
-    CS6->setColour (TextEditor::backgroundColourId, colorCs);
-    CS6->setText (TRANS("C#"));
-
-    addAndMakeVisible (*(F4 = std::make_unique<TextEditor> ("new text editor")));
-    F4->setColour (TextEditor::backgroundColourId, colorF);
-    F4->setText (TRANS("F"));
-
-    addAndMakeVisible (*(C3 = std::make_unique<TextEditor> ("new text editor")));
-    C3->setColour (TextEditor::backgroundColourId,colorC);
-    C3->setText (TRANS("C"));
-
-    addAndMakeVisible (*(G2 = std::make_unique<TextEditor> ("new text editor")));
-    G2->setColour (TextEditor::backgroundColourId, colorG);
-    G2->setText (TRANS("G"));
-
-    addAndMakeVisible (*(D = std::make_unique<TextEditor> ("new text editor")));
-    D->setColour (TextEditor::backgroundColourId, colorD);
-    D->setText (TRANS("D"));
-
-    addAndMakeVisible (*(A5 = std::make_unique<TextEditor> ("new text editor")));
-    A5->setColour (TextEditor::backgroundColourId, colorA);
-    A5->setText (TRANS("A"));
-
-    addAndMakeVisible (*(D6 = std::make_unique<TextEditor> ("new text editor")));
-    D6->setColour (TextEditor::backgroundColourId, colorD);
-    D6->setText (TRANS("D"));
-
-    addAndMakeVisible (*(FS4 = std::make_unique<TextEditor> ("new text editor")));
-    FS4->setColour (TextEditor::backgroundColourId, colorFs);
-    FS4->setText (TRANS("F#"));
-
-    addAndMakeVisible (*(CS3 = std::make_unique<TextEditor> ("new text editor")));
-    CS3->setColour (TextEditor::backgroundColourId, colorCs);
-    CS3->setText (TRANS("C#"));
-
-    addAndMakeVisible (*(GS2 = std::make_unique<TextEditor> ("new text editor")));
-    GS2->setColour (TextEditor::backgroundColourId, colorGs);
-    GS2->setText (TRANS("G#"));
-
-    addAndMakeVisible (*(DS = std::make_unique<TextEditor> ("new text editor")));
-    DS->setColour (TextEditor::backgroundColourId, colorDs);
-    DS->setText (TRANS("D#"));
-
-    addAndMakeVisible (*(AS5 = std::make_unique<TextEditor> ("new text editor")));
-    AS5->setColour (TextEditor::backgroundColourId, colorAs);
-    AS5->setText (TRANS("A#"));
-
-    addAndMakeVisible (*(DS6 = std::make_unique<TextEditor> ("new text editor")));
-    DS6->setColour (TextEditor::backgroundColourId, colorDs);
-    DS6->setText (TRANS("D#"));
-
-    addAndMakeVisible (*(G4 = std::make_unique<TextEditor> ("new text editor")));
-    G4->setColour (TextEditor::backgroundColourId, colorG);
-    G4->setText (TRANS("G"));
-
-    addAndMakeVisible (*(D3 = std::make_unique<TextEditor> ("new text editor")));
-    D3->setColour (TextEditor::backgroundColourId, colorD);
-    D3->setText (TRANS("D"));
-
-    addAndMakeVisible (*(A2 = std::make_unique<TextEditor> ("new text editor")));
-    A2->setColour (TextEditor::backgroundColourId, colorA);
-    A2->setText (TRANS("A"));
-
-    addAndMakeVisible (*(E = std::make_unique<TextEditor> ("new text editor")));
-    E->setColour (TextEditor::backgroundColourId, colorE);
-    E->setText (TRANS("E"));
-
-    addAndMakeVisible (*(B5 = std::make_unique<TextEditor> ("new text editor")));
-    B5->setColour (TextEditor::backgroundColourId, colorB);
-    B5->setText (TRANS("B"));
-
-    addAndMakeVisible (*(E6 = std::make_unique<TextEditor> ("new text editor")));
-    E6->setColour (TextEditor::backgroundColourId, colorE);
-    E6->setText (TRANS("E"));
-
-    addAndMakeVisible (*(GS7 = std::make_unique<TextEditor> ("new text editor")));
-    GS7->setColour (TextEditor::backgroundColourId, colorG);
-    GS7->setText (TRANS("G#"));
-
-    addAndMakeVisible (*(DS7 = std::make_unique<TextEditor> ("new text editor")));
-    DS7->setColour (TextEditor::backgroundColourId, colorDs);
-    DS7->setText (TRANS("D#"));
-
-    addAndMakeVisible (*(AS7 = std::make_unique<TextEditor> ("new text editor")));
-    AS7->setColour (TextEditor::backgroundColourId, colorAs);
-    AS7->setText (TRANS("A#"));
-
-    addAndMakeVisible (*(F6 = std::make_unique<TextEditor> ("new text editor")));
-    F6->setColour (TextEditor::backgroundColourId, colorF);
-    F6->setText (TRANS("F"));
-
-    addAndMakeVisible (*(C7 = std::make_unique<TextEditor> ("new text editor")));
-    C7->setColour (TextEditor::backgroundColourId, colorC);
-    C7->setText (TRANS("C"));
-
-    addAndMakeVisible (*(F7 = std::make_unique<TextEditor> ("new text editor")));
-    F7->setColour (TextEditor::backgroundColourId, colorF);
-    F7->setText (TRANS("F"));
-
-    addAndMakeVisible (*(A7 = std::make_unique<TextEditor> ("new text editor")));
-    A7->setColour (TextEditor::backgroundColourId, colorA);
-    A7->setText (TRANS("A"));
-
-    addAndMakeVisible (*(E7 = std::make_unique<TextEditor> ("new text editor")));
-    E7->setColour (TextEditor::backgroundColourId, colorE);
-    E7->setText (TRANS("E"));
-
-    addAndMakeVisible (*(B7 = std::make_unique<TextEditor> ("new text editor")));
-    B7->setColour (TextEditor::backgroundColourId, colorB);
-    B7->setText (TRANS("B"));
-
-    addAndMakeVisible (*(FS7 = std::make_unique<TextEditor> ("new text editor")));
-    FS7->setColour (TextEditor::backgroundColourId, colorFs);
-    FS7->setText (TRANS("F#"));
-
-    addAndMakeVisible (*(CS7 = std::make_unique<TextEditor> ("new text editor")));
-    CS7->setColour (TextEditor::backgroundColourId, colorCs);
-    CS7->setText (TRANS("C#"));
-
-    addAndMakeVisible (*(FS8 = std::make_unique<TextEditor> ("new text editor")));
-    FS8->setColour (TextEditor::backgroundColourId, colorFs);
-    FS8->setText (TRANS("F#"));
-
-    addAndMakeVisible (*(AS8 = std::make_unique<TextEditor> ("new text editor")));
-    AS8->setColour (TextEditor::backgroundColourId, colorAs);
-    AS8->setText (TRANS("A#"));
-
-    addAndMakeVisible (*(F8 = std::make_unique<TextEditor> ("new text editor")));
-    F8->setColour (TextEditor::backgroundColourId, colorF);
-    F8->setText (TRANS("F"));
-
-    addAndMakeVisible (*(C8 = std::make_unique<TextEditor> ("new text editor")));
-    C8->setColour (TextEditor::backgroundColourId, colorC);
-    C8->setText (TRANS("C"));
-
-    addAndMakeVisible (*(G7 = std::make_unique<TextEditor> ("new text editor")));
-    G7->setColour (TextEditor::backgroundColourId, colorG);
-    G7->setText (TRANS("G"));
-
-    addAndMakeVisible (*(D7 = std::make_unique<TextEditor> ("new text editor")));
-    D7->setColour (TextEditor::backgroundColourId, colorD);
-    D7->setText (TRANS("D"));
-
-    addAndMakeVisible (*(G8 = std::make_unique<TextEditor> ("new text editor")));
-    G8->setColour (TextEditor::backgroundColourId, colorG);
-    G8->setText (TRANS("G"));
-
-    addAndMakeVisible (*(B8 = std::make_unique<TextEditor> ("new text editor")));
-    B8->setColour (TextEditor::backgroundColourId, colorB);
-    B8->setText (TRANS("B"));
-
-    addAndMakeVisible (*(FS9 = std::make_unique<TextEditor> ("new text editor")));
-    FS9->setColour (TextEditor::backgroundColourId, colorFs);
-    FS9->setText (TRANS("F#"));
-
-    addAndMakeVisible (*(CS8 = std::make_unique<TextEditor> ("new text editor")));
-    CS8->setColour (TextEditor::backgroundColourId, colorCs);
-    CS8->setText (TRANS("C#"));
-
-    addAndMakeVisible (*(GS8 = std::make_unique<TextEditor> ("new text editor")));
-    GS8->setColour (TextEditor::backgroundColourId, colorGs);
-    GS8->setText (TRANS("G#"));
-
-    addAndMakeVisible (*(DS8 = std::make_unique<TextEditor> ("new text editor")));
-    DS8->setColour (TextEditor::backgroundColourId, colorDs);
-    DS8->setText (TRANS("D#"));
-
-    addAndMakeVisible (*(GS9 = std::make_unique<TextEditor> ("new text editor")));
-    GS9->setColour (TextEditor::backgroundColourId, colorGs);
-    GS9->setText (TRANS("G#"));
-
-    addAndMakeVisible (*(C9 = std::make_unique<TextEditor> ("new text editor")));
-    C9->setColour (TextEditor::backgroundColourId, colorC);
-    C9->setText (TRANS("C"));
-
-    addAndMakeVisible (*(G9 = std::make_unique<TextEditor> ("new text editor")));
-    G9->setColour (TextEditor::backgroundColourId, colorG);
-    G9->setText (TRANS("G"));
-
-    addAndMakeVisible (*(D8 = std::make_unique<TextEditor> ("new text editor")));
-    D8->setColour (TextEditor::backgroundColourId, colorD);
-    D8->setText (TRANS("D"));
-
-    addAndMakeVisible (*(A8 = std::make_unique<TextEditor> ("new text editor")));
-    A8->setColour (TextEditor::backgroundColourId, colorA);
-    A8->setText (TRANS("A"));
-
-    addAndMakeVisible (*(E8 = std::make_unique<TextEditor> ("new text editor")));
-    E8->setColour (TextEditor::backgroundColourId, colorE);
-    E8->setText (TRANS("E"));
-
-    addAndMakeVisible (*(A9 = std::make_unique<TextEditor> ("new text editor")));
-    A9->setColour (TextEditor::backgroundColourId, colorA);
-    A9->setText (TRANS("A"));
-
-    addAndMakeVisible (*(CS9 = std::make_unique<TextEditor> ("new text editor")));
-    CS9->setColour (TextEditor::backgroundColourId, colorCs);
-    CS9->setText (TRANS("C#"));
-
-    addAndMakeVisible (*(GS10 = std::make_unique<TextEditor> ("new text editor")));
-    GS10->setColour (TextEditor::backgroundColourId, colorGs);
-    GS10->setText (TRANS("G#"));
-
-    addAndMakeVisible (*(DS9 = std::make_unique<TextEditor> ("new text editor")));
-    DS9->setColour (TextEditor::backgroundColourId, colorDs);
-    DS9->setText (TRANS("D#"));
-
-    addAndMakeVisible (*(AS9 = std::make_unique<TextEditor> ("new text editor")));
-    AS9->setColour (TextEditor::backgroundColourId, colorAs);
-    AS9->setText (TRANS("A#"));
-
-    addAndMakeVisible (*(F9 = std::make_unique<TextEditor> ("new text editor")));
-    F9->setColour (TextEditor::backgroundColourId, colorF);
-    F9->setText (TRANS("F"));
-
-    addAndMakeVisible (*(AS10 = std::make_unique<TextEditor> ("new text editor")));
-    AS10->setColour (TextEditor::backgroundColourId, colorAs);
-    AS10->setText (TRANS("A#"));
-
-    addAndMakeVisible (*(D9 = std::make_unique<TextEditor> ("new text editor")));
-    D9->setColour (TextEditor::backgroundColourId, colorD);
-    D9->setText (TRANS("D"));
-
-    addAndMakeVisible (*(A10 = std::make_unique<TextEditor> ("new text editor")));
-    A10->setColour (TextEditor::backgroundColourId, colorA);
-    A10->setText (TRANS("A"));
-
-    addAndMakeVisible (*(E9 = std::make_unique<TextEditor> ("new text editor")));
-    E9->setColour (TextEditor::backgroundColourId, colorE);
-    E9->setText (TRANS("E"));
-
-    addAndMakeVisible (*(B9 = std::make_unique<TextEditor> ("new text editor")));
-    B9->setColour (TextEditor::backgroundColourId, colorB);
-    B9->setText (TRANS("B"));
-
-    addAndMakeVisible (*(FS10 = std::make_unique<TextEditor> ("new text editor")));
-    FS10->setColour (TextEditor::backgroundColourId, colorFs);
-    FS10->setText (TRANS("F#"));
-
-    addAndMakeVisible (*(B10 = std::make_unique<TextEditor> ("new text editor")));
-    B10->setColour (TextEditor::backgroundColourId, colorB);
-    B10->setText (TRANS("B"));
-
-    addAndMakeVisible (*(DS10 = std::make_unique<TextEditor> ("new text editor")));
-    DS10->setColour (TextEditor::backgroundColourId, colorDs);
-    DS10->setText (TRANS("D#"));
-
-    addAndMakeVisible (*(AS11 = std::make_unique<TextEditor> ("new text editor")));
-    AS11->setColour (TextEditor::backgroundColourId, colorAs);
-    AS11->setText (TRANS("A#"));
-
-    addAndMakeVisible (*(F10 = std::make_unique<TextEditor> ("new text editor")));
-    F10->setColour (TextEditor::backgroundColourId, colorF);
-    F10->setText (TRANS("F"));
-
-    addAndMakeVisible (*(C10 = std::make_unique<TextEditor> ("new text editor")));
-    C10->setColour (TextEditor::backgroundColourId, colorC);
-    C10->setText (TRANS("C"));
-
-    addAndMakeVisible (*(G10 = std::make_unique<TextEditor> ("new text editor")));
-    G10->setColour (TextEditor::backgroundColourId, colorG);
-    G10->setText (TRANS("G"));
-
-    addAndMakeVisible (*(C11 = std::make_unique<TextEditor> ("new text editor")));
-    C11->setColour (TextEditor::backgroundColourId, colorC);
-    C11->setText (TRANS("C"));
+    auto createTextEditor = [this](std::unique_ptr<TextEditor>& editorPtr, const String& labelText, Colour color)
+    {
+        addAndMakeVisible(*(editorPtr = std::make_unique<TextEditor>("new text editor")));
+        editorPtr->setColour(TextEditor::backgroundColourId, color);
+        editorPtr->setText(TRANS(labelText));
+    };
+
+    createTextEditor(C, "C", colorC);
+    createTextEditor(C2, "C", colorC);
+    createTextEditor(C3, "C", colorC);
+    createTextEditor(C4, "C", colorC);
+    createTextEditor(C5, "C", colorC);
+    createTextEditor(C6, "C", colorC);
+    createTextEditor(C7, "C", colorC);
+    createTextEditor(C8, "C", colorC);
+    createTextEditor(C9, "C", colorC);
+    createTextEditor(C10, "C", colorC);
+    createTextEditor(C11, "C", colorC);
+
+    createTextEditor(CS, "C#", colorCs);
+    createTextEditor(CS2, "C#", colorCs);
+    createTextEditor(CS3, "C#", colorCs);
+    createTextEditor(CS4, "C#", colorCs);
+    createTextEditor(CS5, "C#", colorCs);
+    createTextEditor(CS6, "C#", colorCs);
+    createTextEditor(CS7, "C#", colorCs);
+    createTextEditor(CS8, "C#", colorCs);
+    createTextEditor(CS9, "C#", colorCs);
+
+    createTextEditor(D, "D", colorD);
+    createTextEditor(D2, "D", colorD);
+    createTextEditor(D3, "D", colorD);
+    createTextEditor(D4, "D", colorD);
+    createTextEditor(D5, "D", colorD);
+    createTextEditor(D6, "D", colorD);
+    createTextEditor(D7, "D", colorD);
+    createTextEditor(D8, "D", colorD);
+    createTextEditor(D9, "D", colorD);
+
+    createTextEditor(DS, "D#", colorDs);
+    createTextEditor(DS2, "D#", colorDs);
+    createTextEditor(DS3, "D#", colorDs);
+    createTextEditor(DS4, "D#", colorDs);
+    createTextEditor(DS5, "D#", colorDs);
+    createTextEditor(DS6, "D#", colorDs);
+    createTextEditor(DS7, "D#", colorDs);
+    createTextEditor(DS8, "D#", colorDs);
+    createTextEditor(DS9, "D#", colorDs);
+    createTextEditor(DS10, "D#", colorDs);
+
+    createTextEditor(E, "E", colorE);
+    createTextEditor(E2, "E", colorE);
+    createTextEditor(E3, "E", colorE);
+    createTextEditor(E4, "E", colorE);
+    createTextEditor(E5, "E", colorE);
+    createTextEditor(E6, "E", colorE);
+    createTextEditor(E7, "E", colorE);
+    createTextEditor(E8, "E", colorE);
+    createTextEditor(E9, "E", colorE);
+
+    createTextEditor(F, "F", colorF);
+    createTextEditor(F1, "F", colorF);
+    createTextEditor(F2, "F", colorF);
+    createTextEditor(F3, "F", colorF);
+    createTextEditor(F4, "F", colorF);
+    createTextEditor(F5, "F", colorF);
+    createTextEditor(F6, "F", colorF);
+    createTextEditor(F7, "F", colorF);
+    createTextEditor(F8, "F", colorF);
+    createTextEditor(F9, "F", colorF);
+    createTextEditor(F10, "F", colorF);
+
+    createTextEditor(FS, "F#", colorFs);
+    createTextEditor(FS2, "F#", colorFs);
+    createTextEditor(FS3, "F#", colorFs);
+    createTextEditor(FS4, "F#", colorFs);
+    createTextEditor(FS5, "F#", colorFs);
+    createTextEditor(FS6, "F#", colorFs);
+    createTextEditor(FS7, "F#", colorFs);
+    createTextEditor(FS8, "F#", colorFs);
+    createTextEditor(FS9, "F#", colorFs);
+    createTextEditor(FS10, "F#", colorFs);
+
+    createTextEditor(G, "G", colorG);
+    createTextEditor(G2, "G", colorG);
+    createTextEditor(G3, "G", colorG);
+    createTextEditor(G4, "G", colorG);
+    createTextEditor(G5, "G", colorG);
+    createTextEditor(G6, "G", colorG);
+    createTextEditor(G7, "G", colorG);
+    createTextEditor(G8, "G", colorG);
+    createTextEditor(G9, "G", colorG);
+    createTextEditor(G10, "G", colorG);
+
+    createTextEditor(GS, "G#", colorGs);
+    createTextEditor(GS2, "G#", colorGs);
+    createTextEditor(GS3, "G#", colorGs);
+    createTextEditor(GS4, "G#", colorGs);
+    createTextEditor(GS5, "G#", colorGs);
+    createTextEditor(GS6, "G#", colorGs);
+    createTextEditor(GS7, "G#", colorGs);
+    createTextEditor(GS8, "G#", colorGs);
+    createTextEditor(GS9, "G#", colorGs);
+    createTextEditor(GS10, "G#", colorGs);
+
+    createTextEditor(A, "A", colorA);
+    createTextEditor(A2, "A", colorA);
+    createTextEditor(A3, "A", colorA);
+    createTextEditor(A4, "A", colorA);
+    createTextEditor(A5, "A", colorA);
+    createTextEditor(A6, "A", colorA);
+    createTextEditor(A7, "A", colorA);
+    createTextEditor(A8, "A", colorA);
+    createTextEditor(A9, "A", colorA);
+    createTextEditor(A10, "A", colorA);
+
+    createTextEditor(AS, "A#", colorAs);
+    createTextEditor(AS2, "A#", colorAs);
+    createTextEditor(AS3, "A#", colorAs);
+    createTextEditor(AS4, "A#", colorAs);
+    createTextEditor(AS5, "A#", colorAs);
+    createTextEditor(AS6, "A#", colorAs);
+    createTextEditor(AS7, "A#", colorAs);
+    createTextEditor(AS8, "A#", colorAs);
+    createTextEditor(AS9, "A#", colorAs);
+    createTextEditor(AS10, "A#", colorAs);
+    createTextEditor(AS11, "A#", colorAs);
+
+    createTextEditor(B, "B", colorB);
+    createTextEditor(B2, "B", colorB);
+    createTextEditor(B3, "B", colorB);
+    createTextEditor(B4, "B", colorB);
+    createTextEditor(B5, "B", colorB);
+    createTextEditor(B6, "B", colorB);
+    createTextEditor(B7, "B", colorB);
+    createTextEditor(B8, "B", colorB);
+    createTextEditor(B9, "B", colorB);
+    createTextEditor(B10, "B", colorB);
 
     cachedImage_gneck_inverted_png_1 = std::make_unique<Image>(ImageCache::getFromMemory (gneck_inverted_png, gneck_inverted_pngSize));
 
@@ -660,7 +320,6 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     setSize (1000, 400);
 
     //[Constructor] You can add your own custom stuff here..
-
 	guitarnotes.push_back(std::move(C));
 	guitarnotes.push_back(std::move(C2));
 	guitarnotes.push_back(std::move(C3));

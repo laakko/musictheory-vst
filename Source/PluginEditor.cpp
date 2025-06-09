@@ -471,25 +471,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     //[/Constructor]
 }
 
-PluginEditor::~PluginEditor()
-{
-    //[Destructor_pre]. You can add your own custom destruction code here..
-    //[/Destructor_pre]
-    guitarComponent = nullptr;
-    scalesComponent = nullptr;
-    infoComponent = nullptr;
-    chordsComponent = nullptr;
-    scaleKey = nullptr;
-    scaleMode = nullptr;
-    chordRoot = nullptr;
-    chordType = nullptr;
-    infoText = nullptr;
-    txtScale = nullptr;
-    txtChord = nullptr;
-    guitarnotes.clear();
-    //[Destructor]. You can add your own custom destruction code here..
-    //[/Destructor]
-}
+PluginEditor::~PluginEditor() = default;
 
 //==============================================================================
 void PluginEditor::paint (Graphics& g)

@@ -29,6 +29,7 @@
 #include "Chord.h"
 #include "BasicChord.h"
 #include "PluginProcessor.h"
+#include "Constants.h"
 #include <sstream>
 #include <memory>
 //[/Headers]
@@ -81,8 +82,7 @@ public:
 
 private:
     //[UserVariables]   -- You can add your own custom variables in this section.
-	std::vector<std::unique_ptr<juce::TextEditor>> texteditors;
-	std::vector<std::unique_ptr<juce::TextEditor>> guitarnotes; // Vector to store guitar neck notes
+	std::vector<std::unique_ptr<juce::TextEditor>> guitarnotes;
     std::unique_ptr<juce::ToggleButton> viewScale;
     std::unique_ptr<juce::ToggleButton> viewAll;
     std::unique_ptr<juce::ToggleButton> viewMidi;

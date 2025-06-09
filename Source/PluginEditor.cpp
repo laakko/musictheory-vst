@@ -51,10 +51,6 @@ juce::Colour colorE = Colour(0xff007062);
 PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     : AudioProcessorEditor (&p), processor (p)
 {
-    //[Constructor_pre] You can add your own custom stuff here..
-
-    //[/Constructor_pre]
-
     addAndMakeVisible (*(guitarComponent = std::make_unique<GroupComponent> ("new group",
                                                             TRANS("guitar"))));
     guitarComponent->setColour (GroupComponent::outlineColourId, Colours::aquamarine);
@@ -76,18 +72,9 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     scaleKey->setJustificationType (Justification::centredLeft);
     scaleKey->setTextWhenNothingSelected (TRANS("key"));
     scaleKey->setTextWhenNoChoicesAvailable (TRANS("(no choices)"));
-    scaleKey->addItem (TRANS("C"), 1);
-    scaleKey->addItem (TRANS("C#"), 2);
-    scaleKey->addItem (TRANS("D"), 3);
-    scaleKey->addItem (TRANS("D#"), 4);
-    scaleKey->addItem (TRANS("E"), 5);
-    scaleKey->addItem (TRANS("F"), 6);
-    scaleKey->addItem (TRANS("F#"), 7);
-    scaleKey->addItem (TRANS("G"), 8);
-    scaleKey->addItem (TRANS("G#"), 9);
-    scaleKey->addItem (TRANS("A"), 10);
-    scaleKey->addItem (TRANS("A#"), 11);
-    scaleKey->addItem (TRANS("B"), 12);
+    for (int i = 0; i < Constants::SCALE_KEYS.size(); ++i) {
+        scaleKey->addItem(TRANS(Constants::SCALE_KEYS[i]), i + 1);
+    }
     scaleKey->setSelectedId (1, dontSendNotification);
     scaleKey->addListener (this);
 
@@ -96,18 +83,9 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     scaleMode->setJustificationType (Justification::centredLeft);
     scaleMode->setTextWhenNothingSelected (TRANS("scale"));
     scaleMode->setTextWhenNoChoicesAvailable (TRANS("(no choices)"));
-    scaleMode->addItem (TRANS("Major"), 1);
-    scaleMode->addItem (TRANS("Minor"), 2);
-    scaleMode->addItem (TRANS("Harmonic Minor"), 3);
-    scaleMode->addItem (TRANS("Blues"), 4);
-    scaleMode->addItem (TRANS("Minor Pentatonic"), 5);
-    scaleMode->addItem (TRANS("Major Pentatonic"), 6);
-    scaleMode->addItem (TRANS("Dorian"), 7);
-    scaleMode->addItem (TRANS("Lydian"), 8);
-    scaleMode->addItem (TRANS("Mixolydian"), 9);
-    scaleMode->addItem (TRANS("Phrygian"), 10);
-    scaleMode->addItem (TRANS("PhrygianDominant"), 11);
-    scaleMode->addItem (TRANS("Metallica"), 12);
+    for (int i = 0; i < Constants::SCALE_MODES.size(); ++i) {
+        scaleMode->addItem(TRANS(Constants::SCALE_MODES[i]), i + 1);
+    }
     scaleMode->setSelectedId (1, dontSendNotification);
     scaleMode->addListener (this);
 
@@ -116,18 +94,9 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     chordRoot->setJustificationType (Justification::centredLeft);
     chordRoot->setTextWhenNothingSelected (TRANS("root"));
     chordRoot->setTextWhenNoChoicesAvailable (TRANS("(no choices)"));
-    chordRoot->addItem (TRANS("C"), 1);
-    chordRoot->addItem (TRANS("C#"), 2);
-    chordRoot->addItem (TRANS("D"), 3);
-    chordRoot->addItem (TRANS("D#"), 4);
-    chordRoot->addItem (TRANS("E"), 5);
-    chordRoot->addItem (TRANS("F"), 6);
-    chordRoot->addItem (TRANS("F#"), 7);
-    chordRoot->addItem (TRANS("G"), 8);
-    chordRoot->addItem (TRANS("G#"), 9);
-    chordRoot->addItem (TRANS("A"), 10);
-    chordRoot->addItem (TRANS("A#"), 11);
-    chordRoot->addItem (TRANS("B"), 12);
+    for (int i = 0; i < Constants::SCALE_KEYS.size(); ++i) {
+        chordRoot->addItem(TRANS(Constants::SCALE_KEYS[i]), i + 1);
+    }
     chordRoot->setSelectedId (1, dontSendNotification);
     chordRoot->addListener (this);
 
@@ -136,19 +105,9 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     chordType->setJustificationType (Justification::centredLeft);
     chordType->setTextWhenNothingSelected (TRANS("type"));
     chordType->setTextWhenNoChoicesAvailable (TRANS("(no choices)"));
-    chordType->addItem (TRANS("m"), 1);
-    chordType->addItem (TRANS("M"), 2);
-    chordType->addItem (TRANS("aug"), 3);
-    chordType->addItem (TRANS("dim"), 4);
-    chordType->addItem (TRANS("sus2"), 11);
-    chordType->addItem (TRANS("sus4"), 12);
-    chordType->addItem (TRANS("m6"), 8);
-    chordType->addItem (TRANS("M6"), 9);
-    chordType->addItem (TRANS("m7"), 5);
-    chordType->addItem (TRANS("M7"), 6);
-    chordType->addItem (TRANS("dom7"), 7);
-    chordType->addItem (TRANS("min_maj7"), 10);
-    chordType->addItem (TRANS("hendrix"), 13);
+    for (int i = 0; i < Constants::CHORD_TYPES.size(); ++i) {
+        chordType->addItem(TRANS(Constants::CHORD_TYPES[i]), i + 1);
+    }
     chordType->setSelectedId (2, dontSendNotification);
     chordType->addListener (this);
 

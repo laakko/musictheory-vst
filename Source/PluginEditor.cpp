@@ -72,8 +72,8 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     scaleKey->setJustificationType (Justification::centredLeft);
     scaleKey->setTextWhenNothingSelected (TRANS("key"));
     scaleKey->setTextWhenNoChoicesAvailable (TRANS("(no choices)"));
-    for (int i = 0; i < Constants::SCALE_KEYS.size(); ++i) {
-        scaleKey->addItem(TRANS(Constants::SCALE_KEYS[i]), i + 1);
+    for (int i = 0; i < Constants::ROOT_NOTES.size(); ++i) {
+        scaleKey->addItem(TRANS(Constants::ROOT_NOTES[i]), i + 1);
     }
     scaleKey->setSelectedId (1, dontSendNotification);
     scaleKey->addListener (this);
@@ -84,7 +84,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     scaleMode->setTextWhenNothingSelected (TRANS("scale"));
     scaleMode->setTextWhenNoChoicesAvailable (TRANS("(no choices)"));
     for (int i = 0; i < Constants::SCALE_MODES.size(); ++i) {
-        scaleMode->addItem(TRANS(Constants::SCALE_MODES[i]), i + 1);
+        scaleMode->addItem(TRANS(Constants::SCALE_MODES[i].first), i + 1);
     }
     scaleMode->setSelectedId (1, dontSendNotification);
     scaleMode->addListener (this);
@@ -94,8 +94,8 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     chordRoot->setJustificationType (Justification::centredLeft);
     chordRoot->setTextWhenNothingSelected (TRANS("root"));
     chordRoot->setTextWhenNoChoicesAvailable (TRANS("(no choices)"));
-    for (int i = 0; i < Constants::SCALE_KEYS.size(); ++i) {
-        chordRoot->addItem(TRANS(Constants::SCALE_KEYS[i]), i + 1);
+    for (int i = 0; i < Constants::ROOT_NOTES.size(); ++i) {
+        chordRoot->addItem(TRANS(Constants::ROOT_NOTES[i]), i + 1);
     }
     chordRoot->setSelectedId (1, dontSendNotification);
     chordRoot->addListener (this);
@@ -106,7 +106,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     chordType->setTextWhenNothingSelected (TRANS("type"));
     chordType->setTextWhenNoChoicesAvailable (TRANS("(no choices)"));
     for (int i = 0; i < Constants::CHORD_TYPES.size(); ++i) {
-        chordType->addItem(TRANS(Constants::CHORD_TYPES[i]), i + 1);
+        chordType->addItem(TRANS(Constants::CHORD_TYPES[i].first), i + 1);
     }
     chordType->setSelectedId (2, dontSendNotification);
     chordType->addListener (this);
@@ -1318,57 +1318,7 @@ void PluginEditor::comboBoxChanged (ComboBox* comboBoxThatHasChanged)
     }
     else if (comboBoxThatHasChanged == scaleMode.get())
     {
-		std::string scalemodestr = scaleMode->getText().toStdString();
-
-		if (scalemodestr == "Major") {
-			scaletype = BasicScale{ BasicScale::Major };
-		}
-		else if (scalemodestr == "Minor") {
-			scaletype = BasicScale{ BasicScale::Minor };
-		}
-		else if (scalemodestr == "Harmonic Minor") {
-			scaletype = BasicScale{ BasicScale::HarmonicMinor };
-		}
-		else if (scalemodestr == "Minor Pentatonic") {
-			scaletype = BasicScale{ BasicScale::MinorPentatonic };
-		}
-		else if (scalemodestr == "Major Pentatonic") {
-			scaletype = BasicScale{ BasicScale::MajorPentatonic };
-		}
-		else if (scalemodestr == "Blues") {
-			scaletype = BasicScale{ BasicScale::Blues };
-		}
-		else if (scalemodestr == "Dorian") {
-			scaletype = BasicScale{ BasicScale::Dorian };
-		}
-		else if (scalemodestr == "Lydian") {
-			scaletype = BasicScale{ BasicScale::Lydian};
-		}
-		else if (scalemodestr == "Mixolydian") {
-			scaletype = BasicScale{ BasicScale::Mixolydian };
-		}
-		else if (scalemodestr == "Phrygian") {
-			scaletype = BasicScale{ BasicScale::Phrygian};
-		}
-		else if (scalemodestr == "Aeolian") {
-			scaletype = BasicScale{ BasicScale::Aeolian };
-		}
-		else if (scalemodestr == "Ionian") {
-			scaletype = BasicScale{ BasicScale::Ionian};
-		}
-		else if (scalemodestr == "Locrian") {
-			scaletype = BasicScale{ BasicScale::Locrian};
-		}
-		else if (scalemodestr == "Metallica") {
-			scaletype = BasicScale{ BasicScale::Metallica };
-		}
-        else if (scalemodestr == "PhrygianDominant") {
-            scaletype = BasicScale{ BasicScale::PhrygianDominant };
-        }
-		else {
-			txtScale->setText(TRANS("invalid scale type"));
-		}
-
+        scaletype = BasicScale{ Constants::SCALE_MODES[scaleMode->getSelectedId()-1].second };
         updateScale();
         if(viewScale->getToggleState()) {
             updateGuitarNeckScales();
@@ -1387,65 +1337,8 @@ void PluginEditor::comboBoxChanged (ComboBox* comboBoxThatHasChanged)
     }
     else if (comboBoxThatHasChanged == chordType.get())
     {
-		std::string chordtypestr = chordType->getText().toStdString();
-
-		if (chordtypestr == "M") {
-			chordtype = BasicChord{ BasicChord::maj };
-			updateChord();
-		}
-		else if (chordtypestr == "m") {
-			chordtype = BasicChord{ BasicChord::min};
-			updateChord();
-		}
-		else if (chordtypestr == "M7") {
-			chordtype = BasicChord{ BasicChord::maj7 };
-			updateChord();
-		}
-		else if (chordtypestr == "m7") {
-			chordtype = BasicChord{ BasicChord::min7 };
-			updateChord();
-		}
-        else if (chordtypestr == "dom7") {
-            chordtype = BasicChord{ BasicChord::dom7 };
-            updateChord();
-        }
-		else if (chordtypestr == "aug") {
-			chordtype = BasicChord{ BasicChord::aug };
-			updateChord();
-		}
-        else if (chordtypestr == "dim") {
-            chordtype = BasicChord{ BasicChord::dim };
-            updateChord();
-        }
-        else if (chordtypestr == "m6") {
-            chordtype = BasicChord{ BasicChord::min6 };
-            updateChord();
-        }
-        else if (chordtypestr == "M6") {
-            chordtype = BasicChord{ BasicChord::maj6 };
-            updateChord();
-        }
-        else if (chordtypestr == "min_maj7") {
-            chordtype = BasicChord{ BasicChord::min_maj7 };
-            updateChord();
-        }
-        else if (chordtypestr == "hendrix") {
-            chordtype = BasicChord{ BasicChord::hendrix };
-            updateChord();
-        }
-
-        else if (chordtypestr == "sus2") {
-            chordtype = BasicChord{ BasicChord::sus2 };
-            updateChord();
-        }
-        else if (chordtypestr == "sus4") {
-            chordtype = BasicChord{ BasicChord::sus4 };
-            updateChord();
-        }
-		else {
-			txtChord->setText(TRANS("Invalid chord type"));
-		}
-
+        chordtype = BasicChord{ Constants::CHORD_TYPES[chordType->getSelectedId()-1].second };
+        updateChord();
         if(viewChord->getToggleState()) {
             updateGuitarNeckChords();
         }
@@ -1504,7 +1397,7 @@ void PluginEditor::updateGuitarNeckScales() {
     juce::StringArray notesToMatch = juce::StringArray::fromTokens(txtScale->getText().trim(), " ", "");
 
 	for (int i = 0; i < guitarnotes.size(); ++i) {
-		guitarnotes.at(i)->setAlpha(0.7);
+		guitarnotes.at(i)->setAlpha(Constants::NON_ROOT_NOTE_ALPHA);
         if (!(notesToMatch.contains(guitarnotes.at(i)->getName()))) {
             guitarnotes.at(i)->setVisible(false);
         }
@@ -1520,7 +1413,7 @@ void PluginEditor::updateGuitarNeckChords() {
     juce::StringArray notesToMatch = juce::StringArray::fromTokens(txtChord->getText().trim(), " ", "");
 
     for (int i = 0; i < guitarnotes.size(); ++i) {
-        guitarnotes.at(i)->setAlpha(0.7);
+        guitarnotes.at(i)->setAlpha(Constants::NON_ROOT_NOTE_ALPHA);
         if (!(notesToMatch.contains(guitarnotes.at(i)->getName()))) {
             guitarnotes.at(i)->setVisible(false);
         }

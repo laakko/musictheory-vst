@@ -19,7 +19,6 @@
 
 #pragma once
 
-//[Headers]     -- You can add your own extra header files here --
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "BasicNote.h"
 #include "Note.h"
@@ -32,18 +31,8 @@
 #include "Constants.h"
 #include <sstream>
 #include <memory>
-//[/Headers]
 
 
-
-//==============================================================================
-/**
-                                                                    //[Comments]
-    An auto-generated component, created by the Projucer.
-
-    Describe your class and how it works here!
-                                                                    //[/Comments]
-*/
 class PluginEditor  : public AudioProcessorEditor,
                       public ComboBox::Listener
 {
@@ -60,18 +49,15 @@ public:
 	void updateGuitarNeckChords();
     void updateGuitarNeckMidi(const String & midinotes);
 	void resetGuitarNotes();
-
-	juce::String simplifyNotes(const std::string & str);
+    juce::String simplifyNotes(const std::string & str);
+    void selectButton(const std::string & function);
+    void viewButton();
+    void switchColour();
     //[/UserMethods]
 
     void paint (Graphics& g) override;
     void resized() override;
     void comboBoxChanged (ComboBox* comboBoxThatHasChanged) override;
-
-    void selectButton(const std::string & function);
-    void viewButton();
-    void switchColour();
-
 
     // Binary resources:
     static const char* screenshot_20190321Blank20Pdf_png;
@@ -81,7 +67,6 @@ public:
 
 
 private:
-    //[UserVariables]   -- You can add your own custom variables in this section.
 	std::vector<std::unique_ptr<juce::TextEditor>> guitarnotes;
     std::unique_ptr<juce::ToggleButton> viewScale;
     std::unique_ptr<juce::ToggleButton> viewAll;
@@ -100,9 +85,6 @@ private:
     ColourThemes currentColourState = ColourThemes::CadetBlue;
     juce::Colour backgroundColour = juce::Colours::cadetblue;
 
-    //[/UserVariables]
-
-    //==============================================================================
     std::unique_ptr<GroupComponent> guitarComponent;
     std::unique_ptr<GroupComponent> scalesComponent;
     std::unique_ptr<GroupComponent> infoComponent;
@@ -240,6 +222,3 @@ private:
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (PluginEditor)
 };
-
-//[EndFile] You can add extra defines here...
-//[/EndFile]

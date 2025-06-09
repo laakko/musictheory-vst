@@ -17,13 +17,8 @@
   ==============================================================================
 */
 
-//[Headers] You can add your own extra header files here...
-//[/Headers]
-
 #include "PluginEditor.h"
 
-
-//[MiscUserDefs] You can add your own user definitions and misc code here...
 using namespace acentric_core;
 std::string root = "C";
 Note scaleroot = Note{ BasicNote::C };
@@ -44,8 +39,6 @@ juce::Colour colorCs = Colour(0xffc1be4f);
 juce::Colour colorD = Colour(0xff86af4d);
 juce::Colour colorDs = Colour(0xff499b53);
 juce::Colour colorE = Colour(0xff007062);
-
-//[/MiscUserDefs]
 
 //==============================================================================
 PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
@@ -171,7 +164,6 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     buttonView->setButtonText("view");
     buttonView->setClickingTogglesState (true);
     buttonView->onClick = [this]() { viewButton(); };
-
 
     auto createTextEditor = [this](std::unique_ptr<TextEditor>& editorPtr, const String& labelText, Colour color)
     {
@@ -314,12 +306,9 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
 
     cachedImage_gneck_inverted_png_1 = std::make_unique<Image>(ImageCache::getFromMemory (gneck_inverted_png, gneck_inverted_pngSize));
 
-    //[UserPreSize]
-    //[/UserPreSize]
+    setSize (1000, 400); // Call Resized()
+    //==============================================================================
 
-    setSize (1000, 400);
-
-    //[Constructor] You can add your own custom stuff here..
 	guitarnotes.push_back(std::move(C));
 	guitarnotes.push_back(std::move(C2));
 	guitarnotes.push_back(std::move(C3));
@@ -455,7 +444,6 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     for(const auto& note : guitarnotes)
     {
         note->setName(note->getText());
-        //note->setJustification(Justification::centred);
         note->setMultiLine (true);
         note->setReturnKeyStartsNewLine (false);
         note->setReadOnly (true);
@@ -468,7 +456,6 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
         note->applyFontToAllText(note->getFont());
     }
   	resetGuitarNotes();
-    //[/Constructor]
 }
 
 PluginEditor::~PluginEditor() = default;
@@ -476,15 +463,10 @@ PluginEditor::~PluginEditor() = default;
 //==============================================================================
 void PluginEditor::paint (Graphics& g)
 {
-    //[UserPrePaint] Add your own custom painting code here..
-    //[/UserPrePaint]
-
     g.fillAll (backgroundColour);
 
     {
         int x = 16, y = 150, width = 968, height = 212;
-        //[UserPaintCustomArguments] Customize the painting arguments here..
-        //[/UserPaintCustomArguments]
         g.setColour (Colours::black);
         g.drawImage (*cachedImage_gneck_inverted_png_1,
                      x, y, width, height,
@@ -494,8 +476,6 @@ void PluginEditor::paint (Graphics& g)
         int x = 146, y = 363, width = 48, height = 30;
         String text (TRANS("3"));
         Colour fillColour = Colours::white;
-        //[UserPaintCustomArguments] Customize the painting arguments here..
-        //[/UserPaintCustomArguments]
         g.setColour (fillColour);
         g.setFont (11.0f);
         g.drawText (text, x, y, width, height,
@@ -506,8 +486,6 @@ void PluginEditor::paint (Graphics& g)
         int x = 264, y = 363, width = 40, height = 30;
         String text (TRANS("5"));
         Colour fillColour = Colours::white;
-        //[UserPaintCustomArguments] Customize the painting arguments here..
-        //[/UserPaintCustomArguments]
         g.setColour (fillColour);
         g.setFont (11.0f);
         g.drawText (text, x, y, width, height,
@@ -518,8 +496,6 @@ void PluginEditor::paint (Graphics& g)
         int x = 365, y = 363, width = 51, height = 30;
         String text (TRANS("7"));
         Colour fillColour = Colours::white;
-        //[UserPaintCustomArguments] Customize the painting arguments here..
-        //[/UserPaintCustomArguments]
         g.setColour (fillColour);
         g.setFont (11.0f);
         g.drawText (text, x, y, width, height,
@@ -530,8 +506,6 @@ void PluginEditor::paint (Graphics& g)
         int x = 470, y = 363, width = 43, height = 30;
         String text (TRANS("9"));
         Colour fillColour = Colours::white;
-        //[UserPaintCustomArguments] Customize the painting arguments here..
-        //[/UserPaintCustomArguments]
         g.setColour (fillColour);
         g.setFont (11.0f);
         g.drawText (text, x, y, width, height,
@@ -542,8 +516,6 @@ void PluginEditor::paint (Graphics& g)
         int x = 614, y = 363, width = 43, height = 30;
         String text (TRANS("12"));
         Colour fillColour = Colours::white;
-        //[UserPaintCustomArguments] Customize the painting arguments here..
-        //[/UserPaintCustomArguments]
         g.setColour (fillColour);
         g.setFont (11.0f);
         g.drawText (text, x, y, width, height,
@@ -554,8 +526,6 @@ void PluginEditor::paint (Graphics& g)
         int x = 742, y = 363, width = 51, height = 30;
         String text (TRANS("15"));
         Colour fillColour = Colours::white;
-        //[UserPaintCustomArguments] Customize the painting arguments here..
-        //[/UserPaintCustomArguments]
         g.setColour (fillColour);
         g.setFont(11.00f);
         g.drawText (text, x, y, width, height,
@@ -566,8 +536,6 @@ void PluginEditor::paint (Graphics& g)
         int x = 829, y = 363, width = 43, height = 30;
         String text (TRANS("17"));
         Colour fillColour = Colours::white;
-        //[UserPaintCustomArguments] Customize the painting arguments here..
-        //[/UserPaintCustomArguments]
         g.setFont(11.0f);
         g.setColour (fillColour);
         g.drawText (text, x, y, width, height,
@@ -578,23 +546,15 @@ void PluginEditor::paint (Graphics& g)
         int x = 901, y = 363, width = 51, height = 30;
         String text (TRANS("19"));
         Colour fillColour = Colours::white;
-        //[UserPaintCustomArguments] Customize the painting arguments here..
-        //[/UserPaintCustomArguments]
         g.setColour (fillColour);
         g.setFont (11.0f);
         g.drawText (text, x, y, width, height,
                     Justification::centred, true);
     }
-
-    //[UserPaint] Add your own custom painting code here..
-    //[/UserPaint]
 }
 
 void PluginEditor::resized()
 {
-    //[UserPreResize] Add your own custom resize code here..
-    //[/UserPreResize]
-
     // x,y,width,height
     chordsComponent->setBounds (8, 8, 200, 75);
     chordRoot->setBounds (15, 25, 60, 24);
@@ -739,8 +699,6 @@ void PluginEditor::resized()
     C10->setBounds (949, 347, 30, 24);
     G10->setBounds (949, 182, 30, 24);
     C11->setBounds (949, 139, 30, 24);
-    //[UserResized] Add your own custom resize handling here..
-    //[/UserResized]
 }
 
 void PluginEditor::switchColour()
@@ -867,7 +825,6 @@ void PluginEditor::comboBoxChanged (ComboBox* comboBoxThatHasChanged)
     }
 }
 
-//[MiscUserCode] You can add your own definitions of your custom methods or any other code here...
 void PluginEditor::updateScale() {
 	std::ostringstream stream;
 	stream << Scale(scaleroot, scaletype) << std::endl;
@@ -912,7 +869,6 @@ juce::String PluginEditor::simplifyNotes(const std::string & str) {
 
 	return jscalestr;
 }
-
 
 void PluginEditor::updateGuitarNeckScales() {
 	resetGuitarNotes();
@@ -1189,7 +1145,3 @@ static const unsigned char resource_PluginEditor_gneck_inverted_png[] = { 137,80
 
 const char* PluginEditor::gneck_inverted_png = (const char*) resource_PluginEditor_gneck_inverted_png;
 const int PluginEditor::gneck_inverted_pngSize = 5025;
-
-
-//[EndFile] You can add extra defines here...
-//[/EndFile]

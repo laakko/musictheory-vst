@@ -190,19 +190,16 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
 
     addAndMakeVisible (*(viewScale = std::make_unique<ToggleButton> ("new toggle button")));
     viewScale->setButtonText("Scale");
-    viewScale->setClickingTogglesState (true);
     viewScale->setToggleState (false, dontSendNotification);
     viewScale->onClick = [this]() { selectButton("Scale"); };
 
     addAndMakeVisible (*(viewChord = std::make_unique<ToggleButton> ("new toggle button")));
     viewChord->setButtonText("Chord");
-    viewChord->setClickingTogglesState (true);
     viewChord->setToggleState (false, dontSendNotification);
     viewChord->onClick = [this]() { selectButton("Chord"); };
 
     addAndMakeVisible (*(viewMidi = std::make_unique<ToggleButton> ("new toggle button")));
     viewMidi->setButtonText("Midi");
-    viewMidi->setClickingTogglesState (true);
     viewMidi->setToggleState (false, dontSendNotification);
     viewMidi->onClick = [this]() { selectButton("Midi"); };
 
@@ -1295,27 +1292,36 @@ void PluginEditor::viewButton()
 void PluginEditor::selectButton(const std::string & function)
 {
     if(function == "All") {
+        viewAll->setToggleState(true, dontSendNotification);
         viewScale->setToggleState(false, dontSendNotification);
         viewChord->setToggleState(false, dontSendNotification);
         viewMidi->setToggleState(false, dontSendNotification);
+        infoText->setText("", dontSendNotification);
         resetGuitarNotes();
     }
     else if(function == "Scale") {
+        viewScale->setToggleState(true, dontSendNotification);
         viewAll->setToggleState(false, dontSendNotification);
         viewChord->setToggleState(false, dontSendNotification);
         viewMidi->setToggleState(false, dontSendNotification);
+        infoText->setText("", dontSendNotification); // TODO
         updateGuitarNeckScales();
     }
     else if(function == "Chord") {
+        viewChord->setToggleState(true, dontSendNotification);
         viewAll->setToggleState(false, dontSendNotification);
         viewScale->setToggleState(false, dontSendNotification);
         viewMidi->setToggleState(false, dontSendNotification);
+        infoText->setText("", dontSendNotification); // TODO
         updateGuitarNeckChords();
     }
     else if(function == "Midi") {
+        viewMidi->setToggleState(true, dontSendNotification);
         viewAll->setToggleState(false, dontSendNotification);
         viewScale->setToggleState(false, dontSendNotification);
         viewChord->setToggleState(false, dontSendNotification);
+
+        // TODO start timer or new thread to keep checking this as long as midi view is active
         auto midiNotes = processor.getActiveMidiNotes();
         String midiNotesStr;
         for (const auto& note : midiNotes) {

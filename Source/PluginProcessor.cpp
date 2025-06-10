@@ -25,6 +25,14 @@ MusicTheoryAudioProcessor::MusicTheoryAudioProcessor()
                        )
 #endif
 {
+        // Initialize AudioProcessorValueTreeState
+        state = std::make_unique<AudioProcessorValueTreeState>(*this, nullptr, "Parameters",
+            AudioProcessorValueTreeState::ParameterLayout{
+                std::make_unique<AudioParameterBool>("buttonColour", "theme", true),
+
+            });
+    
+        buttonColourParam = state->getRawParameterValue("buttonColour");
 }
 
 MusicTheoryAudioProcessor::~MusicTheoryAudioProcessor()
@@ -162,7 +170,6 @@ void MusicTheoryAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuf
                 String midiNote = MidiMessage::getMidiNoteName(message.getNoteNumber(), true, false, 4);
                 if (std::find(activeMidiNotes.begin(), activeMidiNotes.end(), midiNote) == activeMidiNotes.end())
                 {
-                    std::cout << "Note On: " << midiNote << std::endl;
                     activeMidiNotes.push_back(midiNote);
                 }
             }

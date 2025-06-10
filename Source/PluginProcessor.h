@@ -60,10 +60,13 @@ public:
 
     //==============================================================================
     std::vector<String> getActiveMidiNotes();
+
+    std::unique_ptr<AudioProcessorValueTreeState> state;
+    std::atomic<float>* buttonColourParam = nullptr;
 private:
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MusicTheoryAudioProcessor)
     std::vector<String> activeMidiNotes; // Store MIDI note names for use in the editor
     std::mutex midiNotesMutex; // Mutex to protect access to activeMidiNotes
-    std::unique_ptr<AudioProcessorValueTreeState> state;
+
 };

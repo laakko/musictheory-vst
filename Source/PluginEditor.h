@@ -75,6 +75,8 @@ private:
     std::unique_ptr<juce::TextButton> buttonColour;
     std::unique_ptr<juce::TextButton> buttonView;
 
+    std::unique_ptr<AudioProcessorValueTreeState::ButtonAttachment> buttonColourAttachment;
+
     MusicTheoryAudioProcessor& processor;
 
     enum class ColourThemes

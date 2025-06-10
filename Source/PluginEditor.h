@@ -87,6 +87,12 @@ private:
     ColourThemes currentColourState = ColourThemes::CadetBlue;
     juce::Colour backgroundColour = juce::Colours::cadetblue;
 
+    Note scaleroot = Note{ BasicNote::C };
+    Note chordroot = Note{ BasicNote::C };
+    BasicScale scaletype = BasicScale{ BasicScale::Major };
+    BasicChord chordtype = BasicChord{ BasicChord::maj };
+    Chord currentChord = Chord(chordroot, chordtype);
+
     std::unique_ptr<GroupComponent> guitarComponent;
     std::unique_ptr<GroupComponent> scalesComponent;
     std::unique_ptr<GroupComponent> infoComponent;

@@ -28,7 +28,7 @@ MusicTheoryAudioProcessor::MusicTheoryAudioProcessor()
         // Initialize AudioProcessorValueTreeState
         state = std::make_unique<AudioProcessorValueTreeState>(*this, nullptr, "Parameters",
             AudioProcessorValueTreeState::ParameterLayout{
-                std::make_unique<AudioParameterBool>("buttonColour", "theme", true),
+                std::make_unique<AudioParameterBool>("buttonColour", "theme", false),
 
             });
     

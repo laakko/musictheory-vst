@@ -20,12 +20,6 @@
 #include "PluginEditor.h"
 
 using namespace acentric_core;
-std::string root = "C";
-Note scaleroot = Note{ BasicNote::C };
-Note chordroot = Note{ BasicNote::C };
-BasicScale scaletype = BasicScale{ BasicScale::Major };
-BasicChord chordtype = BasicChord{ BasicChord::maj };
-Chord currentChord = Chord(chordroot, chordtype);
 
 //==============================================================================
 PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
@@ -168,7 +162,6 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
         editorPtr->setScrollbarsShown (false);
         editorPtr->setCaretVisible (false);
         editorPtr->setPopupMenuEnabled (false);
-        //editorPtr->applyFontToAllText(editorPtr->getFont());
     };
 
     createTextEditor(C, "C", Constants::colorC);
@@ -767,14 +760,8 @@ void PluginEditor::comboBoxChanged (ComboBox* comboBoxThatHasChanged)
     if (comboBoxThatHasChanged == scaleKey.get())
     {
 		std::string scalekeystr = scaleKey->getText().toStdString();
-		root = scalekeystr[0];
 		char scalekeychar = scalekeystr[0];
-		int offset = 0;
-		if (scalekeystr[1] != '\0') {
-			offset = 1;
-			root += "#";
-		}
-
+        int offset = scalekeystr[1] != '\0' ? 1 : 0;
 		scaleroot = Note{ scalekeychar, offset,4 };
 		updateScale();
         if(viewScale->getToggleState()) {
@@ -865,7 +852,7 @@ void PluginEditor::updateGuitarNeckScales() {
             guitarnotes.at(i)->setVisible(false);
         }
 
-		if (guitarnotes.at(i)->getName() == String(root.c_str())) {
+		if (guitarnotes.at(i)->getName() == scaleKey->getText()) {
 			guitarnotes.at(i)->setAlpha(1);
 		}
 	}

@@ -34,8 +34,8 @@ namespace Constants
         {"PhrygianDominant", BasicScale::PhrygianDominant}};
 
     static const std::vector<std::pair<juce::String, BasicChord>> CHORD_TYPES = {
-        {"m", BasicChord::min},
         {"M", BasicChord::maj},
+        {"m", BasicChord::min},
         {"aug", BasicChord::aug},
         {"dim", BasicChord::dim},
         {"sus2", BasicChord::sus2},

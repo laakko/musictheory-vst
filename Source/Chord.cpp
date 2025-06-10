@@ -233,12 +233,10 @@ namespace acentric_core {
 	}
 
 	Interval Chord::getInterval(Note note) const {
-		// Calculate the interval between the root and the given note
 		Interval targetInterval = root.getInterval(note);
-		
-		// Check if this interval exists in our chord's pitches
 		for (const Interval& interval : pitches) {
-			if (interval.getSemitones() == targetInterval.getSemitones()) {
+			Note chordNote = root.getOtherNote(interval);
+			if (chordNote.getAbsoluteDistance() % 12 == note.getAbsoluteDistance() % 12) {
 				return interval;
 			}
 		}

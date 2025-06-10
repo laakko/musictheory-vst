@@ -82,7 +82,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     for (int i = 0; i < Constants::CHORD_TYPES.size(); ++i) {
         chordType->addItem(TRANS(Constants::CHORD_TYPES[i].first), i + 1);
     }
-    chordType->setSelectedId (2, dontSendNotification);
+    chordType->setSelectedId (1, dontSendNotification);
     chordType->addListener (this);
 
     addAndMakeVisible (*(infoText = std::make_unique<TextEditor> ("new text editor")));

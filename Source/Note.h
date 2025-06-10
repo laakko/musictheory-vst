@@ -96,6 +96,12 @@ namespace acentric_core {
 		For example, if this Note is E4 and the other Note is F3, the returned Interval would be M7 (major seventh). */
 		Interval getInterval(const Note &other) const;
 
+		/*! Evaluates whether this note is equal to another note.
+		 * Equality is determined by comparing the base, offset, and octave of the notes. */
+		bool operator==(const Note &other) const {
+			return base == other.base && offset == other.offset && octave == other.octave;
+		}
+
 	};
 
 	struct NoteAbsoluteDistLessThan {

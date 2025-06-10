@@ -6,6 +6,8 @@
 #include "BasicScale.h"
 #include "Note.h"
 #include "Interval.h"
+#include <sstream>
+
 
 namespace acentric_core {
 
@@ -50,6 +52,9 @@ namespace acentric_core {
 
 		/*! Returns a vector of Notes representing degrees two through seven. This may be changed in the future to include the first (base) degree. */
 		std::vector<Note> getDegrees() const;
+
+		/*! Returns scale degree of the current note */
+		std::string getDegreeString(const Note & note) const;
 
 		/*! Returns the base note of the scale. */
 		Note getBase() const { return base; };

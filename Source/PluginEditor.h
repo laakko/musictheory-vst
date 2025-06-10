@@ -92,6 +92,7 @@ private:
     BasicScale scaletype = BasicScale{ BasicScale::Major };
     BasicChord chordtype = BasicChord{ BasicChord::maj };
     Chord currentChord = Chord(chordroot, chordtype);
+    Scale currentScale = Scale(scaleroot, scaletype);
 
     std::unique_ptr<GroupComponent> guitarComponent;
     std::unique_ptr<GroupComponent> scalesComponent;

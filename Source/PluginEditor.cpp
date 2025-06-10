@@ -799,7 +799,8 @@ void PluginEditor::comboBoxChanged (ComboBox* comboBoxThatHasChanged)
 
 void PluginEditor::updateScale() {
 	std::ostringstream stream;
-	stream << Scale(scaleroot, scaletype) << std::endl;
+    currentScale = Scale(scaleroot, scaletype);
+	stream << currentScale << std::endl;
 	std::string scalestr = stream.str();
     scalestr += " ";
 	juce::String jscalestr = simplifyNotes(scalestr);
@@ -850,6 +851,15 @@ void PluginEditor::updateGuitarNeckScales() {
 		guitarnotes.at(i)->setAlpha(Constants::NON_ROOT_NOTE_ALPHA);
         if (!(notesToMatch.contains(guitarnotes.at(i)->getName()))) {
             guitarnotes.at(i)->setVisible(false);
+        }
+
+        if(buttonView->getToggleState()) {
+            std::string notetext = guitarnotes.at(i)->getName().toStdString();
+            int offset = notetext[1] != '\0' ? 1 : 0;
+            std::string intervaltxt = currentScale.getDegreeString(Note(notetext[0], offset));
+            guitarnotes.at(i)->setText(intervaltxt);
+        } else {
+            guitarnotes.at(i)->setText(guitarnotes.at(i)->getName());
         }
 
 		if (guitarnotes.at(i)->getName() == scaleKey->getText()) {

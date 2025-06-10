@@ -244,7 +244,7 @@ namespace acentric_core {
 		}
 		
 		// If the note is not found in the chord, return Interval(0)
-		return Interval{'P', 1}; // Perfect unison represents "not found"
+		return Interval{'P', 1};
 	}
 
 	std::string Chord::getIntervalString(Note note) const {

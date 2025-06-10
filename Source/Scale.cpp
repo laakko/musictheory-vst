@@ -153,30 +153,18 @@ namespace acentric_core {
 
 	std::string Scale::getDegreeString(const Note & note) const
 	{
-		// Print all notes in the scale for debugging
-		std::cout << "Scale degrees: ";
-		for (const auto& degreeNote : this->getDegrees()) {
-			std::cout << degreeNote << " ";
+		if (note.isEnharmonic(this->getBase())) {
+			return "P1";
 		}
-		std::cout << std::endl;
-
-		// Check if the note matches the root note
-		if (note == this->getBase()) { // Use the operator== for comparing notes
-			return "P1"; // Root note is always "P1"
-		}
-
-		// Check if the note matches any degree in the scale
 		for (size_t i = 0; i < degrees.size(); ++i) {
 			Note scaleNote = base.getOtherNote(degrees[i]);
-			if (scaleNote.isEnharmonic(note)) { // Use isEnharmonic for matching notes
+			bool absMatch = (scaleNote.getAbsoluteDistance() % 12) == (note.getAbsoluteDistance() % 12);
+			if (absMatch) {
 				std::ostringstream ss;
 				ss << degrees[i];
-				return ss.str(); // Return the interval as a string (e.g., "P5", "m3")
+				return ss.str();
 			}
 		}
-
-		std::cout << "No matching degree found for note: " << note << std::endl;
-		// If the note is not in the scale, return an empty string or a default value
 		return "Not in scale";
 	}
 

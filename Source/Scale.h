@@ -53,7 +53,7 @@ namespace acentric_core {
 		/*! Returns a vector of Notes representing degrees two through seven. This may be changed in the future to include the first (base) degree. */
 		std::vector<Note> getDegrees() const;
 
-		/*! Returns scale degree of the current note */
+		/*! Returns scale degree of the current note (e.g "P4" "m3") */
 		std::string getDegreeString(const Note & note) const;
 
 		/*! Returns the base note of the scale. */

@@ -79,6 +79,8 @@ private:
 
     MusicTheoryAudioProcessor& processor;
 
+    Note stringToNote(const juce::String & noteString);
+
     enum class ColourThemes
     {
         CadetBlue,

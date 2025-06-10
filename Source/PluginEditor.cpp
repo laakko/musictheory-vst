@@ -759,10 +759,7 @@ void PluginEditor::comboBoxChanged (ComboBox* comboBoxThatHasChanged)
 {
     if (comboBoxThatHasChanged == scaleKey.get())
     {
-		std::string scalekeystr = scaleKey->getText().toStdString();
-		char scalekeychar = scalekeystr[0];
-        int offset = scalekeystr[1] != '\0' ? 1 : 0;
-		scaleroot = Note{ scalekeychar, offset,4 };
+		scaleroot = stringToNote(scaleKey->getText());
 		updateScale();
         if(viewScale->getToggleState()) {
             updateGuitarNeckScales();
@@ -778,10 +775,7 @@ void PluginEditor::comboBoxChanged (ComboBox* comboBoxThatHasChanged)
     }
     else if (comboBoxThatHasChanged == chordRoot.get())
     {
-		std::string chordkeystr = chordRoot->getText().toStdString();
-		char chordkeychar = chordkeystr[0];
-		int offset = chordkeystr[1] != '\0' ? 1 : 0;
-		chordroot = Note{ chordkeychar, offset,4 };
+		chordroot = stringToNote(chordRoot->getText());
 		updateChord();
         if(viewChord->getToggleState()) {
             updateGuitarNeckChords();
@@ -843,6 +837,15 @@ juce::String PluginEditor::simplifyNotes(const std::string & str) {
 	return jscalestr;
 }
 
+Note PluginEditor::stringToNote(const juce::String & noteString)
+{
+    if (noteString.isEmpty())
+        return Note();
+    char noteChar = noteString[0];
+    int offset = noteString[1] != '\0' ? 1 : 0;
+    return Note(noteChar, offset, 4);
+}
+
 void PluginEditor::updateGuitarNeckScales() {
 	resetGuitarNotes();
     juce::StringArray notesToMatch = juce::StringArray::fromTokens(txtScale->getText().trim(), " ", "");
@@ -854,9 +857,7 @@ void PluginEditor::updateGuitarNeckScales() {
         }
 
         if(buttonView->getToggleState()) {
-            std::string notetext = guitarnotes.at(i)->getName().toStdString();
-            int offset = notetext[1] != '\0' ? 1 : 0;
-            std::string intervaltxt = currentScale.getDegreeString(Note(notetext[0], offset));
+            std::string intervaltxt = currentScale.getDegreeString(stringToNote(guitarnotes.at(i)->getName()));
             guitarnotes.at(i)->setText(intervaltxt);
         } else {
             guitarnotes.at(i)->setText(guitarnotes.at(i)->getName());
@@ -879,9 +880,7 @@ void PluginEditor::updateGuitarNeckChords() {
         }
 
         if(buttonView->getToggleState()) {
-            std::string notetext = guitarnotes.at(i)->getName().toStdString();
-            int offset = notetext[1] != '\0' ? 1 : 0;
-            std::string intervaltxt = currentChord.getIntervalString(Note(notetext[0], offset));
+            std::string intervaltxt = currentChord.getIntervalString(stringToNote(guitarnotes.at(i)->getName()));
             guitarnotes.at(i)->setText(intervaltxt);
         } else {
             guitarnotes.at(i)->setText(guitarnotes.at(i)->getName());

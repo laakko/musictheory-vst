@@ -74,17 +74,10 @@ private:
 	std::vector<std::unique_ptr<juce::TextEditor>> guitarnotes;
 
     std::unique_ptr<juce::ToggleButton> viewScale;
-    std::unique_ptr<AudioProcessorValueTreeState::ButtonAttachment> viewScaleAttachment;
-
     std::unique_ptr<juce::ToggleButton> viewAll;
-    std::unique_ptr<AudioProcessorValueTreeState::ButtonAttachment> viewAllAttachment;
-
     std::unique_ptr<juce::ToggleButton> viewMidi;
-    std::unique_ptr<AudioProcessorValueTreeState::ButtonAttachment> viewMidiAttachment;
-
     std::unique_ptr<juce::ToggleButton> viewChord;
-    std::unique_ptr<AudioProcessorValueTreeState::ButtonAttachment> viewChordAttachment;
-
+    
     std::unique_ptr<juce::TextButton> buttonColour;
     std::unique_ptr<AudioProcessorValueTreeState::ButtonAttachment> buttonColourAttachment;
 

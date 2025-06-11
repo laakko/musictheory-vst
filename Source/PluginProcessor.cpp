@@ -157,10 +157,6 @@ bool MusicTheoryAudioProcessor::isBusesLayoutSupported (const BusesLayout& layou
 void MusicTheoryAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer& midiMessages)
 {
     std::lock_guard<std::mutex> lock(midiNotesMutex);
-    activeMidiNotes.clear();
-    if(midiMessages.isEmpty()) {
-        return;
-    }
 
     ScopedNoDenormals noDenormals;
     const int totalNumInputChannels  = getTotalNumInputChannels();
@@ -192,6 +188,13 @@ void MusicTheoryAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuf
                 {
                     activeMidiNotes.push_back(midiNote);
                 }
+            }
+            else if (message.isNoteOff()) {
+                // Remove note
+                String midiNote = MidiMessage::getMidiNoteName(message.getNoteNumber(), true, false, 4);
+                auto it = std::find(activeMidiNotes.begin(), activeMidiNotes.end(), midiNote);
+                if (it != activeMidiNotes.end())
+                    activeMidiNotes.erase(it);
             }
         }
         // ..do something to the data...

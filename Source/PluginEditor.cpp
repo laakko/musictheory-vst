@@ -120,25 +120,21 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     viewAll->setClickingTogglesState (true);
     viewAll->setToggleState (true, dontSendNotification);
     viewAll->onClick = [this]() { selectButton("All"); };
-    viewAllAttachment = std::make_unique<AudioProcessorValueTreeState::ButtonAttachment>(*p.state, "viewAll", *viewAll);
 
     addAndMakeVisible (*(viewScale = std::make_unique<ToggleButton> ("new toggle button")));
     viewScale->setButtonText("Scale");
     viewScale->setToggleState (false, dontSendNotification);
     viewScale->onClick = [this]() { selectButton("Scale"); };
-    viewScaleAttachment = std::make_unique<AudioProcessorValueTreeState::ButtonAttachment>(*p.state, "viewScale", *viewScale);
 
     addAndMakeVisible (*(viewChord = std::make_unique<ToggleButton> ("new toggle button")));
     viewChord->setButtonText("Chord");
     viewChord->setToggleState (false, dontSendNotification);
     viewChord->onClick = [this]() { selectButton("Chord"); };
-    viewChordAttachment = std::make_unique<AudioProcessorValueTreeState::ButtonAttachment>(*p.state, "viewChord", *viewChord);
 
     addAndMakeVisible (*(viewMidi = std::make_unique<ToggleButton> ("new toggle button")));
     viewMidi->setButtonText("Midi");
     viewMidi->setToggleState (false, dontSendNotification);
     viewMidi->onClick = [this]() { selectButton("Midi"); };
-    viewMidiAttachment = std::make_unique<AudioProcessorValueTreeState::ButtonAttachment>(*p.state, "viewMidi", *viewMidi);
 
     addAndMakeVisible (*(buttonColour = std::make_unique<TextButton> ("new toggle button")));
     buttonColour->setButtonText("theme");

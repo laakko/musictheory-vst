@@ -1,18 +1,6 @@
-/*
-  ==============================================================================
-
-    This file was auto-generated!
-
-    It contains the basic framework code for a JUCE plugin processor.
-
-  ==============================================================================
-*/
-
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
 
-
-//==============================================================================
 MusicTheoryAudioProcessor::MusicTheoryAudioProcessor()
      : AudioProcessor (BusesProperties()
                        .withInput  ("Input",  AudioChannelSet::stereo(), true)
@@ -53,75 +41,10 @@ MusicTheoryAudioProcessor::~MusicTheoryAudioProcessor()
 {
 }
 
-//==============================================================================
 const String MusicTheoryAudioProcessor::getName() const
 {
     return JucePlugin_Name;
 }
-
-bool MusicTheoryAudioProcessor::acceptsMidi() const
-{
-   return true;
-}
-
-bool MusicTheoryAudioProcessor::producesMidi() const
-{
-   return false;
-}
-
-bool MusicTheoryAudioProcessor::isMidiEffect() const
-{
-    return true;
-}
-
-double MusicTheoryAudioProcessor::getTailLengthSeconds() const
-{
-    return 0.0;
-}
-
-int MusicTheoryAudioProcessor::getNumPrograms()
-{
-    return 1;   // NB: some hosts don't cope very well if you tell them there are 0 programs,
-                // so this should be at least 1, even if you're not really implementing programs.
-}
-
-int MusicTheoryAudioProcessor::getCurrentProgram()
-{
-    return 0;
-}
-
-void MusicTheoryAudioProcessor::setCurrentProgram (int index)
-{
-}
-
-const String MusicTheoryAudioProcessor::getProgramName (int index)
-{
-    return {};
-}
-
-void MusicTheoryAudioProcessor::changeProgramName (int index, const String& newName)
-{
-}
-
-//==============================================================================
-void MusicTheoryAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
-{
-    // Use this method as the place to do any pre-playback
-    // initialisation that you need..
-}
-
-void MusicTheoryAudioProcessor::releaseResources()
-{
-    // When playback stops, you can use this as an opportunity to free up any
-    // spare memory, etc.
-}
-
-
-bool MusicTheoryAudioProcessor::isBusesLayoutSupported (const BusesLayout& layouts) const
-{
-  return true;
-}
-
 
 void MusicTheoryAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer& midiMessages)
 {
@@ -161,12 +84,6 @@ void MusicTheoryAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuf
     }
 }
 
-//==============================================================================
-bool MusicTheoryAudioProcessor::hasEditor() const
-{
-    return true; // (change this to false if you choose to not supply an editor)
-}
-
 AudioProcessorEditor* MusicTheoryAudioProcessor::createEditor()
 {
     return new PluginEditor (*this);
@@ -191,12 +108,10 @@ void MusicTheoryAudioProcessor::setStateInformation (const void* data, int sizeI
 std::vector<String> MusicTheoryAudioProcessor::getActiveMidiNotes()
 {
     std::lock_guard<std::mutex> lock(midiNotesMutex);
-    // Return copy of the active MIDI notes for use in the editor
     return activeMidiNotes;
 }
 
 //==============================================================================
-// This creates new instances of the plugin..
 AudioProcessor* JUCE_CALLTYPE createPluginFilter()
 {
     return new MusicTheoryAudioProcessor();

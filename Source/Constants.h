@@ -50,6 +50,8 @@ namespace Constants
 
     static const double NON_ROOT_NOTE_ALPHA = 0.65;
 
+    static const int MIDI_UPDATE_TIMER_FREQ_HZ = 30;
+
     static const juce::Colour colorF = Colour(0xff4d91a9);
     static const juce::Colour colorFs = Colour(0xff5681ab);
     static const juce::Colour colorG = Colour(0xff706ea1);

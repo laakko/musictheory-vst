@@ -738,7 +738,7 @@ void PluginEditor::selectButton(const std::string & function)
         viewAll->setToggleState(false, dontSendNotification);
         viewScale->setToggleState(false, dontSendNotification);
         viewChord->setToggleState(false, dontSendNotification);
-        startTimerHz(10);
+        startTimerHz(Constants::MIDI_UPDATE_TIMER_FREQ_HZ);
     }
 }
 

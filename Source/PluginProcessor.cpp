@@ -14,16 +14,10 @@
 
 //==============================================================================
 MusicTheoryAudioProcessor::MusicTheoryAudioProcessor()
-#ifndef JucePlugin_PreferredChannelConfigurations
      : AudioProcessor (BusesProperties()
-                     #if ! JucePlugin_IsMidiEffect
-                      #if ! JucePlugin_IsSynth
                        .withInput  ("Input",  AudioChannelSet::stereo(), true)
-                      #endif
                        .withOutput ("Output", AudioChannelSet::stereo(), true)
-                     #endif
                        )
-#endif
 {
         // Initialize AudioProcessorValueTreeState
         state = std::make_unique<AudioProcessorValueTreeState>(*this, nullptr, "Parameters",
@@ -72,20 +66,12 @@ bool MusicTheoryAudioProcessor::acceptsMidi() const
 
 bool MusicTheoryAudioProcessor::producesMidi() const
 {
-   #if JucePlugin_ProducesMidiOutput
-    return true;
-   #else
-    return false;
-   #endif
+   return false;
 }
 
 bool MusicTheoryAudioProcessor::isMidiEffect() const
 {
-   #if JucePlugin_IsMidiEffect
     return true;
-   #else
-    return false;
-   #endif
 }
 
 double MusicTheoryAudioProcessor::getTailLengthSeconds() const
@@ -130,74 +116,35 @@ void MusicTheoryAudioProcessor::releaseResources()
     // spare memory, etc.
 }
 
-#ifndef JucePlugin_PreferredChannelConfigurations
+
 bool MusicTheoryAudioProcessor::isBusesLayoutSupported (const BusesLayout& layouts) const
 {
-  #if JucePlugin_IsMidiEffect
-    ignoreUnused (layouts);
-    return true;
-  #else
-    // This is the place where you check if the layout is supported.
-    // In this template code we only support mono or stereo.
-    if (layouts.getMainOutputChannelSet() != AudioChannelSet::mono()
-     && layouts.getMainOutputChannelSet() != AudioChannelSet::stereo())
-        return false;
-
-    // This checks if the input layout matches the output layout
-   #if ! JucePlugin_IsSynth
-    if (layouts.getMainOutputChannelSet() != layouts.getMainInputChannelSet())
-        return false;
-   #endif
-
-    return true;
-  #endif
+  return true;
 }
-#endif
+
 
 void MusicTheoryAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer& midiMessages)
 {
     std::lock_guard<std::mutex> lock(midiNotesMutex);
 
-    ScopedNoDenormals noDenormals;
-    const int totalNumInputChannels  = getTotalNumInputChannels();
-    const int totalNumOutputChannels = getTotalNumOutputChannels();
-
-    // In case we have more outputs than inputs, this code clears any output
-    // channels that didn't contain input data, (because these aren't
-    // guaranteed to be empty - they may contain garbage).
-    // This is here to avoid people getting screaming feedback
-    // when they first compile a plugin, but obviously you don't need to keep
-    // this code if your algorithm always overwrites all the output channels.
-    for (int i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
-        buffer.clear (i, 0, buffer.getNumSamples());
-
-    // This is the place where you'd normally do the guts of your plugin's
-    // audio processing...
-    for (int channel = 0; channel < totalNumInputChannels; ++channel)
+    for (const auto metadata : midiMessages)
     {
-        float* channelData = buffer.getWritePointer (channel);
-        for (const MidiMessageMetadata metadata : midiMessages)
+        const auto message = metadata.getMessage();
+
+        if (message.isNoteOn())
         {
-            const MidiMessage& message = metadata.getMessage();
-    
-            if (message.isNoteOn())
+            String midiNote = MidiMessage::getMidiNoteName(message.getNoteNumber(), true, false, 4);
+            if (std::find(activeMidiNotes.begin(), activeMidiNotes.end(), midiNote) == activeMidiNotes.end())
             {
-                // Store the note number to use in the editor
-                String midiNote = MidiMessage::getMidiNoteName(message.getNoteNumber(), true, false, 4);
-                if (std::find(activeMidiNotes.begin(), activeMidiNotes.end(), midiNote) == activeMidiNotes.end())
-                {
-                    activeMidiNotes.push_back(midiNote);
-                }
-            }
-            else if (message.isNoteOff()) {
-                // Remove note
-                String midiNote = MidiMessage::getMidiNoteName(message.getNoteNumber(), true, false, 4);
-                auto it = std::find(activeMidiNotes.begin(), activeMidiNotes.end(), midiNote);
-                if (it != activeMidiNotes.end())
-                    activeMidiNotes.erase(it);
+                activeMidiNotes.push_back(midiNote);
             }
         }
-        // ..do something to the data...
+        else if (message.isNoteOff()) {
+            String midiNote = MidiMessage::getMidiNoteName(message.getNoteNumber(), true, false, 4);
+            auto it = std::find(activeMidiNotes.begin(), activeMidiNotes.end(), midiNote);
+            if (it != activeMidiNotes.end())
+                activeMidiNotes.erase(it);
+        }
     }
 }
 

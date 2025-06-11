@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <JUCERPROJECT id="yG5hKd" name="MusicTheory" projectType="audioplug" pluginFormats="buildVST3,buildStandalone"
-              companyName="laakko" displaySplashScreen="1" jucerFormatVersion="1">
-  <PluginCharacteristics pluginIsSynth="0" pluginWantsMidiIn="1" pluginProducesMidiOut="0"/>
+              companyName="laakko" displaySplashScreen="1" jucerFormatVersion="1"
+              pluginChannelConfigs="{1,1}" pluginIsSynth="0" pluginWantsMidiIn="1"
+              pluginProducesMidiOut="0" pluginIsMidiEffectPlugin="1" pluginCharacteristicsValue="pluginWantsMidiIn,pluginIsMidiEffectPlugin">
   <MAINGROUP id="ibxzpc" name="MusicTheory">
     <GROUP id="{1A63C5AB-4293-396B-CBF0-B20E756AA426}" name="Source">
       <FILE id="XusGAu" name="BasicNote.h" compile="0" resource="0" file="Source/BasicNote.h"/>

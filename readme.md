@@ -1,13 +1,13 @@
-### Music Theory Helper VST - MTHVST 
+### Music Theory VST
 
-C++/Juce VST plugin, which contains handy music theory helpers especially for guitar players: 
+C++/Juce VST plugin, which displays handy music theory helpers especially for guitar players: 
 - Scales
 - Chords
-- View scale/chord notes on guitar neck
-- Notepad for writing notes/chord progressions, whatnot.
+- View scale/chord notes on the guitar guitar fretboard
+- View incoming MIDI notes in real time on the guitar fretboard
 
 
-![sc](/screenshot.PNG)  
+![sc](/screenshot1.png)  
 
 ### Usage
 

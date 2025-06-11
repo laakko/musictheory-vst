@@ -4,10 +4,11 @@ C++/Juce VST plugin, which displays handy music theory helpers especially for gu
 - Scales
 - Chords
 - View scale/chord notes on the guitar guitar fretboard
-- View incoming MIDI notes in real time on the guitar fretboard
+- View incoming MIDI notes in real time on the guitar fretboard  
 
-
-![sc](/screenshot1.png)  
+<br>
+  
+![sc](/Screenshot1.png)  
 
 ### Usage
 

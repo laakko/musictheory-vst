@@ -34,7 +34,8 @@
 
 
 class PluginEditor  : public AudioProcessorEditor,
-                      public ComboBox::Listener
+                      public ComboBox::Listener,
+                      public Timer
 {
 public:
     //==============================================================================
@@ -58,6 +59,7 @@ public:
     void paint (Graphics& g) override;
     void resized() override;
     void comboBoxChanged (ComboBox* comboBoxThatHasChanged) override;
+    void timerCallback() override;
 
     // Binary resources:
     static const char* screenshot_20190321Blank20Pdf_png;
@@ -67,17 +69,27 @@ public:
 
 
 private:
-	std::vector<std::unique_ptr<juce::TextEditor>> guitarnotes;
-    std::unique_ptr<juce::ToggleButton> viewScale;
-    std::unique_ptr<juce::ToggleButton> viewAll;
-    std::unique_ptr<juce::ToggleButton> viewMidi;
-    std::unique_ptr<juce::ToggleButton> viewChord;
-    std::unique_ptr<juce::TextButton> buttonColour;
-    std::unique_ptr<juce::TextButton> buttonView;
+    MusicTheoryAudioProcessor& processor;
 
+	std::vector<std::unique_ptr<juce::TextEditor>> guitarnotes;
+
+    std::unique_ptr<juce::ToggleButton> viewScale;
+    std::unique_ptr<AudioProcessorValueTreeState::ButtonAttachment> viewScaleAttachment;
+
+    std::unique_ptr<juce::ToggleButton> viewAll;
+    std::unique_ptr<AudioProcessorValueTreeState::ButtonAttachment> viewAllAttachment;
+
+    std::unique_ptr<juce::ToggleButton> viewMidi;
+    std::unique_ptr<AudioProcessorValueTreeState::ButtonAttachment> viewMidiAttachment;
+
+    std::unique_ptr<juce::ToggleButton> viewChord;
+    std::unique_ptr<AudioProcessorValueTreeState::ButtonAttachment> viewChordAttachment;
+
+    std::unique_ptr<juce::TextButton> buttonColour;
     std::unique_ptr<AudioProcessorValueTreeState::ButtonAttachment> buttonColourAttachment;
 
-    MusicTheoryAudioProcessor& processor;
+    std::unique_ptr<juce::TextButton> buttonView;
+    std::unique_ptr<AudioProcessorValueTreeState::ButtonAttachment> buttonViewAttachment;
 
     Note stringToNote(const juce::String & noteString);
 

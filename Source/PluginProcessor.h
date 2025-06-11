@@ -63,6 +63,12 @@ public:
 
     std::unique_ptr<AudioProcessorValueTreeState> state;
     std::atomic<float>* buttonColourParam = nullptr;
+    std::atomic<float>* buttonViewParam = nullptr;
+    std::atomic<float>* viewAllParam = nullptr;
+    std::atomic<float>* viewMidiParam = nullptr;
+    std::atomic<float>* viewChordParam = nullptr;
+    std::atomic<float>* viewScaleParam = nullptr;
+
 private:
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MusicTheoryAudioProcessor)

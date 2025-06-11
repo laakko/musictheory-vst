@@ -120,21 +120,25 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     viewAll->setClickingTogglesState (true);
     viewAll->setToggleState (true, dontSendNotification);
     viewAll->onClick = [this]() { selectButton("All"); };
+    viewAllAttachment = std::make_unique<AudioProcessorValueTreeState::ButtonAttachment>(*p.state, "viewAll", *viewAll);
 
     addAndMakeVisible (*(viewScale = std::make_unique<ToggleButton> ("new toggle button")));
     viewScale->setButtonText("Scale");
     viewScale->setToggleState (false, dontSendNotification);
     viewScale->onClick = [this]() { selectButton("Scale"); };
+    viewScaleAttachment = std::make_unique<AudioProcessorValueTreeState::ButtonAttachment>(*p.state, "viewScale", *viewScale);
 
     addAndMakeVisible (*(viewChord = std::make_unique<ToggleButton> ("new toggle button")));
     viewChord->setButtonText("Chord");
     viewChord->setToggleState (false, dontSendNotification);
     viewChord->onClick = [this]() { selectButton("Chord"); };
+    viewChordAttachment = std::make_unique<AudioProcessorValueTreeState::ButtonAttachment>(*p.state, "viewChord", *viewChord);
 
     addAndMakeVisible (*(viewMidi = std::make_unique<ToggleButton> ("new toggle button")));
     viewMidi->setButtonText("Midi");
     viewMidi->setToggleState (false, dontSendNotification);
     viewMidi->onClick = [this]() { selectButton("Midi"); };
+    viewMidiAttachment = std::make_unique<AudioProcessorValueTreeState::ButtonAttachment>(*p.state, "viewMidi", *viewMidi);
 
     addAndMakeVisible (*(buttonColour = std::make_unique<TextButton> ("new toggle button")));
     buttonColour->setButtonText("theme");
@@ -146,6 +150,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     buttonView->setButtonText("view");
     buttonView->setClickingTogglesState (true);
     buttonView->onClick = [this]() { viewButton(); };
+    buttonViewAttachment = std::make_unique<AudioProcessorValueTreeState::ButtonAttachment>(*p.state, "buttonView", *buttonView);
 
     auto createTextEditor = [this](std::unique_ptr<TextEditor>& editorPtr, const String& labelText, Colour color)
     {
@@ -737,21 +742,7 @@ void PluginEditor::selectButton(const std::string & function)
         viewAll->setToggleState(false, dontSendNotification);
         viewScale->setToggleState(false, dontSendNotification);
         viewChord->setToggleState(false, dontSendNotification);
-
-        // TODO start timer or new thread to keep checking this as long as midi view is active
-        auto midiNotes = processor.getActiveMidiNotes();
-        String midiNotesStr;
-        for (const auto& note : midiNotes) {
-            midiNotesStr += note + " ";
-        }
-        String infostr;
-        if(midiNotes.empty()) {
-            infostr = "No active MIDI notes.\nPlayback MIDI in the plugin's track to see active notes on the fretboard.";
-        } else {
-            infostr = "Active MIDI Notes: " + midiNotesStr;
-        }
-        infoText->setText(infostr, dontSendNotification);
-        updateGuitarNeckMidi(midiNotesStr);
+        startTimerHz(10);
     }
 }
 
@@ -844,6 +835,28 @@ Note PluginEditor::stringToNote(const juce::String & noteString)
     char noteChar = noteString[0];
     int offset = noteString[1] != '\0' ? 1 : 0;
     return Note(noteChar, offset, 4);
+}
+
+void PluginEditor::timerCallback()
+{
+    if(!viewMidi->getToggleState()) {
+        stopTimer();
+        return;
+    }
+
+    auto midiNotes = processor.getActiveMidiNotes();
+    String midiNotesStr;
+    for (const auto& note : midiNotes) {
+        midiNotesStr += note + " ";
+    }
+    String infostr;
+    if(midiNotes.empty()) {
+        infostr = "No active MIDI notes.\nPlayback MIDI in the plugin's track to see active notes on the fretboard.";
+    } else {
+        infostr = "Active MIDI Notes: " + midiNotesStr;
+    }
+    infoText->setText(infostr, dontSendNotification);
+    updateGuitarNeckMidi(midiNotesStr);
 }
 
 void PluginEditor::updateGuitarNeckScales() {

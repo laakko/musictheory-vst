@@ -127,6 +127,19 @@ void MusicTheoryAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuf
 {
     std::lock_guard<std::mutex> lock(midiNotesMutex);
 
+    // Don't remove midi notes if playback is paused
+    if (!getPlayHead()->getPosition()->getIsPlaying())
+    {
+        wasPaused = true;
+        return;
+    }
+    // Clear previously active MIDI notes when playback continues
+    if(wasPaused)
+    {
+        activeMidiNotes.clear(); 
+        wasPaused = false;
+    }
+
     for (const auto metadata : midiMessages)
     {
         const auto message = metadata.getMessage();

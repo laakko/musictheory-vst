@@ -67,6 +67,8 @@ public:
     std::atomic<float>* viewChordParam = nullptr;
     std::atomic<float>* viewScaleParam = nullptr;
 
+    bool wasPaused = false; 
+
 private:
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MusicTheoryAudioProcessor)

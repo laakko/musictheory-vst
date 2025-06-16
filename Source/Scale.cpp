@@ -168,6 +168,24 @@ namespace acentric_core {
 		return "Not in scale";
 	}
 
+	std::string Scale::getDegreesString() const
+	{
+		if(degrees.empty())
+		{
+			return "";
+		}
+		
+		std::ostringstream stream;
+		stream << "P1";
+
+		for(size_t i = 0; i < this->degrees.size(); ++i)
+		{
+			stream << " " << this->degrees[i];
+		}
+
+		return stream.str();
+	}
+
 	std::ostream & operator<<(std::ostream & os, const Scale & scale)
 	{
 		os << scale.getBase();

@@ -56,6 +56,9 @@ namespace acentric_core {
 		/*! Returns scale degree of the current note (e.g "P4" "m3") */
 		std::string getDegreeString(const Note & note) const;
 
+		/*! Returns string with all scale degrees (e.g. "P1 m3 P4 P5")*/
+		std::string getDegreesString() const;
+
 		/*! Returns the base note of the scale. */
 		Note getBase() const { return base; };
 

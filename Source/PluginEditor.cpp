@@ -59,7 +59,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     scaleMode->setTextWhenNothingSelected (TRANS("scale"));
     scaleMode->setTextWhenNoChoicesAvailable (TRANS("(no choices)"));
     for (int i = 0; i < Constants::SCALE_MODES.size(); ++i) {
-        scaleMode->addItem(TRANS(Constants::SCALE_MODES[i].first), i + 1);
+        scaleMode->addItem(TRANS(Constants::SCALE_MODES[i].name), i + 1);
     }
     scaleMode->setSelectedId (1, dontSendNotification);
     scaleMode->addListener (this);
@@ -762,7 +762,7 @@ void PluginEditor::comboBoxChanged (ComboBox* comboBoxThatHasChanged)
     }
     else if (comboBoxThatHasChanged == scaleMode.get())
     {
-        scaletype = BasicScale{ Constants::SCALE_MODES[scaleMode->getSelectedId()-1].second };
+        scaletype = BasicScale{ Constants::SCALE_MODES[scaleMode->getSelectedId()-1].type };
         updateScale();
         if(viewScale->getToggleState()) {
             updateGuitarNeckScales();
@@ -898,7 +898,7 @@ void PluginEditor::updateGuitarNeckChords() {
             continue;
         }
         guitarnotes.at(i)->setVisible(true);
-        
+
         if(buttonView->getToggleState()) {
             guitarnotes.at(i)->setText(currentChord.getIntervalString(stringToNote(guitarnotes.at(i)->getName())));
         } else {
@@ -936,13 +936,16 @@ void PluginEditor::resetGuitarNotes() {
 
 juce::String PluginEditor::getScalesInformation()
 {
-    juce::String infotext = "this is a scale";
+    juce::String infotext = juce::String(scaleKey->getText() + " " + scaleMode->getText() + "\n");
+    infotext += Constants::SCALE_MODES[scaleMode->getSelectedId()-1].description;
+    infotext += juce::String("\ndegrees: " + currentScale.getDegreesString());
     return infotext;
 }
 
 juce::String PluginEditor::getChordsInformation()
 {
-    juce::String infotext = "this is a chord";
+    juce::String infotext = juce::String("Chord: " + chordRoot->getText() + chordType->getText());
+    infotext += juce::String("\nIntervals: " + currentChord.getIntervalsString());
     return infotext;
 }
 

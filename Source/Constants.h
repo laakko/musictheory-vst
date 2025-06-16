@@ -16,27 +16,35 @@ namespace Constants
     static const juce::StringArray ROOT_NOTES = {
         "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"};
 
-    static const std::vector<std::pair<juce::String, BasicScale>> SCALE_MODES = {
-        {"Major", BasicScale::Major},
-        {"Minor", BasicScale::Minor},
-        {"Harmonic Minor", BasicScale::HarmonicMinor},
-        {"Minor Pentatonic", BasicScale::MinorPentatonic},
-        {"Major Pentatonic", BasicScale::MajorPentatonic},
-        {"Blues", BasicScale::Blues},
-        {"Dorian", BasicScale::Dorian},
-        {"Lydian", BasicScale::Lydian},
-        {"Mixolydian", BasicScale::Mixolydian},
-        {"Phrygian", BasicScale::Phrygian},
-        {"Aeolian", BasicScale::Aeolian},
-        {"Ionian", BasicScale::Ionian},
-        {"Locrian", BasicScale::Locrian},
-        {"Metallica", BasicScale::Metallica},
-        {"PhrygianDominant", BasicScale::PhrygianDominant}};
+    struct ScaleInfo {
+        juce::String name;
+        BasicScale type;
+        juce::String description;
+        
+        ScaleInfo(const juce::String& n, BasicScale t, const juce::String& d = "")
+            : name(n), type(t), description(d) {}
+    };
+
+    static const std::vector<ScaleInfo> SCALE_MODES = {
+    {"Major", BasicScale::Major, "standard major scale (Ionian mode)"},
+    {"Minor", BasicScale::Minor, "natural minor scale (Aeolian mode)"},
+    {"Harmonic Minor", BasicScale::HarmonicMinor, "minor scale with raised 7th"},
+    {"Minor Pentatonic", BasicScale::MinorPentatonic, "five-note minor scale very common in blues and rock music"},
+    {"Major Pentatonic", BasicScale::MajorPentatonic, "five-note major scale very common in rock and folk music"},
+    {"Blues", BasicScale::Blues, "minor pentatonic with added 'blue note' (flat 5th)"},
+    {"Dorian", BasicScale::Dorian, ""},
+    {"Lydian", BasicScale::Lydian, "major mode with raised 4th, creates a dreamy quality"},
+    {"Mixolydian", BasicScale::Mixolydian, "major mode with flat 7th, common in rock and folk"},
+    {"Phrygian", BasicScale::Phrygian, "minor mode with flat 2nd, used in Spanish music"},
+    {"Locrian", BasicScale::Locrian, "minor mode with flat 2nd and flat 5th, rarely used"},
+    {"Metallica", BasicScale::Metallica, "typical Metallica sound when writing riffs with these notes"},
+    {"Phrygian Dominant", BasicScale::PhrygianDominant, "phrygian with major 3rd, used in Flamenco music"}};
+
     
     static juce::StringArray getScaleModesStringArray() {
         juce::StringArray names;
         for (const auto& pair : SCALE_MODES) {
-            names.add(pair.first);
+            names.add(pair.name);
         }
         return names;
     }
@@ -54,7 +62,7 @@ namespace Constants
         {"M7", BasicChord::maj7},
         {"dom7", BasicChord::dom7},
         {"min_maj7", BasicChord::min_maj7},
-        {"hendrix", BasicChord::hendrix}};
+        {"7#9", BasicChord::hendrix}};
     
     static juce::StringArray getChordTypesStringArray() {
         juce::StringArray names;

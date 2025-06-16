@@ -226,7 +226,7 @@ namespace acentric_core {
 		
 		// Append the rest of the intervals with commas
 		for (size_t i = 1; i < pitches.size(); i++) {
-			ss << ", " << pitches[i];
+			ss << " " << pitches[i];
 		}
 		
 		return ss.str();

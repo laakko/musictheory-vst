@@ -864,49 +864,55 @@ void PluginEditor::timerCallback()
 }
 
 void PluginEditor::updateGuitarNeckScales() {
-	resetGuitarNotes();
     juce::StringArray notesToMatch = juce::StringArray::fromTokens(txtScale->getText().trim(), " ", "");
 
 	for (int i = 0; i < guitarnotes.size(); ++i) {
-		guitarnotes.at(i)->setAlpha(Constants::NON_ROOT_NOTE_ALPHA);
         if (!(notesToMatch.contains(guitarnotes.at(i)->getName()))) {
             guitarnotes.at(i)->setVisible(false);
+            continue;
         }
+        guitarnotes.at(i)->setVisible(true);
 
         if(buttonView->getToggleState()) {
-            std::string intervaltxt = currentScale.getDegreeString(stringToNote(guitarnotes.at(i)->getName()));
-            guitarnotes.at(i)->setText(intervaltxt);
+            guitarnotes.at(i)->setText(currentScale.getDegreeString(stringToNote(guitarnotes.at(i)->getName())));
         } else {
             guitarnotes.at(i)->setText(guitarnotes.at(i)->getName());
         }
 
 		if (guitarnotes.at(i)->getName() == scaleKey->getText()) {
 			guitarnotes.at(i)->setAlpha(1);
-		}
+		} else {
+            guitarnotes.at(i)->setAlpha(Constants::NON_ROOT_NOTE_ALPHA);
+        }
 	}
+
+    infoText->setText(getScalesInformation(), dontSendNotification);
 }
 
 void PluginEditor::updateGuitarNeckChords() {
-    resetGuitarNotes();
     juce::StringArray notesToMatch = juce::StringArray::fromTokens(txtChord->getText().trim(), " ", "");
 
     for (int i = 0; i < guitarnotes.size(); ++i) {
-        guitarnotes.at(i)->setAlpha(Constants::NON_ROOT_NOTE_ALPHA);
         if (!(notesToMatch.contains(guitarnotes.at(i)->getName()))) {
             guitarnotes.at(i)->setVisible(false);
+            continue;
         }
-
+        guitarnotes.at(i)->setVisible(true);
+        
         if(buttonView->getToggleState()) {
-            std::string intervaltxt = currentChord.getIntervalString(stringToNote(guitarnotes.at(i)->getName()));
-            guitarnotes.at(i)->setText(intervaltxt);
+            guitarnotes.at(i)->setText(currentChord.getIntervalString(stringToNote(guitarnotes.at(i)->getName())));
         } else {
             guitarnotes.at(i)->setText(guitarnotes.at(i)->getName());
         }
 
         if (guitarnotes.at(i)->getName() == chordRoot->getText()) {
             guitarnotes.at(i)->setAlpha(1);
+        } else {
+            guitarnotes.at(i)->setAlpha(Constants::NON_ROOT_NOTE_ALPHA);
         }
     }
+
+    infoText->setText(getChordsInformation(), dontSendNotification);
 }
 
 void PluginEditor::updateGuitarNeckMidi(const String & midinotes) {
@@ -914,7 +920,6 @@ void PluginEditor::updateGuitarNeckMidi(const String & midinotes) {
     juce::StringArray notesToMatch = juce::StringArray::fromTokens(midinotes, " ", "");
 
     for (int i = 0; i < guitarnotes.size(); ++i) {
-        guitarnotes.at(i)->setAlpha(1.0);
         if (!(notesToMatch.contains(guitarnotes.at(i)->getName()))) {
             guitarnotes.at(i)->setVisible(false);
         }
@@ -927,6 +932,18 @@ void PluginEditor::resetGuitarNotes() {
 		guitarnotes.at(i)->setVisible(true);
         guitarnotes.at(i)->setText(guitarnotes.at(i)->getName());
 	}
+}
+
+juce::String PluginEditor::getScalesInformation()
+{
+    juce::String infotext = "this is a scale";
+    return infotext;
+}
+
+juce::String PluginEditor::getChordsInformation()
+{
+    juce::String infotext = "this is a chord";
+    return infotext;
 }
 
 //==============================================================================

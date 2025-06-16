@@ -50,6 +50,8 @@ public:
 	void updateGuitarNeckChords();
     void updateGuitarNeckMidi(const String & midinotes);
 	void resetGuitarNotes();
+    juce::String getScalesInformation();
+    juce::String getChordsInformation();
     juce::String simplifyNotes(const std::string & str);
     void selectButton(const std::string & function);
     void viewButton();

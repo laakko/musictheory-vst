@@ -74,9 +74,13 @@ private:
 	std::vector<std::unique_ptr<juce::TextEditor>> guitarnotes;
 
     std::unique_ptr<juce::ToggleButton> viewScale;
+    std::unique_ptr<AudioProcessorValueTreeState::ButtonAttachment> viewScaleAttachment;
     std::unique_ptr<juce::ToggleButton> viewAll;
+    std::unique_ptr<AudioProcessorValueTreeState::ButtonAttachment> viewAllAttachment;
     std::unique_ptr<juce::ToggleButton> viewMidi;
+    std::unique_ptr<AudioProcessorValueTreeState::ButtonAttachment> viewMidiAttachment;
     std::unique_ptr<juce::ToggleButton> viewChord;
+    std::unique_ptr<AudioProcessorValueTreeState::ButtonAttachment> viewChordAttachment;
     
     std::unique_ptr<juce::TextButton> buttonColour;
     std::unique_ptr<AudioProcessorValueTreeState::ButtonAttachment> buttonColourAttachment;
@@ -101,14 +105,19 @@ private:
     Chord currentChord = Chord(chordroot, chordtype);
     Scale currentScale = Scale(scaleroot, scaletype);
 
-    std::unique_ptr<GroupComponent> guitarComponent;
+    std::unique_ptr<ComboBox> scaleKey;
+    std::unique_ptr<AudioProcessorValueTreeState::ComboBoxAttachment> scaleKeyAttachment;
+    std::unique_ptr<ComboBox> scaleMode;
+    std::unique_ptr<AudioProcessorValueTreeState::ComboBoxAttachment> scaleModeAttachment;
+    std::unique_ptr<ComboBox> chordRoot;
+    std::unique_ptr<AudioProcessorValueTreeState::ComboBoxAttachment> chordRootAttachment;
+    std::unique_ptr<ComboBox> chordType;
+    std::unique_ptr<AudioProcessorValueTreeState::ComboBoxAttachment> chordTypeAttachment;
+
     std::unique_ptr<GroupComponent> scalesComponent;
+    std::unique_ptr<GroupComponent> guitarComponent;
     std::unique_ptr<GroupComponent> infoComponent;
     std::unique_ptr<GroupComponent> chordsComponent;
-    std::unique_ptr<ComboBox> scaleKey;
-    std::unique_ptr<ComboBox> scaleMode;
-    std::unique_ptr<ComboBox> chordRoot;
-    std::unique_ptr<ComboBox> chordType;
     std::unique_ptr<TextEditor> infoText;
     std::unique_ptr<TextEditor> txtScale;
     std::unique_ptr<TextEditor> txtChord;

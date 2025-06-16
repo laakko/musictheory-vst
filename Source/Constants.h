@@ -32,6 +32,14 @@ namespace Constants
         {"Locrian", BasicScale::Locrian},
         {"Metallica", BasicScale::Metallica},
         {"PhrygianDominant", BasicScale::PhrygianDominant}};
+    
+    static juce::StringArray getScaleModesStringArray() {
+        juce::StringArray names;
+        for (const auto& pair : SCALE_MODES) {
+            names.add(pair.first);
+        }
+        return names;
+    }
 
     static const std::vector<std::pair<juce::String, BasicChord>> CHORD_TYPES = {
         {"M", BasicChord::maj},
@@ -47,6 +55,14 @@ namespace Constants
         {"dom7", BasicChord::dom7},
         {"min_maj7", BasicChord::min_maj7},
         {"hendrix", BasicChord::hendrix}};
+    
+    static juce::StringArray getChordTypesStringArray() {
+        juce::StringArray names;
+        for (const auto& pair : CHORD_TYPES) {
+            names.add(pair.first);
+        }
+        return names;
+    }
 
     static const double NON_ROOT_NOTE_ALPHA = 0.65;
 

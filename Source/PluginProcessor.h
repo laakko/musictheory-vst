@@ -4,9 +4,7 @@
 #include <mutex>
 
 
-//==============================================================================
-/**
-*/
+//==================================================================================
 class MusicTheoryAudioProcessor  : public AudioProcessor
 {
 public:
@@ -27,12 +25,12 @@ public:
     bool hasEditor() const override { return true; }
 
     //==============================================================================
-    const String getName() const override;
+    const String getName() const override { return JucePlugin_Name; };
+    double getTailLengthSeconds() const override { return 0.0; }
 
     bool acceptsMidi() const override { return true; }
     bool producesMidi() const override { return false; }
     bool isMidiEffect () const override { return true; }
-    double getTailLengthSeconds() const override { return 0.0; }
 
     //==============================================================================
     int getNumPrograms() override { return 1; }
@@ -44,18 +42,10 @@ public:
     //==============================================================================
     void getStateInformation (MemoryBlock& destData) override;
     void setStateInformation (const void* data, int sizeInBytes) override;
-
+    std::unique_ptr<AudioProcessorValueTreeState> state;
+    
     //==============================================================================
     std::vector<String> getActiveMidiNotes();
-
-    std::unique_ptr<AudioProcessorValueTreeState> state;
-    std::atomic<float>* buttonColourParam = nullptr;
-    std::atomic<float>* buttonViewParam = nullptr;
-    std::atomic<float>* viewAllParam = nullptr;
-    std::atomic<float>* viewMidiParam = nullptr;
-    std::atomic<float>* viewChordParam = nullptr;
-    std::atomic<float>* viewScaleParam = nullptr;
-
     bool wasPaused = false; 
 
 private:

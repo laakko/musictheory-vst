@@ -7,7 +7,7 @@ MusicTheoryAudioProcessor::MusicTheoryAudioProcessor()
                        .withOutput ("Output", AudioChannelSet::stereo(), true)
                        )
 {
-        // Initialize AudioProcessorValueTreeState
+        // Saved plugin state
         state = std::make_unique<AudioProcessorValueTreeState>(*this, nullptr, "Parameters",
             AudioProcessorValueTreeState::ParameterLayout{
                 std::make_unique<AudioParameterBool>("buttonColour", "theme", false),
@@ -18,32 +18,15 @@ MusicTheoryAudioProcessor::MusicTheoryAudioProcessor()
                 std::make_unique<AudioParameterBool>("viewChord", "Chord", false),
                 std::make_unique<AudioParameterBool>("viewMidi", "Midi", false),
 
-                /*
-                std::make_unique<AudioParameterChoice>("scaleKey", "key", Constants::ROOT_NOTES, 0),
-                std::make_unique<AudioParameterChoice>("scaleMode", "scale", Constants::SCALE_MODES, 0),
                 std::make_unique<AudioParameterChoice>("chordRoot", "root", Constants::ROOT_NOTES, 0),
-                std::make_unique<AudioParameterChoice>("chordType", "chord", Constants::CHORD_TYPES, 0)
-                */
+                std::make_unique<AudioParameterChoice>("chordType", "chord", Constants::getChordTypesStringArray(), 0),
+                std::make_unique<AudioParameterChoice>("scaleKey", "key", Constants::ROOT_NOTES, 0),
+                std::make_unique<AudioParameterChoice>("scaleMode", "scale", Constants::getScaleModesStringArray(), 0),
             });
-    
-        buttonColourParam = state->getRawParameterValue("buttonColour");
-        buttonViewParam = state->getRawParameterValue("buttonView");
-        viewAllParam = state->getRawParameterValue("viewAll");
-        viewScaleParam = state->getRawParameterValue("viewScale");
-        viewChordParam = state->getRawParameterValue("viewChord");
-        viewMidiParam = state->getRawParameterValue("viewMidi");
-
-        //chordroot = stringToNote(state->getRawParameterValue("chordRoot")->load());
-        //scaletype = BasicScale{ Constants::SCALE_MODES[state->getRawParameterValue("scaleMode")->load()].second };
 }
 
 MusicTheoryAudioProcessor::~MusicTheoryAudioProcessor()
 {
-}
-
-const String MusicTheoryAudioProcessor::getName() const
-{
-    return JucePlugin_Name;
 }
 
 void MusicTheoryAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer& midiMessages)

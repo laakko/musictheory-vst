@@ -944,7 +944,7 @@ juce::String PluginEditor::getScalesInformation()
 
 juce::String PluginEditor::getChordsInformation()
 {
-    juce::String infotext = juce::String("Chord: " + chordRoot->getText() + chordType->getText()  + " — ");
+    juce::String infotext = juce::String(chordRoot->getText() + " " + chordType->getText()  + " — ");
     infotext += juce::String(" intervals: " + currentChord.getIntervalsString() + "\n");
     infotext += Constants::CHORD_TYPES[chordType->getSelectedId()-1].description;
     return infotext;

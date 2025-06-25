@@ -60,19 +60,19 @@ namespace Constants
     };
 
     static const std::vector<ChordInfo> CHORD_TYPES = {
-        {"M", BasicChord::maj, "Major triad. Happy, bright."},
-        {"m", BasicChord::min, "Minor triad. Sad, melancholic."},
-        {"aug", BasicChord::aug, "Augmented triad. "},
-        {"dim", BasicChord::dim, "Diminished triad. "},
-        {"sus2", BasicChord::sus2, "Suspended second chord. "},
-        {"sus4", BasicChord::sus4, "Suspended fourth chord. "},
-        {"m6", BasicChord::min6, "Minor sixth chord. "},
-        {"M6", BasicChord::maj6, "Major sixth chord. "},
-        {"m7", BasicChord::min7, "Minor seventh chord. "},
-        {"M7", BasicChord::maj7, "Major seventh chord. "},
-        {"7", BasicChord::dom7, "Dominant seventh chord. "},
-        {"min_maj7", BasicChord::min_maj7, "Minor-major seventh chord. "},
-        {"7#9", BasicChord::hendrix, "The Hendrix chord. "}};
+        {"major", BasicChord::maj, "Major triad. Stable, happy, bright."},
+        {"m", BasicChord::min, "Minor triad. Stable, sad, melancholic."},
+        {"aug", BasicChord::aug, "Augmented triad. Unstable, tense, like a 'floating question mark'. Wants to resolve to a stable chord."},
+        {"dim", BasicChord::dim, "Diminished triad. Unstable and chaotic. Wants to resolve, e.g. to a stable major/minor chord half step higher or whole step lower."},
+        {"sus2", BasicChord::sus2, "Suspended second chord. No major or minor quality due to the missing 3rd, 'suspended' in between them. Usually paired with major chord of the same root."},
+        {"sus4", BasicChord::sus4, "Suspended fourth chord. No major or minor quality due to the missing 3rd, 'suspended' in between them. Usually paired with major chord of the same root."},
+        {"m6", BasicChord::min6, "Minor sixth chord. The added M6 interval creates some brightness to the minor sound."},
+        {"M6", BasicChord::maj6, "Major sixth chord. Adds warm and mellow color to major triad."},
+        {"m7", BasicChord::min7, "Minor seventh chord. Colors a minor chord less harsh and a bit brighter."},
+        {"M7", BasicChord::maj7, "Major seventh chord. Adds jazzy, smooth and relaxing color to a major chord."},
+        {"7", BasicChord::dom7, "Dominant seventh chord. Tense and unstable. Commonly used on 12 bar blues on all chords. Often used as the V7 chord, creates strong pull to the tonic."},
+        {"min_maj7", BasicChord::min_maj7, "Minor-major seventh chord. Conflicting minor and major tonality, cinematic, 'noir', emotional."},
+        {"7#9", BasicChord::hendrix, "The Hendrix chord. Raw and bluesy dominant chord. Works great with blues/rock music."}};
     
     static juce::StringArray getChordTypesStringArray() {
         juce::StringArray names;

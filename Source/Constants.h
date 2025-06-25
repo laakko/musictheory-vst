@@ -28,7 +28,7 @@ namespace Constants
     static const std::vector<ScaleInfo> SCALE_MODES = {
     {"Major", BasicScale::Major, "Standard major scale (Ionian mode)"},
     {"Minor", BasicScale::Minor, "Natural minor scale (Aeolian mode)"},
-    {"Harmonic Minor", BasicScale::HarmonicMinor, "Minor scale with a raised 7th. More exotic and dramatic sound than the natural minor. Typically used during the V7 chord in a minor key."},
+    {"Harmonic Minor", BasicScale::HarmonicMinor, "Minor scale with a raised 7th. More exotic and dramatic sound than the natural minor. Common in metal and classical music. Typically used during the V7 chord in a minor key."},
     {"Minor Pentatonic", BasicScale::MinorPentatonic, "Five-note minor scale. Timeless and commonly used across musical genres."},
     {"Major Pentatonic", BasicScale::MajorPentatonic, "Five-note major scale. Timeless and commonly used across musical genres."},
     {"Blues", BasicScale::Blues, "Minor pentatonic with added 'blue note' (the flat 5th)."},
@@ -43,31 +43,41 @@ namespace Constants
     
     static juce::StringArray getScaleModesStringArray() {
         juce::StringArray names;
-        for (const auto& pair : SCALE_MODES) {
-            names.add(pair.name);
+        for (const auto& scale : SCALE_MODES) {
+            names.add(scale.name);
         }
         return names;
     }
 
-    static const std::vector<std::pair<juce::String, BasicChord>> CHORD_TYPES = {
-        {"M", BasicChord::maj},
-        {"m", BasicChord::min},
-        {"aug", BasicChord::aug},
-        {"dim", BasicChord::dim},
-        {"sus2", BasicChord::sus2},
-        {"sus4", BasicChord::sus4},
-        {"m6", BasicChord::min6},
-        {"M6", BasicChord::maj6},
-        {"m7", BasicChord::min7},
-        {"M7", BasicChord::maj7},
-        {"7", BasicChord::dom7},
-        {"min_maj7", BasicChord::min_maj7},
-        {"7#9", BasicChord::hendrix}};
+
+    struct ChordInfo {
+        juce::String name;
+        BasicChord type;
+        juce::String description;
+        
+        ChordInfo(const juce::String& n, BasicChord t, const juce::String& d = "")
+            : name(n), type(t), description(d) {}
+    };
+
+    static const std::vector<ChordInfo> CHORD_TYPES = {
+        {"M", BasicChord::maj, "Major triad. Happy, bright."},
+        {"m", BasicChord::min, "Minor triad. Sad, melancholic."},
+        {"aug", BasicChord::aug, "Augmented triad. "},
+        {"dim", BasicChord::dim, "Diminished triad. "},
+        {"sus2", BasicChord::sus2, "Suspended second chord. "},
+        {"sus4", BasicChord::sus4, "Suspended fourth chord. "},
+        {"m6", BasicChord::min6, "Minor sixth chord. "},
+        {"M6", BasicChord::maj6, "Major sixth chord. "},
+        {"m7", BasicChord::min7, "Minor seventh chord. "},
+        {"M7", BasicChord::maj7, "Major seventh chord. "},
+        {"7", BasicChord::dom7, "Dominant seventh chord. "},
+        {"min_maj7", BasicChord::min_maj7, "Minor-major seventh chord. "},
+        {"7#9", BasicChord::hendrix, "The Hendrix chord. "}};
     
     static juce::StringArray getChordTypesStringArray() {
         juce::StringArray names;
-        for (const auto& pair : CHORD_TYPES) {
-            names.add(pair.first);
+        for (const auto& chord : CHORD_TYPES) {
+            names.add(chord.name);
         }
         return names;
     }

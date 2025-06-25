@@ -83,7 +83,7 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     chordType->setTextWhenNothingSelected (TRANS("type"));
     chordType->setTextWhenNoChoicesAvailable (TRANS("(no choices)"));
     for (int i = 0; i < Constants::CHORD_TYPES.size(); ++i) {
-        chordType->addItem(TRANS(Constants::CHORD_TYPES[i].first), i + 1);
+        chordType->addItem(TRANS(Constants::CHORD_TYPES[i].name), i + 1);
     }
     chordType->setSelectedId (1, dontSendNotification);
     chordType->addListener (this);
@@ -778,7 +778,7 @@ void PluginEditor::comboBoxChanged (ComboBox* comboBoxThatHasChanged)
     }
     else if (comboBoxThatHasChanged == chordType.get())
     {
-        chordtype = BasicChord{ Constants::CHORD_TYPES[chordType->getSelectedId()-1].second };
+        chordtype = BasicChord{ Constants::CHORD_TYPES[chordType->getSelectedId()-1].type };
         updateChord();
         if(viewChord->getToggleState()) {
             updateGuitarNeckChords();
@@ -946,6 +946,7 @@ juce::String PluginEditor::getChordsInformation()
 {
     juce::String infotext = juce::String("Chord: " + chordRoot->getText() + chordType->getText()  + " — ");
     infotext += juce::String(" intervals: " + currentChord.getIntervalsString() + "\n");
+    infotext += Constants::CHORD_TYPES[chordType->getSelectedId()-1].description;
     return infotext;
 }
 

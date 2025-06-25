@@ -26,19 +26,19 @@ namespace Constants
     };
 
     static const std::vector<ScaleInfo> SCALE_MODES = {
-    {"Major", BasicScale::Major, "standard major scale (Ionian mode)"},
-    {"Minor", BasicScale::Minor, "natural minor scale (Aeolian mode)"},
-    {"Harmonic Minor", BasicScale::HarmonicMinor, "minor scale with raised 7th"},
-    {"Minor Pentatonic", BasicScale::MinorPentatonic, "five-note minor scale very common in blues and rock music"},
-    {"Major Pentatonic", BasicScale::MajorPentatonic, "five-note major scale very common in rock and folk music"},
-    {"Blues", BasicScale::Blues, "minor pentatonic with added 'blue note' (flat 5th)"},
-    {"Dorian", BasicScale::Dorian, ""},
-    {"Lydian", BasicScale::Lydian, "major mode with raised 4th, creates a dreamy quality"},
-    {"Mixolydian", BasicScale::Mixolydian, "major mode with flat 7th, common in rock and folk"},
-    {"Phrygian", BasicScale::Phrygian, "minor mode with flat 2nd, used in Spanish music"},
-    {"Locrian", BasicScale::Locrian, "minor mode with flat 2nd and flat 5th, rarely used"},
-    {"Metallica", BasicScale::Metallica, "typical Metallica sound when writing riffs with these notes"},
-    {"Phrygian Dominant", BasicScale::PhrygianDominant, "phrygian with major 3rd, used in Flamenco music"}};
+    {"Major", BasicScale::Major, "Standard major scale (Ionian mode)"},
+    {"Minor", BasicScale::Minor, "Natural minor scale (Aeolian mode)"},
+    {"Harmonic Minor", BasicScale::HarmonicMinor, "Minor scale with a raised 7th. More exotic and dramatic sound than the natural minor. Typically used during the V7 chord in a minor key."},
+    {"Minor Pentatonic", BasicScale::MinorPentatonic, "Five-note minor scale. Timeless and commonly used across musical genres."},
+    {"Major Pentatonic", BasicScale::MajorPentatonic, "Five-note major scale. Timeless and commonly used across musical genres."},
+    {"Blues", BasicScale::Blues, "Minor pentatonic with added 'blue note' (the flat 5th)."},
+    {"Dorian", BasicScale::Dorian, "Minor mode with raised 6th. Blends minor and major tonality; melancholic, yet mystical and uplifting. Often used in groove-based music like funk and latin."},
+    {"Lydian", BasicScale::Lydian, "Major mode with raised 4th. Bright, dreamy, ethereal."},
+    {"Mixolydian", BasicScale::Mixolydian, "Major mode with flat 7th. Major feel with more 'attitude'. Commonly used in rock and modal jazz, especially over the V7 chord."},
+    {"Phrygian", BasicScale::Phrygian, "Minor mode with flat 2nd. Exotic, middle-eastern sound."},
+    {"Locrian", BasicScale::Locrian, "Minor mode with flat 2nd and flat 5th. Extremely dark and unstable, rarely used."},
+    {"Metallica", BasicScale::Metallica, "For Metallica style riffs, use like minor scale but add chromatic passing tones from the added intervals. Idea from Signals Music Studio: https://www.youtube.com/watch?v=UuqvZDDm_bk"},
+    {"Phrygian Dominant", BasicScale::PhrygianDominant, "Phrygian with major 3rd. Common in flamenco and middle-eastern folk music. Alternatively called 'Andalusian scale' (region where flamenco originated) or 'Ahava Rabbah' (Hebrew)."}};
 
     
     static juce::StringArray getScaleModesStringArray() {
@@ -60,7 +60,7 @@ namespace Constants
         {"M6", BasicChord::maj6},
         {"m7", BasicChord::min7},
         {"M7", BasicChord::maj7},
-        {"dom7", BasicChord::dom7},
+        {"7", BasicChord::dom7},
         {"min_maj7", BasicChord::min_maj7},
         {"7#9", BasicChord::hendrix}};
     

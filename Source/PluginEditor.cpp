@@ -936,16 +936,16 @@ void PluginEditor::resetGuitarNotes() {
 
 juce::String PluginEditor::getScalesInformation()
 {
-    juce::String infotext = juce::String(scaleKey->getText() + " " + scaleMode->getText() + "\n");
+    juce::String infotext = juce::String(scaleKey->getText() + " " + scaleMode->getText() + " — ");
+    infotext += juce::String(" degrees: " + currentScale.getDegreesString() + "\n");
     infotext += Constants::SCALE_MODES[scaleMode->getSelectedId()-1].description;
-    infotext += juce::String("\ndegrees: " + currentScale.getDegreesString());
     return infotext;
 }
 
 juce::String PluginEditor::getChordsInformation()
 {
-    juce::String infotext = juce::String("Chord: " + chordRoot->getText() + chordType->getText());
-    infotext += juce::String("\nIntervals: " + currentChord.getIntervalsString());
+    juce::String infotext = juce::String("Chord: " + chordRoot->getText() + chordType->getText()  + " — ");
+    infotext += juce::String(" intervals: " + currentChord.getIntervalsString() + "\n");
     return infotext;
 }
 

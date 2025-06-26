@@ -3,7 +3,6 @@
 
 MusicTheoryAudioProcessor::MusicTheoryAudioProcessor()
      : AudioProcessor (BusesProperties()
-                       .withInput  ("Input",  AudioChannelSet::stereo(), true)
                        .withOutput ("Output", AudioChannelSet::stereo(), true)
                        )
 {

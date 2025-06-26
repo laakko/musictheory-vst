@@ -1,16 +1,24 @@
-### Music Theory VST
+## Music Theory VST
 
-C++/Juce VST plugin, which displays handy music theory helpers especially for guitar players: 
+Linux & Windows VST3 plugin, for displaying handy music theory helpers especially for guitar players: 
 - Scales
 - Chords
 - View scale/chord notes on the guitar guitar fretboard
 - View incoming MIDI notes in real time on the guitar fretboard  
+
+Written with Juce & C++
 
 <br>
   
 ![sc](/musictheory.gif)  
 
 ### Usage
+
+- Download latest Linux or Windows vst3 plugin binaries from Github releases, or build manually from sources (instructions below).
+
+- Search and add the plugin on your DAW of choice. To use the midi-live feature, add the plugin to a midi track. Note that it will block and mute midi instruments and effects, so use a separate track.
+
+
 
 #### Linux build
 ```
@@ -25,18 +33,25 @@ docker run -it --rm \
     musictheory-juce709
 
 ./build_plugin.sh
-```
-(chmod +x the build_plugin.sh file if not sufficient permissions)
-  
+
 -> Build finished at Builds/LinuxMakeFile directory.
   
 Contains standalone and linux vst3. 
 To run standalone ./plugin/Builds/LinuxMakeFile/build/MusicTheory
 
+chmod +x the build_plugin.sh file if not sufficient permissions
+  
+Change JUCE installation path on the MusicTheory.jucer file if needed
+
+```
+
 #### Windows build
+```
+Open .sln project in VisualStudio2022
+  
+-> build with ctrl+shift+b 
+  
+-> Generates standalone and VST3.
 
-Open .sln project in VisualStudio2022, build with ctrl+shift+b. Generates standalone and VST3.
-
-
-### Libraries
-https://github.com/laakko/acentric
+Change JUCE installation path in the MusicTheory.jucer file or in Projucer GUI if needed.
+```

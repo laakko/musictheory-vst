@@ -8,7 +8,7 @@ C++/Juce VST plugin, which displays handy music theory helpers especially for gu
 
 <br>
   
-![sc](/Screenshot1.png)  
+![sc](/musictheory.gif)  
 
 ### Usage
 

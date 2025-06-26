@@ -3,6 +3,7 @@
 
 MusicTheoryAudioProcessor::MusicTheoryAudioProcessor()
      : AudioProcessor (BusesProperties()
+                       .withInput  ("Input",  AudioChannelSet::stereo(), true)
                        .withOutput ("Output", AudioChannelSet::stereo(), true)
                        )
 {
@@ -30,6 +31,13 @@ MusicTheoryAudioProcessor::~MusicTheoryAudioProcessor()
 
 void MusicTheoryAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer& midiMessages)
 {
+    // Pass audio untouched
+    ScopedNoDenormals noDenormals;
+    for (int channel = 0; channel < getTotalNumInputChannels(); ++channel)
+    {
+        auto* channelData = buffer.getWritePointer(channel);
+    }
+
     std::lock_guard<std::mutex> lock(midiNotesMutex);
 
     // Don't remove midi notes if playback is paused

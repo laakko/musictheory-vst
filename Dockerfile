@@ -43,23 +43,6 @@ WORKDIR /plugin
 # Copy everything (JUCE + your project)
 COPY . .
 
-# Ensure correct permissions and line endings
-#RUN chmod -R 755 /plugin && \
-#    find /plugin -type f -name "*.h" -o -name "*.cpp" -exec chmod 644 {} \; && \
-#    dos2unix MusicTheory.jucer
-
-# Build Projucer
-#WORKDIR /plugin/JUCE/extras/Projucer/Builds/LinuxMakefile
-#RUN make -j$(nproc)
-
-# Verify JUCE modules and resave project
-#WORKDIR /plugin
-#RUN xvfb-run --auto-servernum /plugin/JUCE/extras/Projucer/Builds/LinuxMakefile/build/Projucer --resave MusicTheory.jucer --verbose
-
-# Build the plugin using generated Makefile
-#WORKDIR /plugin/Builds/LinuxMakefile
-#RUN make -j$(nproc)
-
 WORKDIR /plugin
 
 # Default command

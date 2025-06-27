@@ -19,7 +19,6 @@
 
 #pragma once
 
-//[Headers]     -- You can add your own extra header files here --
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "BasicNote.h"
 #include "Note.h"
@@ -29,22 +28,14 @@
 #include "Chord.h"
 #include "BasicChord.h"
 #include "PluginProcessor.h"
+#include "Constants.h"
 #include <sstream>
 #include <memory>
-//[/Headers]
 
 
-
-//==============================================================================
-/**
-                                                                    //[Comments]
-    An auto-generated component, created by the Projucer.
-
-    Describe your class and how it works here!
-                                                                    //[/Comments]
-*/
 class PluginEditor  : public AudioProcessorEditor,
-                      public ComboBox::Listener
+                      public ComboBox::Listener,
+                      public Timer
 {
 public:
     //==============================================================================
@@ -57,14 +48,20 @@ public:
 	void updateChord();
 	void updateGuitarNeckScales();
 	void updateGuitarNeckChords();
+    void updateGuitarNeckMidi(const String & midinotes);
 	void resetGuitarNotes();
-
-	juce::String simplifyNotes(std::string str);
+    juce::String getScalesInformation();
+    juce::String getChordsInformation();
+    juce::String simplifyNotes(const std::string & str);
+    void selectButton(const std::string & function);
+    void viewButton();
+    void switchColour();
     //[/UserMethods]
 
     void paint (Graphics& g) override;
     void resized() override;
     void comboBoxChanged (ComboBox* comboBoxThatHasChanged) override;
+    void timerCallback() override;
 
     // Binary resources:
     static const char* screenshot_20190321Blank20Pdf_png;
@@ -74,23 +71,56 @@ public:
 
 
 private:
-    //[UserVariables]   -- You can add your own custom variables in this section.
-	std::vector<std::unique_ptr<juce::TextEditor>> texteditors;
-	std::vector<std::unique_ptr<juce::TextEditor>> guitarnotes; // Vector to store guitar neck notes
+    MusicTheoryAudioProcessor& processor;
 
-    //[/UserVariables]
+	std::vector<std::unique_ptr<juce::TextEditor>> guitarnotes;
 
-    //==============================================================================
-    std::unique_ptr<GroupComponent> groupComponent;
-    std::unique_ptr<GroupComponent> groupComponent4;
-    std::unique_ptr<GroupComponent> groupComponent3;
-    std::unique_ptr<GroupComponent> groupComponent2;
+    std::unique_ptr<juce::ToggleButton> viewScale;
+    std::unique_ptr<AudioProcessorValueTreeState::ButtonAttachment> viewScaleAttachment;
+    std::unique_ptr<juce::ToggleButton> viewAll;
+    std::unique_ptr<AudioProcessorValueTreeState::ButtonAttachment> viewAllAttachment;
+    std::unique_ptr<juce::ToggleButton> viewMidi;
+    std::unique_ptr<AudioProcessorValueTreeState::ButtonAttachment> viewMidiAttachment;
+    std::unique_ptr<juce::ToggleButton> viewChord;
+    std::unique_ptr<AudioProcessorValueTreeState::ButtonAttachment> viewChordAttachment;
+    
+    std::unique_ptr<juce::TextButton> buttonColour;
+    std::unique_ptr<AudioProcessorValueTreeState::ButtonAttachment> buttonColourAttachment;
+
+    std::unique_ptr<juce::TextButton> buttonView;
+    std::unique_ptr<AudioProcessorValueTreeState::ButtonAttachment> buttonViewAttachment;
+
+    Note stringToNote(const juce::String & noteString);
+
+    enum class ColourThemes
+    {
+        CadetBlue,
+        TransparentBlack
+    };
+    ColourThemes currentColourState = ColourThemes::CadetBlue;
+    juce::Colour backgroundColour = juce::Colours::cadetblue;
+
+    Note scaleroot = Note{ BasicNote::C };
+    Note chordroot = Note{ BasicNote::C };
+    BasicScale scaletype = BasicScale{ BasicScale::Major };
+    BasicChord chordtype = BasicChord{ BasicChord::maj };
+    Chord currentChord = Chord(chordroot, chordtype);
+    Scale currentScale = Scale(scaleroot, scaletype);
+
     std::unique_ptr<ComboBox> scaleKey;
-    std::unique_ptr<ComboBox> comboBox2;
+    std::unique_ptr<AudioProcessorValueTreeState::ComboBoxAttachment> scaleKeyAttachment;
     std::unique_ptr<ComboBox> scaleMode;
+    std::unique_ptr<AudioProcessorValueTreeState::ComboBoxAttachment> scaleModeAttachment;
     std::unique_ptr<ComboBox> chordRoot;
+    std::unique_ptr<AudioProcessorValueTreeState::ComboBoxAttachment> chordRootAttachment;
     std::unique_ptr<ComboBox> chordType;
-    std::unique_ptr<TextEditor> textEditor2;
+    std::unique_ptr<AudioProcessorValueTreeState::ComboBoxAttachment> chordTypeAttachment;
+
+    std::unique_ptr<GroupComponent> scalesComponent;
+    std::unique_ptr<GroupComponent> guitarComponent;
+    std::unique_ptr<GroupComponent> infoComponent;
+    std::unique_ptr<GroupComponent> chordsComponent;
+    std::unique_ptr<TextEditor> infoText;
     std::unique_ptr<TextEditor> txtScale;
     std::unique_ptr<TextEditor> txtChord;
     std::unique_ptr<TextEditor> GS4;
@@ -219,6 +249,3 @@ private:
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (PluginEditor)
 };
-
-//[EndFile] You can add extra defines here...
-//[/EndFile]

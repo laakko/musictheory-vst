@@ -1,21 +1,10 @@
-/*
-  ==============================================================================
-
-    This file was auto-generated!
-
-    It contains the basic framework code for a JUCE plugin processor.
-
-  ==============================================================================
-*/
-
 #pragma once
-
 #include "../JuceLibraryCode/JuceHeader.h"
+#include "Constants.h"
+#include <mutex>
 
 
-//==============================================================================
-/**
-*/
+//==================================================================================
 class MusicTheoryAudioProcessor  : public AudioProcessor
 {
 public:
@@ -24,39 +13,45 @@ public:
     ~MusicTheoryAudioProcessor();
 
     //==============================================================================
-    void prepareToPlay (double sampleRate, int samplesPerBlock) override;
-    void releaseResources() override;
+    void prepareToPlay (double sampleRate, int samplesPerBlock) override {};
+    void releaseResources() override {};
 
-   #ifndef JucePlugin_PreferredChannelConfigurations
-    bool isBusesLayoutSupported (const BusesLayout& layouts) const override;
-   #endif
+    bool isBusesLayoutSupported (const BusesLayout& layouts) const override { return true; };
 
     void processBlock (AudioBuffer<float>&, MidiBuffer&) override;
 
     //==============================================================================
     AudioProcessorEditor* createEditor() override;
-    bool hasEditor() const override;
+    bool hasEditor() const override { return true; }
 
     //==============================================================================
-    const String getName() const override;
+    const String getName() const override { return JucePlugin_Name; };
+    double getTailLengthSeconds() const override { return 0.0; }
 
-    bool acceptsMidi() const override;
-    bool producesMidi() const override;
-    bool isMidiEffect () const override;
-    double getTailLengthSeconds() const override;
+    bool acceptsMidi() const override { return true; }
+    bool producesMidi() const override { return false; }
+    bool isMidiEffect () const override { return true; }
 
     //==============================================================================
-    int getNumPrograms() override;
-    int getCurrentProgram() override;
-    void setCurrentProgram (int index) override;
-    const String getProgramName (int index) override;
-    void changeProgramName (int index, const String& newName) override;
+    int getNumPrograms() override { return 1; }
+    int getCurrentProgram() override { return 0; }
+    void setCurrentProgram (int index) override {};
+    const String getProgramName (int index) override { return "None"; }
+    void changeProgramName (int index, const String& newName) override {};
 
     //==============================================================================
     void getStateInformation (MemoryBlock& destData) override;
     void setStateInformation (const void* data, int sizeInBytes) override;
+    std::unique_ptr<AudioProcessorValueTreeState> state;
+    
+    //==============================================================================
+    std::vector<String> getActiveMidiNotes();
+    bool wasPaused = false; 
 
 private:
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MusicTheoryAudioProcessor)
+    std::vector<String> activeMidiNotes; // Store MIDI note names for use in the editor
+    std::mutex midiNotesMutex; // Mutex to protect access to activeMidiNotes
+
 };

@@ -23,7 +23,8 @@ namespace acentric_core {
 		MinorPentatonic /*! Minor Pentatonic scales; */,
 		MajorPentatonic /*! Major Pentatonic scales; */,
 		Blues			/*! The blues scale; Based on pentatonic scales with added m5 blue note */,
-		Metallica		/*! Minor scale with an added b2 and b5*/
+		Metallica		/*! Minor scale with an added b2 and b5*/,
+		PhrygianDominant /*! The Phrygian Dominant scale; intervals P1 m2 M3 P4 P5 m6 m7 */
 	};
 
 }

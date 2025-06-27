@@ -1,17 +1,29 @@
-### Music Theory Helper VST - MTHVST 
+## Music Theory VST
 
-C++/Juce VST plugin, which contains handy music theory helpers especially for guitar players: 
+Linux & Windows VST3 plugin, for displaying handy music theory helpers especially for guitar players: 
 - Scales
 - Chords
-- View scale/chord notes on guitar neck
-- Notepad for writing notes/chord progressions, whatnot.
+- View scale/chord notes on the guitar guitar fretboard
+- View incoming MIDI notes in real time on the guitar fretboard  
 
+Written with Juce & C++
 
-![sc](/screenshot.PNG)  
+<br>
+  
+![sc](/musictheoryvst.gif)  
 
-### Usage
+### Installation & Usage
 
-#### Linux build
+- Download latest Linux or Windows vst3 plugin binaries from Github releases, or build manually from sources (instructions below).
+
+- Search and add the plugin on your DAW of choice. To use the midi-live feature, add the plugin to a midi track. Note that it will block and mute midi instruments and effects, so use a separate track.
+
+- The plugin has parameters for all choices, so you can use DAW automation to e.g. have certain scales to show at specific times
+
+<br>
+
+### Source build
+#### Linux
 ```
 docker build -t musictheory-juce709 .
 
@@ -24,18 +36,25 @@ docker run -it --rm \
     musictheory-juce709
 
 ./build_plugin.sh
-```
-(chmod +x the build_plugin.sh file if not sufficient permissions)
-  
+
 -> Build finished at Builds/LinuxMakeFile directory.
   
 Contains standalone and linux vst3. 
 To run standalone ./plugin/Builds/LinuxMakeFile/build/MusicTheory
 
-#### Windows build
+chmod +x the build_plugin.sh file if not sufficient permissions
+  
+Change JUCE installation path on the MusicTheory.jucer file if needed
 
-Open .sln project in VisualStudio2022, build with ctrl+shift+b. Generates standalone and VST3.
+```
 
+#### Windows
+```
+Open .sln project in VisualStudio2022
+  
+-> build with ctrl+shift+b 
+  
+-> Generates standalone and VST3.
 
-### Libraries
-https://github.com/laakko/acentric
+Change JUCE installation path in the MusicTheory.jucer file or in Projucer GUI if needed.
+```

@@ -17,106 +17,50 @@
   ==============================================================================
 */
 
-//[Headers] You can add your own extra header files here...
-//[/Headers]
-
 #include "PluginEditor.h"
 
-
-//[MiscUserDefs] You can add your own user definitions and misc code here...
 using namespace acentric_core;
-std::string root = "C";
-Note scaleroot = Note{ BasicNote::C };
-Note chordroot = Note{ BasicNote::C };
-BasicScale scaletype = BasicScale{ BasicScale::Major };
-BasicChord chordtype = BasicChord{ BasicChord::maj };
-
-
-juce::Colour colorF = Colour(0xff4d91a9);
-juce::Colour colorFs = Colour(0xff5681ab);
-juce::Colour colorG = Colour(0xff706ea1);
-juce::Colour colorGs = Colour(0xff885887);
-juce::Colour colorA = Colour(0xff934561);
-juce::Colour colorAs = Colour(0xffbd5c63);
-juce::Colour colorB = Colour(0xffdf7b60);
-juce::Colour colorC = Colour(0xfffecb5f);
-juce::Colour colorCs = Colour(0xffc1be4f);
-juce::Colour colorD = Colour(0xff86af4d);
-juce::Colour colorDs = Colour(0xff499b53);
-juce::Colour colorE = Colour(0xff007062);
-
-
-
-//[/MiscUserDefs]
 
 //==============================================================================
 PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
-    : AudioProcessorEditor (&p)
+    : AudioProcessorEditor (&p), processor (p)
 {
-    //[Constructor_pre] You can add your own custom stuff here..
-
-    //[/Constructor_pre]
-
-    addAndMakeVisible (*(groupComponent = std::make_unique<GroupComponent> ("new group",
+    addAndMakeVisible (*(guitarComponent = std::make_unique<GroupComponent> ("new group",
                                                             TRANS("guitar"))));
-    groupComponent->setColour (GroupComponent::outlineColourId, Colours::aquamarine);
+    guitarComponent->setColour (GroupComponent::outlineColourId, Colours::aquamarine);
 
-    addAndMakeVisible (*(groupComponent4 = std::make_unique<GroupComponent> ("new group",
+    addAndMakeVisible (*(scalesComponent = std::make_unique<GroupComponent> ("new group",
                                                              TRANS("scales"))));
-    groupComponent4->setColour (GroupComponent::outlineColourId, Colours::aquamarine);
+    scalesComponent->setColour (GroupComponent::outlineColourId, Colours::aquamarine);
 
-    addAndMakeVisible (*(groupComponent3 = std::make_unique<GroupComponent> ("new group",
-                                                             TRANS("notepad"))));
-    groupComponent3->setColour (GroupComponent::outlineColourId, Colours::aquamarine);
+    addAndMakeVisible (*(infoComponent = std::make_unique<GroupComponent> ("new group",
+                                                             TRANS("information"))));
+    infoComponent->setColour (GroupComponent::outlineColourId, Colours::aquamarine);
 
-    addAndMakeVisible (*(groupComponent2 = std::make_unique<GroupComponent> ("new group",
+    addAndMakeVisible (*(chordsComponent = std::make_unique<GroupComponent> ("new group",
                                                              TRANS("chords"))));
-    groupComponent2->setColour (GroupComponent::outlineColourId, Colours::aquamarine);
+    chordsComponent->setColour (GroupComponent::outlineColourId, Colours::aquamarine);
 
     addAndMakeVisible (*(scaleKey = std::make_unique<ComboBox> ("new combo box")));
     scaleKey->setEditableText (false);
     scaleKey->setJustificationType (Justification::centredLeft);
-    scaleKey->setTextWhenNothingSelected (TRANS("none"));
+    scaleKey->setTextWhenNothingSelected (TRANS("key"));
     scaleKey->setTextWhenNoChoicesAvailable (TRANS("(no choices)"));
-    scaleKey->addItem (TRANS("C"), 1);
-    scaleKey->addItem (TRANS("C#"), 2);
-    scaleKey->addItem (TRANS("D"), 3);
-    scaleKey->addItem (TRANS("D#"), 4);
-    scaleKey->addItem (TRANS("E"), 5);
-    scaleKey->addItem (TRANS("F"), 6);
-    scaleKey->addItem (TRANS("F#"), 7);
-    scaleKey->addItem (TRANS("G"), 8);
-    scaleKey->addItem (TRANS("G#"), 9);
-    scaleKey->addItem (TRANS("A"), 10);
-    scaleKey->addItem (TRANS("A#"), 11);
-    scaleKey->addItem (TRANS("B"), 12);
+    for (int i = 0; i < Constants::ROOT_NOTES.size(); ++i) {
+        scaleKey->addItem(TRANS(Constants::ROOT_NOTES[i]), i + 1);
+    }
+    scaleKey->setSelectedId (1, dontSendNotification);
     scaleKey->addListener (this);
-
-    addAndMakeVisible (*(comboBox2 = std::make_unique<ComboBox> ("new combo box")));
-    comboBox2->setEditableText (false);
-    comboBox2->setJustificationType (Justification::centredLeft);
-    comboBox2->setTextWhenNothingSelected (TRANS("Notes"));
-    comboBox2->setTextWhenNoChoicesAvailable (TRANS("(no choices)"));
-    comboBox2->addItem (TRANS("Notes"), 1);
-    comboBox2->addItem (TRANS("Scales"), 2);
-    comboBox2->addItem (TRANS("Chords"), 3);
-    comboBox2->addListener (this);
 
     addAndMakeVisible (*(scaleMode = std::make_unique<ComboBox> ("new combo box")));
     scaleMode->setEditableText (false);
     scaleMode->setJustificationType (Justification::centredLeft);
-    scaleMode->setTextWhenNothingSelected (TRANS("none"));
+    scaleMode->setTextWhenNothingSelected (TRANS("scale"));
     scaleMode->setTextWhenNoChoicesAvailable (TRANS("(no choices)"));
-    scaleMode->addItem (TRANS("Major"), 1);
-    scaleMode->addItem (TRANS("Minor"), 2);
-    scaleMode->addItem (TRANS("Harmonic Minor"), 3);
-    scaleMode->addItem (TRANS("Blues"), 4);
-    scaleMode->addItem (TRANS("Minor Pentatonic"), 5);
-    scaleMode->addItem (TRANS("Major Pentatonic"), 6);
-    scaleMode->addItem (TRANS("Dorian"), 7);
-    scaleMode->addItem (TRANS("Lydian"), 8);
-    scaleMode->addItem (TRANS("Mixolydian"), 9);
-    scaleMode->addItem (TRANS("Phrygian"), 10);
+    for (int i = 0; i < Constants::SCALE_MODES.size(); ++i) {
+        scaleMode->addItem(TRANS(Constants::SCALE_MODES[i].name), i + 1);
+    }
+    scaleMode->setSelectedId (1, dontSendNotification);
     scaleMode->addListener (this);
 
     addAndMakeVisible (*(chordRoot = std::make_unique<ComboBox> ("new combo box")));
@@ -124,18 +68,10 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     chordRoot->setJustificationType (Justification::centredLeft);
     chordRoot->setTextWhenNothingSelected (TRANS("root"));
     chordRoot->setTextWhenNoChoicesAvailable (TRANS("(no choices)"));
-    chordRoot->addItem (TRANS("C"), 1);
-    chordRoot->addItem (TRANS("C#"), 2);
-    chordRoot->addItem (TRANS("D"), 3);
-    chordRoot->addItem (TRANS("D#"), 4);
-    chordRoot->addItem (TRANS("E"), 5);
-    chordRoot->addItem (TRANS("F"), 6);
-    chordRoot->addItem (TRANS("F#"), 7);
-    chordRoot->addItem (TRANS("G"), 8);
-    chordRoot->addItem (TRANS("G#"), 9);
-    chordRoot->addItem (TRANS("A"), 10);
-    chordRoot->addItem (TRANS("A#"), 11);
-    chordRoot->addItem (TRANS("B"), 12);
+    for (int i = 0; i < Constants::ROOT_NOTES.size(); ++i) {
+        chordRoot->addItem(TRANS(Constants::ROOT_NOTES[i]), i + 1);
+    }
+    chordRoot->setSelectedId (1, dontSendNotification);
     chordRoot->addListener (this);
 
     addAndMakeVisible (*(chordType = std::make_unique<ComboBox> ("new combo box")));
@@ -143,22 +79,21 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     chordType->setJustificationType (Justification::centredLeft);
     chordType->setTextWhenNothingSelected (TRANS("type"));
     chordType->setTextWhenNoChoicesAvailable (TRANS("(no choices)"));
-    chordType->addItem (TRANS("m"), 1);
-    chordType->addItem (TRANS("M"), 2);
-    chordType->addItem (TRANS("aug"), 3);
-    chordType->addItem (TRANS("M7"), 4);
-    chordType->addItem (TRANS("m7"), 5);
+    for (int i = 0; i < Constants::CHORD_TYPES.size(); ++i) {
+        chordType->addItem(TRANS(Constants::CHORD_TYPES[i].name), i + 1);
+    }
+    chordType->setSelectedId (1, dontSendNotification);
     chordType->addListener (this);
 
-    addAndMakeVisible (*(textEditor2 = std::make_unique<TextEditor> ("new text editor")));
-    textEditor2->setMultiLine (true);
-    textEditor2->setReturnKeyStartsNewLine (true);
-    textEditor2->setReadOnly (false);
-    textEditor2->setScrollbarsShown (true);
-    textEditor2->setCaretVisible (true);
-    textEditor2->setPopupMenuEnabled (true);
-    textEditor2->setColour (TextEditor::backgroundColourId, Colour (0xff508385));
-    textEditor2->setText (TRANS("write anything here ...\n"));
+    addAndMakeVisible (*(infoText = std::make_unique<TextEditor> ("new text editor")));
+    infoText->setMultiLine (true);
+    infoText->setReturnKeyStartsNewLine (true);
+    infoText->setReadOnly (false);
+    infoText->setScrollbarsShown (true);
+    infoText->setCaretVisible (true);
+    infoText->setPopupMenuEnabled (true);
+    infoText->setColour (TextEditor::backgroundColourId, Colours::transparentWhite);
+    infoText->setText (TRANS(""));
 
     addAndMakeVisible (*(txtScale = std::make_unique<TextEditor> ("new text editor")));
     txtScale->setMultiLine (true);
@@ -167,8 +102,8 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     txtScale->setScrollbarsShown (false);
     txtScale->setCaretVisible (false);
     txtScale->setPopupMenuEnabled (false);
-    txtScale->setColour (TextEditor::backgroundColourId, Colours::cadetblue);
-    txtScale->setText (String());
+    txtScale->setColour (TextEditor::backgroundColourId, Colours::transparentWhite);
+    txtScale->setText ("C D E F G A B ");
 
     addAndMakeVisible (*(txtChord = std::make_unique<TextEditor> ("new text editor")));
     txtChord->setMultiLine (true);
@@ -177,1579 +112,196 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     txtChord->setScrollbarsShown (false);
     txtChord->setCaretVisible (false);
     txtChord->setPopupMenuEnabled (false);
-    txtChord->setColour (TextEditor::backgroundColourId, Colours::cadetblue);
-    txtChord->setText (String());
-
-    addAndMakeVisible (*(GS4 = std::make_unique<TextEditor> ("new text editor")));
-    GS4->setMultiLine (true);
-    GS4->setReturnKeyStartsNewLine (false);
-    GS4->setReadOnly (true);
-    GS4->setScrollbarsShown (false);
-    GS4->setCaretVisible (false);
-    GS4->setPopupMenuEnabled (false);
-    GS4->setColour (TextEditor::textColourId, Colours::black);
-    GS4->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
-    GS4->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
-    GS4->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
-    GS4->setText (TRANS("G#"));
-
-    addAndMakeVisible (*(DS3 = std::make_unique<TextEditor> ("new text editor")));
-    DS3->setMultiLine (true);
-    DS3->setReturnKeyStartsNewLine (false);
-    DS3->setReadOnly (true);
-    DS3->setScrollbarsShown (false);
-    DS3->setCaretVisible (false);
-    DS3->setPopupMenuEnabled (false);
-    DS3->setColour (TextEditor::textColourId, Colours::black);
-    DS3->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
-    DS3->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
-    DS3->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
-    DS3->setText (TRANS("D#"));
-
-    addAndMakeVisible (*(AS2 = std::make_unique<TextEditor> ("new text editor")));
-    AS2->setMultiLine (true);
-    AS2->setReturnKeyStartsNewLine (false);
-    AS2->setReadOnly (true);
-    AS2->setScrollbarsShown (false);
-    AS2->setCaretVisible (false);
-    AS2->setPopupMenuEnabled (false);
-    AS2->setColour (TextEditor::textColourId, Colours::black);
-    AS2->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
-    AS2->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
-    AS2->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
-    AS2->setText (TRANS("A#"));
-
-    addAndMakeVisible (*(F1 = std::make_unique<TextEditor> ("new text editor")));
-    F1->setMultiLine (true);
-    F1->setReturnKeyStartsNewLine (false);
-    F1->setReadOnly (true);
-    F1->setScrollbarsShown (false);
-    F1->setCaretVisible (false);
-    F1->setPopupMenuEnabled (false);
-    F1->setColour (TextEditor::textColourId, Colours::black);
-    F1->setColour (TextEditor::backgroundColourId, Colour (0xff4d91a9));
-    F1->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
-    F1->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
-    F1->setText (TRANS("F"));
-
-    addAndMakeVisible (*(C5 = std::make_unique<TextEditor> ("new text editor")));
-    C5->setMultiLine (true);
-    C5->setReturnKeyStartsNewLine (false);
-    C5->setReadOnly (true);
-    C5->setScrollbarsShown (false);
-    C5->setCaretVisible (false);
-    C5->setPopupMenuEnabled (false);
-    C5->setColour (TextEditor::textColourId, Colours::black);
-    C5->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
-    C5->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
-    C5->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
-    C5->setText (TRANS("C"));
-
-    addAndMakeVisible (*(F2 = std::make_unique<TextEditor> ("new text editor")));
-    F2->setMultiLine (true);
-    F2->setReturnKeyStartsNewLine (false);
-    F2->setReadOnly (true);
-    F2->setScrollbarsShown (false);
-    F2->setCaretVisible (false);
-    F2->setPopupMenuEnabled (false);
-    F2->setColour (TextEditor::textColourId, Colours::black);
-    F2->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
-    F2->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
-    F2->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
-    F2->setText (TRANS("F"));
-
-    addAndMakeVisible (*(A4 = std::make_unique<TextEditor> ("new text editor")));
-    A4->setMultiLine (true);
-    A4->setReturnKeyStartsNewLine (false);
-    A4->setReadOnly (true);
-    A4->setScrollbarsShown (false);
-    A4->setCaretVisible (false);
-    A4->setPopupMenuEnabled (false);
-    A4->setColour (TextEditor::textColourId, Colours::black);
-    A4->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
-    A4->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
-    A4->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
-    A4->setText (TRANS("A"));
-
-    addAndMakeVisible (*(E3 = std::make_unique<TextEditor> ("new text editor")));
-    E3->setMultiLine (true);
-    E3->setReturnKeyStartsNewLine (false);
-    E3->setReadOnly (true);
-    E3->setScrollbarsShown (false);
-    E3->setCaretVisible (false);
-    E3->setPopupMenuEnabled (false);
-    E3->setColour (TextEditor::textColourId, Colours::black);
-    E3->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
-    E3->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
-    E3->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
-    E3->setText (TRANS("E"));
-
-    addAndMakeVisible (*(B2 = std::make_unique<TextEditor> ("new text editor")));
-    B2->setMultiLine (true);
-    B2->setReturnKeyStartsNewLine (false);
-    B2->setReadOnly (true);
-    B2->setScrollbarsShown (false);
-    B2->setCaretVisible (false);
-    B2->setPopupMenuEnabled (false);
-    B2->setColour (TextEditor::textColourId, Colours::black);
-    B2->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
-    B2->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
-    B2->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
-    B2->setText (TRANS("B"));
-
-    addAndMakeVisible (*(FS = std::make_unique<TextEditor> ("new text editor")));
-    FS->setMultiLine (true);
-    FS->setReturnKeyStartsNewLine (false);
-    FS->setReadOnly (true);
-    FS->setScrollbarsShown (false);
-    FS->setCaretVisible (false);
-    FS->setPopupMenuEnabled (false);
-    FS->setColour (TextEditor::textColourId, Colours::black);
-    FS->setColour (TextEditor::backgroundColourId, Colour (0xff5681ab));
-    FS->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
-    FS->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
-    FS->setText (TRANS("F#"));
-
-    addAndMakeVisible (*(CS5 = std::make_unique<TextEditor> ("new text editor")));
-    CS5->setMultiLine (true);
-    CS5->setReturnKeyStartsNewLine (false);
-    CS5->setReadOnly (true);
-    CS5->setScrollbarsShown (false);
-    CS5->setCaretVisible (false);
-    CS5->setPopupMenuEnabled (false);
-    CS5->setColour (TextEditor::textColourId, Colours::black);
-    CS5->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
-    CS5->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
-    CS5->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
-    CS5->setText (TRANS("C#"));
-
-    addAndMakeVisible (*(FS6 = std::make_unique<TextEditor> ("new text editor")));
-    FS6->setMultiLine (true);
-    FS6->setReturnKeyStartsNewLine (false);
-    FS6->setReadOnly (true);
-    FS6->setScrollbarsShown (false);
-    FS6->setCaretVisible (false);
-    FS6->setPopupMenuEnabled (false);
-    FS6->setColour (TextEditor::textColourId, Colours::black);
-    FS6->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
-    FS6->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
-    FS6->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
-    FS6->setText (TRANS("F#"));
-
-    addAndMakeVisible (*(AS4 = std::make_unique<TextEditor> ("new text editor")));
-    AS4->setMultiLine (true);
-    AS4->setReturnKeyStartsNewLine (false);
-    AS4->setReadOnly (true);
-    AS4->setScrollbarsShown (false);
-    AS4->setCaretVisible (false);
-    AS4->setPopupMenuEnabled (false);
-    AS4->setColour (TextEditor::textColourId, Colours::black);
-    AS4->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
-    AS4->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
-    AS4->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
-    AS4->setText (TRANS("A#"));
-
-    addAndMakeVisible (*(F = std::make_unique<TextEditor> ("new text editor")));
-    F->setMultiLine (true);
-    F->setReturnKeyStartsNewLine (false);
-    F->setReadOnly (true);
-    F->setScrollbarsShown (false);
-    F->setCaretVisible (false);
-    F->setPopupMenuEnabled (false);
-    F->setColour (TextEditor::textColourId, Colours::black);
-    F->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
-    F->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
-    F->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
-    F->setText (TRANS("F"));
-
-    addAndMakeVisible (*(C2 = std::make_unique<TextEditor> ("new text editor")));
-    C2->setMultiLine (true);
-    C2->setReturnKeyStartsNewLine (false);
-    C2->setReadOnly (true);
-    C2->setScrollbarsShown (false);
-    C2->setCaretVisible (false);
-    C2->setPopupMenuEnabled (false);
-    C2->setColour (TextEditor::textColourId, Colours::black);
-    C2->setColour (TextEditor::backgroundColourId, Colour (0xd4ab1e1e));
-    C2->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
-    C2->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
-    C2->setText (TRANS("C"));
-
-    addAndMakeVisible (*(G = std::make_unique<TextEditor> ("new text editor")));
-    G->setMultiLine (true);
-    G->setReturnKeyStartsNewLine (false);
-    G->setReadOnly (true);
-    G->setScrollbarsShown (false);
-    G->setCaretVisible (false);
-    G->setPopupMenuEnabled (false);
-    G->setColour (TextEditor::textColourId, Colours::black);
-    G->setColour (TextEditor::backgroundColourId, Colour (0xff706ea1));
-    G->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
-    G->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
-    G->setText (TRANS("G"));
-
-    addAndMakeVisible (*(D5 = std::make_unique<TextEditor> ("new text editor")));
-    D5->setMultiLine (true);
-    D5->setReturnKeyStartsNewLine (false);
-    D5->setReadOnly (true);
-    D5->setScrollbarsShown (false);
-    D5->setCaretVisible (false);
-    D5->setPopupMenuEnabled (false);
-    D5->setColour (TextEditor::textColourId, Colours::black);
-    D5->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
-    D5->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
-    D5->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
-    D5->setText (TRANS("D"));
-
-    addAndMakeVisible (*(G6 = std::make_unique<TextEditor> ("new text editor")));
-    G6->setMultiLine (true);
-    G6->setReturnKeyStartsNewLine (false);
-    G6->setReadOnly (true);
-    G6->setScrollbarsShown (false);
-    G6->setCaretVisible (false);
-    G6->setPopupMenuEnabled (false);
-    G6->setColour (TextEditor::textColourId, Colours::black);
-    G6->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
-    G6->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
-    G6->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
-    G6->setText (TRANS("G"));
-
-    addAndMakeVisible (*(B4 = std::make_unique<TextEditor> ("new text editor")));
-    B4->setMultiLine (true);
-    B4->setReturnKeyStartsNewLine (false);
-    B4->setReadOnly (true);
-    B4->setScrollbarsShown (false);
-    B4->setCaretVisible (false);
-    B4->setPopupMenuEnabled (false);
-    B4->setColour (TextEditor::textColourId, Colours::black);
-    B4->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
-    B4->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
-    B4->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
-    B4->setText (TRANS("B"));
-
-    addAndMakeVisible (*(FS3 = std::make_unique<TextEditor> ("new text editor")));
-    FS3->setMultiLine (true);
-    FS3->setReturnKeyStartsNewLine (false);
-    FS3->setReadOnly (true);
-    FS3->setScrollbarsShown (false);
-    FS3->setCaretVisible (false);
-    FS3->setPopupMenuEnabled (false);
-    FS3->setColour (TextEditor::textColourId, Colours::black);
-    FS3->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
-    FS3->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
-    FS3->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
-    FS3->setText (TRANS("F#"));
-
-    addAndMakeVisible (*(CS2 = std::make_unique<TextEditor> ("new text editor")));
-    CS2->setMultiLine (true);
-    CS2->setReturnKeyStartsNewLine (false);
-    CS2->setReadOnly (true);
-    CS2->setScrollbarsShown (false);
-    CS2->setCaretVisible (false);
-    CS2->setPopupMenuEnabled (false);
-    CS2->setColour (TextEditor::textColourId, Colours::black);
-    CS2->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
-    CS2->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
-    CS2->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
-    CS2->setText (TRANS("C#"));
-
-    addAndMakeVisible (*(GS = std::make_unique<TextEditor> ("new text editor")));
-    GS->setMultiLine (true);
-    GS->setReturnKeyStartsNewLine (false);
-    GS->setReadOnly (true);
-    GS->setScrollbarsShown (false);
-    GS->setCaretVisible (false);
-    GS->setPopupMenuEnabled (false);
-    GS->setColour (TextEditor::textColourId, Colours::black);
-    GS->setColour (TextEditor::backgroundColourId, Colour (0xff885887));
-    GS->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
-    GS->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
-    GS->setText (TRANS("G#"));
-
-    addAndMakeVisible (*(DS5 = std::make_unique<TextEditor> ("new text editor")));
-    DS5->setMultiLine (true);
-    DS5->setReturnKeyStartsNewLine (false);
-    DS5->setReadOnly (true);
-    DS5->setScrollbarsShown (false);
-    DS5->setCaretVisible (false);
-    DS5->setPopupMenuEnabled (false);
-    DS5->setColour (TextEditor::textColourId, Colours::black);
-    DS5->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
-    DS5->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
-    DS5->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
-    DS5->setText (TRANS("D#"));
-
-    addAndMakeVisible (*(GS6 = std::make_unique<TextEditor> ("new text editor")));
-    GS6->setMultiLine (true);
-    GS6->setReturnKeyStartsNewLine (false);
-    GS6->setReadOnly (true);
-    GS6->setScrollbarsShown (false);
-    GS6->setCaretVisible (false);
-    GS6->setPopupMenuEnabled (false);
-    GS6->setColour (TextEditor::textColourId, Colours::black);
-    GS6->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
-    GS6->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
-    GS6->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
-    GS6->setText (TRANS("G#"));
-
-    addAndMakeVisible (*(C4 = std::make_unique<TextEditor> ("new text editor")));
-    C4->setMultiLine (true);
-    C4->setReturnKeyStartsNewLine (false);
-    C4->setReadOnly (true);
-    C4->setScrollbarsShown (false);
-    C4->setCaretVisible (false);
-    C4->setPopupMenuEnabled (false);
-    C4->setColour (TextEditor::textColourId, Colours::black);
-    C4->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
-    C4->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
-    C4->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
-    C4->setText (TRANS("C"));
-
-    addAndMakeVisible (*(G3 = std::make_unique<TextEditor> ("new text editor")));
-    G3->setMultiLine (true);
-    G3->setReturnKeyStartsNewLine (false);
-    G3->setReadOnly (true);
-    G3->setScrollbarsShown (false);
-    G3->setCaretVisible (false);
-    G3->setPopupMenuEnabled (false);
-    G3->setColour (TextEditor::textColourId, Colours::black);
-    G3->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
-    G3->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
-    G3->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
-    G3->setText (TRANS("G"));
-
-    addAndMakeVisible (*(D2 = std::make_unique<TextEditor> ("new text editor")));
-    D2->setMultiLine (true);
-    D2->setReturnKeyStartsNewLine (false);
-    D2->setReadOnly (true);
-    D2->setScrollbarsShown (false);
-    D2->setCaretVisible (false);
-    D2->setPopupMenuEnabled (false);
-    D2->setColour (TextEditor::textColourId, Colours::black);
-    D2->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
-    D2->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
-    D2->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
-    D2->setText (TRANS("D"));
-
-    addAndMakeVisible (*(A = std::make_unique<TextEditor> ("new text editor")));
-    A->setMultiLine (true);
-    A->setReturnKeyStartsNewLine (false);
-    A->setReadOnly (true);
-    A->setScrollbarsShown (false);
-    A->setCaretVisible (false);
-    A->setPopupMenuEnabled (false);
-    A->setColour (TextEditor::textColourId, Colours::black);
-    A->setColour (TextEditor::backgroundColourId, Colour (0xff934561));
-    A->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
-    A->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
-    A->setText (TRANS("A"));
-
-    addAndMakeVisible (*(E5 = std::make_unique<TextEditor> ("new text editor")));
-    E5->setMultiLine (true);
-    E5->setReturnKeyStartsNewLine (false);
-    E5->setReadOnly (true);
-    E5->setScrollbarsShown (false);
-    E5->setCaretVisible (false);
-    E5->setPopupMenuEnabled (false);
-    E5->setColour (TextEditor::textColourId, Colours::black);
-    E5->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
-    E5->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
-    E5->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
-    E5->setText (TRANS("E"));
-
-    addAndMakeVisible (*(A6 = std::make_unique<TextEditor> ("new text editor")));
-    A6->setMultiLine (true);
-    A6->setReturnKeyStartsNewLine (false);
-    A6->setReadOnly (true);
-    A6->setScrollbarsShown (false);
-    A6->setCaretVisible (false);
-    A6->setPopupMenuEnabled (false);
-    A6->setColour (TextEditor::textColourId, Colours::black);
-    A6->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
-    A6->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
-    A6->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
-    A6->setText (TRANS("A"));
-
-    addAndMakeVisible (*(CS4 = std::make_unique<TextEditor> ("new text editor")));
-    CS4->setMultiLine (true);
-    CS4->setReturnKeyStartsNewLine (false);
-    CS4->setReadOnly (true);
-    CS4->setScrollbarsShown (false);
-    CS4->setCaretVisible (false);
-    CS4->setPopupMenuEnabled (false);
-    CS4->setColour (TextEditor::textColourId, Colours::black);
-    CS4->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
-    CS4->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
-    CS4->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
-    CS4->setText (TRANS("C#"));
-
-    addAndMakeVisible (*(GS3 = std::make_unique<TextEditor> ("new text editor")));
-    GS3->setMultiLine (true);
-    GS3->setReturnKeyStartsNewLine (false);
-    GS3->setReadOnly (true);
-    GS3->setScrollbarsShown (false);
-    GS3->setCaretVisible (false);
-    GS3->setPopupMenuEnabled (false);
-    GS3->setColour (TextEditor::textColourId, Colours::black);
-    GS3->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
-    GS3->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
-    GS3->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
-    GS3->setText (TRANS("G#"));
-
-    addAndMakeVisible (*(DS2 = std::make_unique<TextEditor> ("new text editor")));
-    DS2->setMultiLine (true);
-    DS2->setReturnKeyStartsNewLine (false);
-    DS2->setReadOnly (true);
-    DS2->setScrollbarsShown (false);
-    DS2->setCaretVisible (false);
-    DS2->setPopupMenuEnabled (false);
-    DS2->setColour (TextEditor::textColourId, Colours::black);
-    DS2->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
-    DS2->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
-    DS2->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
-    DS2->setText (TRANS("D#"));
-
-    addAndMakeVisible (*(AS = std::make_unique<TextEditor> ("new text editor")));
-    AS->setMultiLine (true);
-    AS->setReturnKeyStartsNewLine (false);
-    AS->setReadOnly (true);
-    AS->setScrollbarsShown (false);
-    AS->setCaretVisible (false);
-    AS->setPopupMenuEnabled (false);
-    AS->setColour (TextEditor::textColourId, Colours::black);
-    AS->setColour (TextEditor::backgroundColourId, Colour (0xffbd5c63));
-    AS->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
-    AS->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
-    AS->setText (TRANS("A#"));
-
-    addAndMakeVisible (*(F5 = std::make_unique<TextEditor> ("new text editor")));
-    F5->setMultiLine (true);
-    F5->setReturnKeyStartsNewLine (false);
-    F5->setReadOnly (true);
-    F5->setScrollbarsShown (false);
-    F5->setCaretVisible (false);
-    F5->setPopupMenuEnabled (false);
-    F5->setColour (TextEditor::textColourId, Colours::black);
-    F5->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
-    F5->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
-    F5->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
-    F5->setText (TRANS("F"));
-
-    addAndMakeVisible (*(AS6 = std::make_unique<TextEditor> ("new text editor")));
-    AS6->setMultiLine (true);
-    AS6->setReturnKeyStartsNewLine (false);
-    AS6->setReadOnly (true);
-    AS6->setScrollbarsShown (false);
-    AS6->setCaretVisible (false);
-    AS6->setPopupMenuEnabled (false);
-    AS6->setColour (TextEditor::textColourId, Colours::black);
-    AS6->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
-    AS6->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
-    AS6->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
-    AS6->setText (TRANS("A#"));
-
-    addAndMakeVisible (*(D4 = std::make_unique<TextEditor> ("new text editor")));
-    D4->setMultiLine (true);
-    D4->setReturnKeyStartsNewLine (false);
-    D4->setReadOnly (true);
-    D4->setScrollbarsShown (false);
-    D4->setCaretVisible (false);
-    D4->setPopupMenuEnabled (false);
-    D4->setColour (TextEditor::textColourId, Colours::black);
-    D4->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
-    D4->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
-    D4->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
-    D4->setText (TRANS("D"));
-
-    addAndMakeVisible (*(A3 = std::make_unique<TextEditor> ("new text editor")));
-    A3->setMultiLine (true);
-    A3->setReturnKeyStartsNewLine (false);
-    A3->setReadOnly (true);
-    A3->setScrollbarsShown (false);
-    A3->setCaretVisible (false);
-    A3->setPopupMenuEnabled (false);
-    A3->setColour (TextEditor::textColourId, Colours::black);
-    A3->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
-    A3->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
-    A3->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
-    A3->setText (TRANS("A"));
-
-    addAndMakeVisible (*(E2 = std::make_unique<TextEditor> ("new text editor")));
-    E2->setMultiLine (true);
-    E2->setReturnKeyStartsNewLine (false);
-    E2->setReadOnly (true);
-    E2->setScrollbarsShown (false);
-    E2->setCaretVisible (false);
-    E2->setPopupMenuEnabled (false);
-    E2->setColour (TextEditor::textColourId, Colours::black);
-    E2->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
-    E2->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
-    E2->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
-    E2->setText (TRANS("E"));
-
-    addAndMakeVisible (*(B = std::make_unique<TextEditor> ("new text editor")));
-    B->setMultiLine (true);
-    B->setReturnKeyStartsNewLine (false);
-    B->setReadOnly (true);
-    B->setScrollbarsShown (false);
-    B->setCaretVisible (false);
-    B->setPopupMenuEnabled (false);
-    B->setColour (TextEditor::textColourId, Colours::black);
-    B->setColour (TextEditor::backgroundColourId, Colour (0xffdf7b60));
-    B->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
-    B->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
-    B->setText (TRANS("B"));
-
-    addAndMakeVisible (*(FS5 = std::make_unique<TextEditor> ("new text editor")));
-    FS5->setMultiLine (true);
-    FS5->setReturnKeyStartsNewLine (false);
-    FS5->setReadOnly (true);
-    FS5->setScrollbarsShown (false);
-    FS5->setCaretVisible (false);
-    FS5->setPopupMenuEnabled (false);
-    FS5->setColour (TextEditor::textColourId, Colours::black);
-    FS5->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
-    FS5->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
-    FS5->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
-    FS5->setText (TRANS("F#"));
-
-    addAndMakeVisible (*(B6 = std::make_unique<TextEditor> ("new text editor")));
-    B6->setMultiLine (true);
-    B6->setReturnKeyStartsNewLine (false);
-    B6->setReadOnly (true);
-    B6->setScrollbarsShown (false);
-    B6->setCaretVisible (false);
-    B6->setPopupMenuEnabled (false);
-    B6->setColour (TextEditor::textColourId, Colours::black);
-    B6->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
-    B6->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
-    B6->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
-    B6->setText (TRANS("B"));
-
-    addAndMakeVisible (*(DS4 = std::make_unique<TextEditor> ("new text editor")));
-    DS4->setMultiLine (true);
-    DS4->setReturnKeyStartsNewLine (false);
-    DS4->setReadOnly (true);
-    DS4->setScrollbarsShown (false);
-    DS4->setCaretVisible (false);
-    DS4->setPopupMenuEnabled (false);
-    DS4->setColour (TextEditor::textColourId, Colours::black);
-    DS4->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
-    DS4->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
-    DS4->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
-    DS4->setText (TRANS("D#"));
-
-    addAndMakeVisible (*(AS3 = std::make_unique<TextEditor> ("new text editor")));
-    AS3->setMultiLine (true);
-    AS3->setReturnKeyStartsNewLine (false);
-    AS3->setReadOnly (true);
-    AS3->setScrollbarsShown (false);
-    AS3->setCaretVisible (false);
-    AS3->setPopupMenuEnabled (false);
-    AS3->setColour (TextEditor::textColourId, Colours::black);
-    AS3->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
-    AS3->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
-    AS3->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
-    AS3->setText (TRANS("A#"));
-
-    addAndMakeVisible (*(F3 = std::make_unique<TextEditor> ("new text editor")));
-    F3->setMultiLine (true);
-    F3->setReturnKeyStartsNewLine (false);
-    F3->setReadOnly (true);
-    F3->setScrollbarsShown (false);
-    F3->setCaretVisible (false);
-    F3->setPopupMenuEnabled (false);
-    F3->setColour (TextEditor::textColourId, Colours::black);
-    F3->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
-    F3->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
-    F3->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
-    F3->setText (TRANS("F"));
-
-    addAndMakeVisible (*(C = std::make_unique<TextEditor> ("new text editor")));
-    C->setMultiLine (true);
-    C->setReturnKeyStartsNewLine (false);
-    C->setReadOnly (true);
-    C->setScrollbarsShown (false);
-    C->setCaretVisible (false);
-    C->setPopupMenuEnabled (false);
-    C->setColour (TextEditor::textColourId, Colours::black);
-    C->setColour (TextEditor::backgroundColourId, Colour (0xfffecb5f));
-    C->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
-    C->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
-    C->setText (TRANS("C"));
-
-    addAndMakeVisible (*(G5 = std::make_unique<TextEditor> ("new text editor")));
-    G5->setMultiLine (true);
-    G5->setReturnKeyStartsNewLine (false);
-    G5->setReadOnly (true);
-    G5->setScrollbarsShown (false);
-    G5->setCaretVisible (false);
-    G5->setPopupMenuEnabled (false);
-    G5->setColour (TextEditor::textColourId, Colours::black);
-    G5->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
-    G5->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
-    G5->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
-    G5->setText (TRANS("G"));
-
-    addAndMakeVisible (*(C6 = std::make_unique<TextEditor> ("new text editor")));
-    C6->setMultiLine (true);
-    C6->setReturnKeyStartsNewLine (false);
-    C6->setReadOnly (true);
-    C6->setScrollbarsShown (false);
-    C6->setCaretVisible (false);
-    C6->setPopupMenuEnabled (false);
-    C6->setColour (TextEditor::textColourId, Colours::black);
-    C6->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
-    C6->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
-    C6->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
-    C6->setText (TRANS("C"));
-
-    addAndMakeVisible (*(E4 = std::make_unique<TextEditor> ("new text editor")));
-    E4->setMultiLine (true);
-    E4->setReturnKeyStartsNewLine (false);
-    E4->setReadOnly (true);
-    E4->setScrollbarsShown (false);
-    E4->setCaretVisible (false);
-    E4->setPopupMenuEnabled (false);
-    E4->setColour (TextEditor::textColourId, Colours::black);
-    E4->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
-    E4->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
-    E4->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
-    E4->setText (TRANS("E"));
-
-    addAndMakeVisible (*(B3 = std::make_unique<TextEditor> ("new text editor")));
-    B3->setMultiLine (true);
-    B3->setReturnKeyStartsNewLine (false);
-    B3->setReadOnly (true);
-    B3->setScrollbarsShown (false);
-    B3->setCaretVisible (false);
-    B3->setPopupMenuEnabled (false);
-    B3->setColour (TextEditor::textColourId, Colours::black);
-    B3->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
-    B3->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
-    B3->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
-    B3->setText (TRANS("B"));
-
-    addAndMakeVisible (*(FS2 = std::make_unique<TextEditor> ("new text editor")));
-    FS2->setMultiLine (true);
-    FS2->setReturnKeyStartsNewLine (false);
-    FS2->setReadOnly (true);
-    FS2->setScrollbarsShown (false);
-    FS2->setCaretVisible (false);
-    FS2->setPopupMenuEnabled (false);
-    FS2->setColour (TextEditor::textColourId, Colours::black);
-    FS2->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
-    FS2->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
-    FS2->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
-    FS2->setText (TRANS("F#"));
-
-    addAndMakeVisible (*(CS = std::make_unique<TextEditor> ("new text editor")));
-    CS->setMultiLine (true);
-    CS->setReturnKeyStartsNewLine (false);
-    CS->setReadOnly (true);
-    CS->setScrollbarsShown (false);
-    CS->setCaretVisible (false);
-    CS->setPopupMenuEnabled (false);
-    CS->setColour (TextEditor::textColourId, Colours::black);
-    CS->setColour (TextEditor::backgroundColourId, Colour (0xffc1be4f));
-    CS->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
-    CS->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
-    CS->setText (TRANS("C#"));
-
-    addAndMakeVisible (*(GS5 = std::make_unique<TextEditor> ("new text editor")));
-    GS5->setMultiLine (true);
-    GS5->setReturnKeyStartsNewLine (false);
-    GS5->setReadOnly (true);
-    GS5->setScrollbarsShown (false);
-    GS5->setCaretVisible (false);
-    GS5->setPopupMenuEnabled (false);
-    GS5->setColour (TextEditor::textColourId, Colours::black);
-    GS5->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
-    GS5->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
-    GS5->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
-    GS5->setText (TRANS("G#"));
-
-    addAndMakeVisible (*(CS6 = std::make_unique<TextEditor> ("new text editor")));
-    CS6->setMultiLine (true);
-    CS6->setReturnKeyStartsNewLine (false);
-    CS6->setReadOnly (true);
-    CS6->setScrollbarsShown (false);
-    CS6->setCaretVisible (false);
-    CS6->setPopupMenuEnabled (false);
-    CS6->setColour (TextEditor::textColourId, Colours::black);
-    CS6->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
-    CS6->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
-    CS6->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
-    CS6->setText (TRANS("C#"));
-
-    addAndMakeVisible (*(F4 = std::make_unique<TextEditor> ("new text editor")));
-    F4->setMultiLine (true);
-    F4->setReturnKeyStartsNewLine (false);
-    F4->setReadOnly (true);
-    F4->setScrollbarsShown (false);
-    F4->setCaretVisible (false);
-    F4->setPopupMenuEnabled (false);
-    F4->setColour (TextEditor::textColourId, Colours::black);
-    F4->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
-    F4->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
-    F4->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
-    F4->setText (TRANS("F"));
-
-    addAndMakeVisible (*(C3 = std::make_unique<TextEditor> ("new text editor")));
-    C3->setMultiLine (true);
-    C3->setReturnKeyStartsNewLine (false);
-    C3->setReadOnly (true);
-    C3->setScrollbarsShown (false);
-    C3->setCaretVisible (false);
-    C3->setPopupMenuEnabled (false);
-    C3->setColour (TextEditor::textColourId, Colours::black);
-    C3->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
-    C3->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
-    C3->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
-    C3->setText (TRANS("C"));
-
-    addAndMakeVisible (*(G2 = std::make_unique<TextEditor> ("new text editor")));
-    G2->setMultiLine (true);
-    G2->setReturnKeyStartsNewLine (false);
-    G2->setReadOnly (true);
-    G2->setScrollbarsShown (false);
-    G2->setCaretVisible (false);
-    G2->setPopupMenuEnabled (false);
-    G2->setColour (TextEditor::textColourId, Colours::black);
-    G2->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
-    G2->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
-    G2->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
-    G2->setText (TRANS("G"));
-
-    addAndMakeVisible (*(D = std::make_unique<TextEditor> ("new text editor")));
-    D->setMultiLine (true);
-    D->setReturnKeyStartsNewLine (false);
-    D->setReadOnly (true);
-    D->setScrollbarsShown (false);
-    D->setCaretVisible (false);
-    D->setPopupMenuEnabled (false);
-    D->setColour (TextEditor::textColourId, Colours::black);
-    D->setColour (TextEditor::backgroundColourId, Colour (0xff86af4d));
-    D->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
-    D->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
-    D->setText (TRANS("D"));
-
-    addAndMakeVisible (*(A5 = std::make_unique<TextEditor> ("new text editor")));
-    A5->setMultiLine (true);
-    A5->setReturnKeyStartsNewLine (false);
-    A5->setReadOnly (true);
-    A5->setScrollbarsShown (false);
-    A5->setCaretVisible (false);
-    A5->setPopupMenuEnabled (false);
-    A5->setColour (TextEditor::textColourId, Colours::black);
-    A5->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
-    A5->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
-    A5->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
-    A5->setText (TRANS("A"));
-
-    addAndMakeVisible (*(D6 = std::make_unique<TextEditor> ("new text editor")));
-    D6->setMultiLine (true);
-    D6->setReturnKeyStartsNewLine (false);
-    D6->setReadOnly (true);
-    D6->setScrollbarsShown (false);
-    D6->setCaretVisible (false);
-    D6->setPopupMenuEnabled (false);
-    D6->setColour (TextEditor::textColourId, Colours::black);
-    D6->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
-    D6->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
-    D6->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
-    D6->setText (TRANS("D"));
-
-    addAndMakeVisible (*(FS4 = std::make_unique<TextEditor> ("new text editor")));
-    FS4->setMultiLine (true);
-    FS4->setReturnKeyStartsNewLine (false);
-    FS4->setReadOnly (true);
-    FS4->setScrollbarsShown (false);
-    FS4->setCaretVisible (false);
-    FS4->setPopupMenuEnabled (false);
-    FS4->setColour (TextEditor::textColourId, Colours::black);
-    FS4->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
-    FS4->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
-    FS4->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
-    FS4->setText (TRANS("F#"));
-
-    addAndMakeVisible (*(CS3 = std::make_unique<TextEditor> ("new text editor")));
-    CS3->setMultiLine (true);
-    CS3->setReturnKeyStartsNewLine (false);
-    CS3->setReadOnly (true);
-    CS3->setScrollbarsShown (false);
-    CS3->setCaretVisible (false);
-    CS3->setPopupMenuEnabled (false);
-    CS3->setColour (TextEditor::textColourId, Colours::black);
-    CS3->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
-    CS3->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
-    CS3->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
-    CS3->setText (TRANS("C#"));
-
-    addAndMakeVisible (*(GS2 = std::make_unique<TextEditor> ("new text editor")));
-    GS2->setMultiLine (true);
-    GS2->setReturnKeyStartsNewLine (false);
-    GS2->setReadOnly (true);
-    GS2->setScrollbarsShown (false);
-    GS2->setCaretVisible (false);
-    GS2->setPopupMenuEnabled (false);
-    GS2->setColour (TextEditor::textColourId, Colours::black);
-    GS2->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
-    GS2->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
-    GS2->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
-    GS2->setText (TRANS("G#"));
-
-    addAndMakeVisible (*(DS = std::make_unique<TextEditor> ("new text editor")));
-    DS->setMultiLine (true);
-    DS->setReturnKeyStartsNewLine (false);
-    DS->setReadOnly (true);
-    DS->setScrollbarsShown (false);
-    DS->setCaretVisible (false);
-    DS->setPopupMenuEnabled (false);
-    DS->setColour (TextEditor::textColourId, Colours::black);
-    DS->setColour (TextEditor::backgroundColourId, Colour (0xff499b53));
-    DS->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
-    DS->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
-    DS->setText (TRANS("D#"));
-
-    addAndMakeVisible (*(AS5 = std::make_unique<TextEditor> ("new text editor")));
-    AS5->setMultiLine (true);
-    AS5->setReturnKeyStartsNewLine (false);
-    AS5->setReadOnly (true);
-    AS5->setScrollbarsShown (false);
-    AS5->setCaretVisible (false);
-    AS5->setPopupMenuEnabled (false);
-    AS5->setColour (TextEditor::textColourId, Colours::black);
-    AS5->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
-    AS5->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
-    AS5->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
-    AS5->setText (TRANS("A#"));
-
-    addAndMakeVisible (*(DS6 = std::make_unique<TextEditor> ("new text editor")));
-    DS6->setMultiLine (true);
-    DS6->setReturnKeyStartsNewLine (false);
-    DS6->setReadOnly (true);
-    DS6->setScrollbarsShown (false);
-    DS6->setCaretVisible (false);
-    DS6->setPopupMenuEnabled (false);
-    DS6->setColour (TextEditor::textColourId, Colours::black);
-    DS6->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
-    DS6->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
-    DS6->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
-    DS6->setText (TRANS("D#"));
-
-    addAndMakeVisible (*(G4 = std::make_unique<TextEditor> ("new text editor")));
-    G4->setMultiLine (true);
-    G4->setReturnKeyStartsNewLine (false);
-    G4->setReadOnly (true);
-    G4->setScrollbarsShown (false);
-    G4->setCaretVisible (false);
-    G4->setPopupMenuEnabled (false);
-    G4->setColour (TextEditor::textColourId, Colours::black);
-    G4->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
-    G4->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
-    G4->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
-    G4->setText (TRANS("G"));
-
-    addAndMakeVisible (*(D3 = std::make_unique<TextEditor> ("new text editor")));
-    D3->setMultiLine (true);
-    D3->setReturnKeyStartsNewLine (false);
-    D3->setReadOnly (true);
-    D3->setScrollbarsShown (false);
-    D3->setCaretVisible (false);
-    D3->setPopupMenuEnabled (false);
-    D3->setColour (TextEditor::textColourId, Colours::black);
-    D3->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
-    D3->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
-    D3->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
-    D3->setText (TRANS("D"));
-
-    addAndMakeVisible (*(A2 = std::make_unique<TextEditor> ("new text editor")));
-    A2->setMultiLine (true);
-    A2->setReturnKeyStartsNewLine (false);
-    A2->setReadOnly (true);
-    A2->setScrollbarsShown (false);
-    A2->setCaretVisible (false);
-    A2->setPopupMenuEnabled (false);
-    A2->setColour (TextEditor::textColourId, Colours::black);
-    A2->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
-    A2->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
-    A2->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
-    A2->setText (TRANS("A"));
-
-    addAndMakeVisible (*(E = std::make_unique<TextEditor> ("new text editor")));
-    E->setMultiLine (true);
-    E->setReturnKeyStartsNewLine (false);
-    E->setReadOnly (true);
-    E->setScrollbarsShown (false);
-    E->setCaretVisible (false);
-    E->setPopupMenuEnabled (false);
-    E->setColour (TextEditor::textColourId, Colours::black);
-    E->setColour (TextEditor::backgroundColourId, Colour (0xff007062));
-    E->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
-    E->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
-    E->setText (TRANS("E"));
-
-    addAndMakeVisible (*(B5 = std::make_unique<TextEditor> ("new text editor")));
-    B5->setMultiLine (true);
-    B5->setReturnKeyStartsNewLine (false);
-    B5->setReadOnly (true);
-    B5->setScrollbarsShown (false);
-    B5->setCaretVisible (false);
-    B5->setPopupMenuEnabled (false);
-    B5->setColour (TextEditor::textColourId, Colours::black);
-    B5->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
-    B5->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
-    B5->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
-    B5->setText (TRANS("B"));
-
-    addAndMakeVisible (*(E6 = std::make_unique<TextEditor> ("new text editor")));
-    E6->setMultiLine (true);
-    E6->setReturnKeyStartsNewLine (false);
-    E6->setReadOnly (true);
-    E6->setScrollbarsShown (false);
-    E6->setCaretVisible (false);
-    E6->setPopupMenuEnabled (false);
-    E6->setColour (TextEditor::textColourId, Colours::black);
-    E6->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
-    E6->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
-    E6->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
-    E6->setText (TRANS("E"));
-
-    addAndMakeVisible (*(GS7 = std::make_unique<TextEditor> ("new text editor")));
-    GS7->setMultiLine (true);
-    GS7->setReturnKeyStartsNewLine (false);
-    GS7->setReadOnly (true);
-    GS7->setScrollbarsShown (false);
-    GS7->setCaretVisible (false);
-    GS7->setPopupMenuEnabled (false);
-    GS7->setColour (TextEditor::textColourId, Colours::black);
-    GS7->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
-    GS7->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
-    GS7->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
-    GS7->setText (TRANS("G#"));
-
-    addAndMakeVisible (*(DS7 = std::make_unique<TextEditor> ("new text editor")));
-    DS7->setMultiLine (true);
-    DS7->setReturnKeyStartsNewLine (false);
-    DS7->setReadOnly (true);
-    DS7->setScrollbarsShown (false);
-    DS7->setCaretVisible (false);
-    DS7->setPopupMenuEnabled (false);
-    DS7->setColour (TextEditor::textColourId, Colours::black);
-    DS7->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
-    DS7->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
-    DS7->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
-    DS7->setText (TRANS("D#"));
-
-    addAndMakeVisible (*(AS7 = std::make_unique<TextEditor> ("new text editor")));
-    AS7->setMultiLine (true);
-    AS7->setReturnKeyStartsNewLine (false);
-    AS7->setReadOnly (true);
-    AS7->setScrollbarsShown (false);
-    AS7->setCaretVisible (false);
-    AS7->setPopupMenuEnabled (false);
-    AS7->setColour (TextEditor::textColourId, Colours::black);
-    AS7->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
-    AS7->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
-    AS7->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
-    AS7->setText (TRANS("A#"));
-
-    addAndMakeVisible (*(F6 = std::make_unique<TextEditor> ("new text editor")));
-    F6->setMultiLine (true);
-    F6->setReturnKeyStartsNewLine (false);
-    F6->setReadOnly (true);
-    F6->setScrollbarsShown (false);
-    F6->setCaretVisible (false);
-    F6->setPopupMenuEnabled (false);
-    F6->setColour (TextEditor::textColourId, Colours::black);
-    F6->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
-    F6->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
-    F6->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
-    F6->setText (TRANS("F"));
-
-    addAndMakeVisible (*(C7 = std::make_unique<TextEditor> ("new text editor")));
-    C7->setMultiLine (true);
-    C7->setReturnKeyStartsNewLine (false);
-    C7->setReadOnly (true);
-    C7->setScrollbarsShown (false);
-    C7->setCaretVisible (false);
-    C7->setPopupMenuEnabled (false);
-    C7->setColour (TextEditor::textColourId, Colours::black);
-    C7->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
-    C7->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
-    C7->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
-    C7->setText (TRANS("C"));
-
-    addAndMakeVisible (*(F7 = std::make_unique<TextEditor> ("new text editor")));
-    F7->setMultiLine (true);
-    F7->setReturnKeyStartsNewLine (false);
-    F7->setReadOnly (true);
-    F7->setScrollbarsShown (false);
-    F7->setCaretVisible (false);
-    F7->setPopupMenuEnabled (false);
-    F7->setColour (TextEditor::textColourId, Colours::black);
-    F7->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
-    F7->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
-    F7->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
-    F7->setText (TRANS("F"));
-
-    addAndMakeVisible (*(A7 = std::make_unique<TextEditor> ("new text editor")));
-    A7->setMultiLine (true);
-    A7->setReturnKeyStartsNewLine (false);
-    A7->setReadOnly (true);
-    A7->setScrollbarsShown (false);
-    A7->setCaretVisible (false);
-    A7->setPopupMenuEnabled (false);
-    A7->setColour (TextEditor::textColourId, Colours::black);
-    A7->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
-    A7->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
-    A7->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
-    A7->setText (TRANS("A"));
-
-    addAndMakeVisible (*(E7 = std::make_unique<TextEditor> ("new text editor")));
-    E7->setMultiLine (true);
-    E7->setReturnKeyStartsNewLine (false);
-    E7->setReadOnly (true);
-    E7->setScrollbarsShown (false);
-    E7->setCaretVisible (false);
-    E7->setPopupMenuEnabled (false);
-    E7->setColour (TextEditor::textColourId, Colours::black);
-    E7->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
-    E7->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
-    E7->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
-    E7->setText (TRANS("E"));
-
-    addAndMakeVisible (*(B7 = std::make_unique<TextEditor> ("new text editor")));
-    B7->setMultiLine (true);
-    B7->setReturnKeyStartsNewLine (false);
-    B7->setReadOnly (true);
-    B7->setScrollbarsShown (false);
-    B7->setCaretVisible (false);
-    B7->setPopupMenuEnabled (false);
-    B7->setColour (TextEditor::textColourId, Colours::black);
-    B7->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
-    B7->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
-    B7->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
-    B7->setText (TRANS("B"));
-
-    addAndMakeVisible (*(FS7 = std::make_unique<TextEditor> ("new text editor")));
-    FS7->setMultiLine (true);
-    FS7->setReturnKeyStartsNewLine (false);
-    FS7->setReadOnly (true);
-    FS7->setScrollbarsShown (false);
-    FS7->setCaretVisible (false);
-    FS7->setPopupMenuEnabled (false);
-    FS7->setColour (TextEditor::textColourId, Colours::black);
-    FS7->setColour (TextEditor::backgroundColourId, Colour (0xff5681ab));
-    FS7->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
-    FS7->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
-    FS7->setText (TRANS("\n"
-    "F#\n"));
-
-    addAndMakeVisible (*(CS7 = std::make_unique<TextEditor> ("new text editor")));
-    CS7->setMultiLine (true);
-    CS7->setReturnKeyStartsNewLine (false);
-    CS7->setReadOnly (true);
-    CS7->setScrollbarsShown (false);
-    CS7->setCaretVisible (false);
-    CS7->setPopupMenuEnabled (false);
-    CS7->setColour (TextEditor::textColourId, Colours::black);
-    CS7->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
-    CS7->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
-    CS7->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
-    CS7->setText (TRANS("C#"));
-
-    addAndMakeVisible (*(FS8 = std::make_unique<TextEditor> ("new text editor")));
-    FS8->setMultiLine (true);
-    FS8->setReturnKeyStartsNewLine (false);
-    FS8->setReadOnly (true);
-    FS8->setScrollbarsShown (false);
-    FS8->setCaretVisible (false);
-    FS8->setPopupMenuEnabled (false);
-    FS8->setColour (TextEditor::textColourId, Colours::black);
-    FS8->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
-    FS8->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
-    FS8->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
-    FS8->setText (TRANS("F#"));
-
-    addAndMakeVisible (*(AS8 = std::make_unique<TextEditor> ("new text editor")));
-    AS8->setMultiLine (true);
-    AS8->setReturnKeyStartsNewLine (false);
-    AS8->setReadOnly (true);
-    AS8->setScrollbarsShown (false);
-    AS8->setCaretVisible (false);
-    AS8->setPopupMenuEnabled (false);
-    AS8->setColour (TextEditor::textColourId, Colours::black);
-    AS8->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
-    AS8->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
-    AS8->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
-    AS8->setText (TRANS("A#"));
-
-    addAndMakeVisible (*(F8 = std::make_unique<TextEditor> ("new text editor")));
-    F8->setMultiLine (true);
-    F8->setReturnKeyStartsNewLine (false);
-    F8->setReadOnly (true);
-    F8->setScrollbarsShown (false);
-    F8->setCaretVisible (false);
-    F8->setPopupMenuEnabled (false);
-    F8->setColour (TextEditor::textColourId, Colours::black);
-    F8->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
-    F8->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
-    F8->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
-    F8->setText (TRANS("F"));
-
-    addAndMakeVisible (*(C8 = std::make_unique<TextEditor> ("new text editor")));
-    C8->setMultiLine (true);
-    C8->setReturnKeyStartsNewLine (false);
-    C8->setReadOnly (true);
-    C8->setScrollbarsShown (false);
-    C8->setCaretVisible (false);
-    C8->setPopupMenuEnabled (false);
-    C8->setColour (TextEditor::textColourId, Colours::black);
-    C8->setColour (TextEditor::backgroundColourId, Colour (0xd4ab1e1e));
-    C8->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
-    C8->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
-    C8->setText (TRANS("C"));
-
-    addAndMakeVisible (*(G7 = std::make_unique<TextEditor> ("new text editor")));
-    G7->setMultiLine (true);
-    G7->setReturnKeyStartsNewLine (false);
-    G7->setReadOnly (true);
-    G7->setScrollbarsShown (false);
-    G7->setCaretVisible (false);
-    G7->setPopupMenuEnabled (false);
-    G7->setColour (TextEditor::textColourId, Colours::black);
-    G7->setColour (TextEditor::backgroundColourId, Colour (0xff706ea1));
-    G7->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
-    G7->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
-    G7->setText (TRANS("G"));
-
-    addAndMakeVisible (*(D7 = std::make_unique<TextEditor> ("new text editor")));
-    D7->setMultiLine (true);
-    D7->setReturnKeyStartsNewLine (false);
-    D7->setReadOnly (true);
-    D7->setScrollbarsShown (false);
-    D7->setCaretVisible (false);
-    D7->setPopupMenuEnabled (false);
-    D7->setColour (TextEditor::textColourId, Colours::black);
-    D7->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
-    D7->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
-    D7->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
-    D7->setText (TRANS("D"));
-
-    addAndMakeVisible (*(G8 = std::make_unique<TextEditor> ("new text editor")));
-    G8->setMultiLine (true);
-    G8->setReturnKeyStartsNewLine (false);
-    G8->setReadOnly (true);
-    G8->setScrollbarsShown (false);
-    G8->setCaretVisible (false);
-    G8->setPopupMenuEnabled (false);
-    G8->setColour (TextEditor::textColourId, Colours::black);
-    G8->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
-    G8->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
-    G8->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
-    G8->setText (TRANS("G"));
-
-    addAndMakeVisible (*(B8 = std::make_unique<TextEditor> ("new text editor")));
-    B8->setMultiLine (true);
-    B8->setReturnKeyStartsNewLine (false);
-    B8->setReadOnly (true);
-    B8->setScrollbarsShown (false);
-    B8->setCaretVisible (false);
-    B8->setPopupMenuEnabled (false);
-    B8->setColour (TextEditor::textColourId, Colours::black);
-    B8->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
-    B8->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
-    B8->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
-    B8->setText (TRANS("B"));
-
-    addAndMakeVisible (*(FS9 = std::make_unique<TextEditor> ("new text editor")));
-    FS9->setMultiLine (true);
-    FS9->setReturnKeyStartsNewLine (false);
-    FS9->setReadOnly (true);
-    FS9->setScrollbarsShown (false);
-    FS9->setCaretVisible (false);
-    FS9->setPopupMenuEnabled (false);
-    FS9->setColour (TextEditor::textColourId, Colours::black);
-    FS9->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
-    FS9->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
-    FS9->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
-    FS9->setText (TRANS("F#"));
-
-    addAndMakeVisible (*(CS8 = std::make_unique<TextEditor> ("new text editor")));
-    CS8->setMultiLine (true);
-    CS8->setReturnKeyStartsNewLine (false);
-    CS8->setReadOnly (true);
-    CS8->setScrollbarsShown (false);
-    CS8->setCaretVisible (false);
-    CS8->setPopupMenuEnabled (false);
-    CS8->setColour (TextEditor::textColourId, Colours::black);
-    CS8->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
-    CS8->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
-    CS8->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
-    CS8->setText (TRANS("C#"));
-
-    addAndMakeVisible (*(GS8 = std::make_unique<TextEditor> ("new text editor")));
-    GS8->setMultiLine (true);
-    GS8->setReturnKeyStartsNewLine (false);
-    GS8->setReadOnly (true);
-    GS8->setScrollbarsShown (false);
-    GS8->setCaretVisible (false);
-    GS8->setPopupMenuEnabled (false);
-    GS8->setColour (TextEditor::textColourId, Colours::black);
-    GS8->setColour (TextEditor::backgroundColourId, Colour (0xff885887));
-    GS8->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
-    GS8->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
-    GS8->setText (TRANS("G#"));
-
-    addAndMakeVisible (*(DS8 = std::make_unique<TextEditor> ("new text editor")));
-    DS8->setMultiLine (true);
-    DS8->setReturnKeyStartsNewLine (false);
-    DS8->setReadOnly (true);
-    DS8->setScrollbarsShown (false);
-    DS8->setCaretVisible (false);
-    DS8->setPopupMenuEnabled (false);
-    DS8->setColour (TextEditor::textColourId, Colours::black);
-    DS8->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
-    DS8->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
-    DS8->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
-    DS8->setText (TRANS("D#"));
-
-    addAndMakeVisible (*(GS9 = std::make_unique<TextEditor> ("new text editor")));
-    GS9->setMultiLine (true);
-    GS9->setReturnKeyStartsNewLine (false);
-    GS9->setReadOnly (true);
-    GS9->setScrollbarsShown (false);
-    GS9->setCaretVisible (false);
-    GS9->setPopupMenuEnabled (false);
-    GS9->setColour (TextEditor::textColourId, Colours::black);
-    GS9->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
-    GS9->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
-    GS9->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
-    GS9->setText (TRANS("G#"));
-
-    addAndMakeVisible (*(C9 = std::make_unique<TextEditor> ("new text editor")));
-    C9->setMultiLine (true);
-    C9->setReturnKeyStartsNewLine (false);
-    C9->setReadOnly (true);
-    C9->setScrollbarsShown (false);
-    C9->setCaretVisible (false);
-    C9->setPopupMenuEnabled (false);
-    C9->setColour (TextEditor::textColourId, Colours::black);
-    C9->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
-    C9->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
-    C9->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
-    C9->setText (TRANS("C"));
-
-    addAndMakeVisible (*(G9 = std::make_unique<TextEditor> ("new text editor")));
-    G9->setMultiLine (true);
-    G9->setReturnKeyStartsNewLine (false);
-    G9->setReadOnly (true);
-    G9->setScrollbarsShown (false);
-    G9->setCaretVisible (false);
-    G9->setPopupMenuEnabled (false);
-    G9->setColour (TextEditor::textColourId, Colours::black);
-    G9->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
-    G9->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
-    G9->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
-    G9->setText (TRANS("G"));
-
-    addAndMakeVisible (*(D8 = std::make_unique<TextEditor> ("new text editor")));
-    D8->setMultiLine (true);
-    D8->setReturnKeyStartsNewLine (false);
-    D8->setReadOnly (true);
-    D8->setScrollbarsShown (false);
-    D8->setCaretVisible (false);
-    D8->setPopupMenuEnabled (false);
-    D8->setColour (TextEditor::textColourId, Colours::black);
-    D8->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
-    D8->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
-    D8->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
-    D8->setText (TRANS("D"));
-
-    addAndMakeVisible (*(A8 = std::make_unique<TextEditor> ("new text editor")));
-    A8->setMultiLine (true);
-    A8->setReturnKeyStartsNewLine (false);
-    A8->setReadOnly (true);
-    A8->setScrollbarsShown (false);
-    A8->setCaretVisible (false);
-    A8->setPopupMenuEnabled (false);
-    A8->setColour (TextEditor::textColourId, Colours::black);
-    A8->setColour (TextEditor::backgroundColourId, Colour (0xff934561));
-    A8->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
-    A8->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
-    A8->setText (TRANS("A"));
-
-    addAndMakeVisible (*(E8 = std::make_unique<TextEditor> ("new text editor")));
-    E8->setMultiLine (true);
-    E8->setReturnKeyStartsNewLine (false);
-    E8->setReadOnly (true);
-    E8->setScrollbarsShown (false);
-    E8->setCaretVisible (false);
-    E8->setPopupMenuEnabled (false);
-    E8->setColour (TextEditor::textColourId, Colours::black);
-    E8->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
-    E8->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
-    E8->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
-    E8->setText (TRANS("E"));
-
-    addAndMakeVisible (*(A9 = std::make_unique<TextEditor> ("new text editor")));
-    A9->setMultiLine (true);
-    A9->setReturnKeyStartsNewLine (false);
-    A9->setReadOnly (true);
-    A9->setScrollbarsShown (false);
-    A9->setCaretVisible (false);
-    A9->setPopupMenuEnabled (false);
-    A9->setColour (TextEditor::textColourId, Colours::black);
-    A9->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
-    A9->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
-    A9->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
-    A9->setText (TRANS("A"));
-
-    addAndMakeVisible (*(CS9 = std::make_unique<TextEditor> ("new text editor")));
-    CS9->setMultiLine (true);
-    CS9->setReturnKeyStartsNewLine (false);
-    CS9->setReadOnly (true);
-    CS9->setScrollbarsShown (false);
-    CS9->setCaretVisible (false);
-    CS9->setPopupMenuEnabled (false);
-    CS9->setColour (TextEditor::textColourId, Colours::black);
-    CS9->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
-    CS9->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
-    CS9->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
-    CS9->setText (TRANS("C#"));
-
-    addAndMakeVisible (*(GS10 = std::make_unique<TextEditor> ("new text editor")));
-    GS10->setMultiLine (true);
-    GS10->setReturnKeyStartsNewLine (false);
-    GS10->setReadOnly (true);
-    GS10->setScrollbarsShown (false);
-    GS10->setCaretVisible (false);
-    GS10->setPopupMenuEnabled (false);
-    GS10->setColour (TextEditor::textColourId, Colours::black);
-    GS10->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
-    GS10->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
-    GS10->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
-    GS10->setText (TRANS("G#"));
-
-    addAndMakeVisible (*(DS9 = std::make_unique<TextEditor> ("new text editor")));
-    DS9->setMultiLine (true);
-    DS9->setReturnKeyStartsNewLine (false);
-    DS9->setReadOnly (true);
-    DS9->setScrollbarsShown (false);
-    DS9->setCaretVisible (false);
-    DS9->setPopupMenuEnabled (false);
-    DS9->setColour (TextEditor::textColourId, Colours::black);
-    DS9->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
-    DS9->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
-    DS9->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
-    DS9->setText (TRANS("D#"));
-
-    addAndMakeVisible (*(AS9 = std::make_unique<TextEditor> ("new text editor")));
-    AS9->setMultiLine (true);
-    AS9->setReturnKeyStartsNewLine (false);
-    AS9->setReadOnly (true);
-    AS9->setScrollbarsShown (false);
-    AS9->setCaretVisible (false);
-    AS9->setPopupMenuEnabled (false);
-    AS9->setColour (TextEditor::textColourId, Colours::black);
-    AS9->setColour (TextEditor::backgroundColourId, Colour (0xffbd5c63));
-    AS9->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
-    AS9->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
-    AS9->setText (TRANS("A#"));
-
-    addAndMakeVisible (*(F9 = std::make_unique<TextEditor> ("new text editor")));
-    F9->setMultiLine (true);
-    F9->setReturnKeyStartsNewLine (false);
-    F9->setReadOnly (true);
-    F9->setScrollbarsShown (false);
-    F9->setCaretVisible (false);
-    F9->setPopupMenuEnabled (false);
-    F9->setColour (TextEditor::textColourId, Colours::black);
-    F9->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
-    F9->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
-    F9->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
-    F9->setText (TRANS("F"));
-
-    addAndMakeVisible (*(AS10 = std::make_unique<TextEditor> ("new text editor")));
-    AS10->setMultiLine (true);
-    AS10->setReturnKeyStartsNewLine (false);
-    AS10->setReadOnly (true);
-    AS10->setScrollbarsShown (false);
-    AS10->setCaretVisible (false);
-    AS10->setPopupMenuEnabled (false);
-    AS10->setColour (TextEditor::textColourId, Colours::black);
-    AS10->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
-    AS10->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
-    AS10->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
-    AS10->setText (TRANS("A#"));
-
-    addAndMakeVisible (*(D9 = std::make_unique<TextEditor> ("new text editor")));
-    D9->setMultiLine (true);
-    D9->setReturnKeyStartsNewLine (false);
-    D9->setReadOnly (true);
-    D9->setScrollbarsShown (false);
-    D9->setCaretVisible (false);
-    D9->setPopupMenuEnabled (false);
-    D9->setColour (TextEditor::textColourId, Colours::black);
-    D9->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
-    D9->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
-    D9->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
-    D9->setText (TRANS("D"));
-
-    addAndMakeVisible (*(A10 = std::make_unique<TextEditor> ("new text editor")));
-    A10->setMultiLine (true);
-    A10->setReturnKeyStartsNewLine (false);
-    A10->setReadOnly (true);
-    A10->setScrollbarsShown (false);
-    A10->setCaretVisible (false);
-    A10->setPopupMenuEnabled (false);
-    A10->setColour (TextEditor::textColourId, Colours::black);
-    A10->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
-    A10->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
-    A10->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
-    A10->setText (TRANS("A"));
-
-    addAndMakeVisible (*(E9 = std::make_unique<TextEditor> ("new text editor")));
-    E9->setMultiLine (true);
-    E9->setReturnKeyStartsNewLine (false);
-    E9->setReadOnly (true);
-    E9->setScrollbarsShown (false);
-    E9->setCaretVisible (false);
-    E9->setPopupMenuEnabled (false);
-    E9->setColour (TextEditor::textColourId, Colours::black);
-    E9->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
-    E9->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
-    E9->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
-    E9->setText (TRANS("E"));
-
-    addAndMakeVisible (*(B9 = std::make_unique<TextEditor> ("new text editor")));
-    B9->setMultiLine (true);
-    B9->setReturnKeyStartsNewLine (false);
-    B9->setReadOnly (true);
-    B9->setScrollbarsShown (false);
-    B9->setCaretVisible (false);
-    B9->setPopupMenuEnabled (false);
-    B9->setColour (TextEditor::textColourId, Colours::black);
-    B9->setColour (TextEditor::backgroundColourId, Colour (0xffdf7b60));
-    B9->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
-    B9->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
-    B9->setText (TRANS("B"));
-
-    addAndMakeVisible (*(FS10 = std::make_unique<TextEditor> ("new text editor")));
-    FS10->setMultiLine (true);
-    FS10->setReturnKeyStartsNewLine (false);
-    FS10->setReadOnly (true);
-    FS10->setScrollbarsShown (false);
-    FS10->setCaretVisible (false);
-    FS10->setPopupMenuEnabled (false);
-    FS10->setColour (TextEditor::textColourId, Colours::black);
-    FS10->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
-    FS10->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
-    FS10->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
-    FS10->setText (TRANS("F#"));
-
-    addAndMakeVisible (*(B10 = std::make_unique<TextEditor> ("new text editor")));
-    B10->setMultiLine (true);
-    B10->setReturnKeyStartsNewLine (false);
-    B10->setReadOnly (true);
-    B10->setScrollbarsShown (false);
-    B10->setCaretVisible (false);
-    B10->setPopupMenuEnabled (false);
-    B10->setColour (TextEditor::textColourId, Colours::black);
-    B10->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
-    B10->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
-    B10->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
-    B10->setText (TRANS("B"));
-
-    addAndMakeVisible (*(DS10 = std::make_unique<TextEditor> ("new text editor")));
-    DS10->setMultiLine (true);
-    DS10->setReturnKeyStartsNewLine (false);
-    DS10->setReadOnly (true);
-    DS10->setScrollbarsShown (false);
-    DS10->setCaretVisible (false);
-    DS10->setPopupMenuEnabled (false);
-    DS10->setColour (TextEditor::textColourId, Colours::black);
-    DS10->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
-    DS10->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
-    DS10->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
-    DS10->setText (TRANS("D#"));
-
-    addAndMakeVisible (*(AS11 = std::make_unique<TextEditor> ("new text editor")));
-    AS11->setMultiLine (true);
-    AS11->setReturnKeyStartsNewLine (false);
-    AS11->setReadOnly (true);
-    AS11->setScrollbarsShown (false);
-    AS11->setCaretVisible (false);
-    AS11->setPopupMenuEnabled (false);
-    AS11->setColour (TextEditor::textColourId, Colours::black);
-    AS11->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
-    AS11->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
-    AS11->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
-    AS11->setText (TRANS("A#"));
-
-    addAndMakeVisible (*(F10 = std::make_unique<TextEditor> ("new text editor")));
-    F10->setMultiLine (true);
-    F10->setReturnKeyStartsNewLine (false);
-    F10->setReadOnly (true);
-    F10->setScrollbarsShown (false);
-    F10->setCaretVisible (false);
-    F10->setPopupMenuEnabled (false);
-    F10->setColour (TextEditor::textColourId, Colours::black);
-    F10->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
-    F10->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
-    F10->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
-    F10->setText (TRANS("F"));
-
-    addAndMakeVisible (*(C10 = std::make_unique<TextEditor> ("new text editor")));
-    C10->setMultiLine (true);
-    C10->setReturnKeyStartsNewLine (false);
-    C10->setReadOnly (true);
-    C10->setScrollbarsShown (false);
-    C10->setCaretVisible (false);
-    C10->setPopupMenuEnabled (false);
-    C10->setColour (TextEditor::textColourId, Colours::black);
-    C10->setColour (TextEditor::backgroundColourId, Colour (0xfffecb5f));
-    C10->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
-    C10->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
-    C10->setText (TRANS("C"));
-
-    addAndMakeVisible (*(G10 = std::make_unique<TextEditor> ("new text editor")));
-    G10->setMultiLine (true);
-    G10->setReturnKeyStartsNewLine (false);
-    G10->setReadOnly (true);
-    G10->setScrollbarsShown (false);
-    G10->setCaretVisible (false);
-    G10->setPopupMenuEnabled (false);
-    G10->setColour (TextEditor::textColourId, Colours::black);
-    G10->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
-    G10->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
-    G10->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
-    G10->setText (TRANS("G"));
-
-    addAndMakeVisible (*(C11 = std::make_unique<TextEditor> ("new text editor")));
-    C11->setMultiLine (true);
-    C11->setReturnKeyStartsNewLine (false);
-    C11->setReadOnly (true);
-    C11->setScrollbarsShown (false);
-    C11->setCaretVisible (false);
-    C11->setPopupMenuEnabled (false);
-    C11->setColour (TextEditor::textColourId, Colours::black);
-    C11->setColour (TextEditor::backgroundColourId, Colour (0x49ab1e1e));
-    C11->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
-    C11->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
-    C11->setText (TRANS("C"));
+    txtChord->setColour (TextEditor::backgroundColourId, Colours::transparentWhite);
+    txtChord->setText ("C E G ");
+
+    addAndMakeVisible (*(viewAll = std::make_unique<ToggleButton> ("new toggle button")));
+    viewAll->setButtonText("All");
+    viewAll->setToggleState (false, dontSendNotification);
+    viewAll->setClickingTogglesState (false);
+    viewAll->onClick = [this]() { selectButton("All"); };
+
+    addAndMakeVisible (*(viewScale = std::make_unique<ToggleButton> ("new toggle button")));
+    viewScale->setButtonText("Scale");
+    viewScale->setToggleState (false, dontSendNotification);
+    viewScale->setClickingTogglesState (false);
+    viewScale->onClick = [this]() { selectButton("Scale"); };
+
+    addAndMakeVisible (*(viewChord = std::make_unique<ToggleButton> ("new toggle button")));
+    viewChord->setButtonText("Chord");
+    viewChord->setToggleState (false, dontSendNotification);
+    viewChord->setClickingTogglesState (false);
+    viewChord->onClick = [this]() { selectButton("Chord"); };
+
+    addAndMakeVisible (*(viewMidi = std::make_unique<ToggleButton> ("new toggle button")));
+    viewMidi->setButtonText("Midi");
+    viewMidi->setToggleState (false, dontSendNotification);
+    viewMidi->setClickingTogglesState (false);
+    viewMidi->onClick = [this]() { selectButton("Midi"); };
+
+    addAndMakeVisible (*(buttonColour = std::make_unique<TextButton> ("new toggle button")));
+    buttonColour->setButtonText("theme");
+    buttonColour->setClickingTogglesState (true);
+    buttonColour->onClick = [this]() { switchColour(); };
+
+    addAndMakeVisible (*(buttonView = std::make_unique<TextButton> ("new toggle button")));
+    buttonView->setButtonText("view");
+    buttonView->setClickingTogglesState (true);
+    buttonView->onClick = [this]() { viewButton(); };
+
+    auto createTextEditor = [this](std::unique_ptr<TextEditor>& editorPtr, const String& labelText, Colour color)
+    {
+        addAndMakeVisible(*(editorPtr = std::make_unique<TextEditor>("new text editor")));
+        editorPtr->setColour (TextEditor::outlineColourId, Colour (0x00522d2d));
+        editorPtr->setColour (TextEditor::shadowColourId, Colour (0x00c12323));
+        editorPtr->setColour(TextEditor::textColourId, Colours::black);
+        editorPtr->setColour(TextEditor::backgroundColourId, color);
+        editorPtr->setText(TRANS(labelText));
+        editorPtr->setName(editorPtr->getText());
+        editorPtr->setMultiLine (true);
+        editorPtr->setReturnKeyStartsNewLine (false);
+        editorPtr->setReadOnly (true);
+        editorPtr->setScrollbarsShown (false);
+        editorPtr->setCaretVisible (false);
+        editorPtr->setPopupMenuEnabled (false);
+    };
+
+    createTextEditor(C, "C", Constants::colorC);
+    createTextEditor(C2, "C", Constants::colorC);
+    createTextEditor(C3, "C", Constants::colorC);
+    createTextEditor(C4, "C", Constants::colorC);
+    createTextEditor(C5, "C", Constants::colorC);
+    createTextEditor(C6, "C", Constants::colorC);
+    createTextEditor(C7, "C", Constants::colorC);
+    createTextEditor(C8, "C", Constants::colorC);
+    createTextEditor(C9, "C", Constants::colorC);
+    createTextEditor(C10, "C", Constants::colorC);
+    createTextEditor(C11, "C", Constants::colorC);
+
+    createTextEditor(CS, "C#", Constants::colorCs);
+    createTextEditor(CS2, "C#", Constants::colorCs);
+    createTextEditor(CS3, "C#", Constants::colorCs);
+    createTextEditor(CS4, "C#", Constants::colorCs);
+    createTextEditor(CS5, "C#", Constants::colorCs);
+    createTextEditor(CS6, "C#", Constants::colorCs);
+    createTextEditor(CS7, "C#", Constants::colorCs);
+    createTextEditor(CS8, "C#", Constants::colorCs);
+    createTextEditor(CS9, "C#", Constants::colorCs);
+
+    createTextEditor(D, "D", Constants::colorD);
+    createTextEditor(D2, "D", Constants::colorD);
+    createTextEditor(D3, "D", Constants::colorD);
+    createTextEditor(D4, "D", Constants::colorD);
+    createTextEditor(D5, "D", Constants::colorD);
+    createTextEditor(D6, "D", Constants::colorD);
+    createTextEditor(D7, "D", Constants::colorD);
+    createTextEditor(D8, "D", Constants::colorD);
+    createTextEditor(D9, "D", Constants::colorD);
+
+    createTextEditor(DS, "D#", Constants::colorDs);
+    createTextEditor(DS2, "D#", Constants::colorDs);
+    createTextEditor(DS3, "D#", Constants::colorDs);
+    createTextEditor(DS4, "D#", Constants::colorDs);
+    createTextEditor(DS5, "D#", Constants::colorDs);
+    createTextEditor(DS6, "D#", Constants::colorDs);
+    createTextEditor(DS7, "D#", Constants::colorDs);
+    createTextEditor(DS8, "D#", Constants::colorDs);
+    createTextEditor(DS9, "D#", Constants::colorDs);
+    createTextEditor(DS10, "D#", Constants::colorDs);
+
+    createTextEditor(E, "E", Constants::colorE);
+    createTextEditor(E2, "E", Constants::colorE);
+    createTextEditor(E3, "E", Constants::colorE);
+    createTextEditor(E4, "E", Constants::colorE);
+    createTextEditor(E5, "E", Constants::colorE);
+    createTextEditor(E6, "E", Constants::colorE);
+    createTextEditor(E7, "E", Constants::colorE);
+    createTextEditor(E8, "E", Constants::colorE);
+    createTextEditor(E9, "E", Constants::colorE);
+
+    createTextEditor(F, "F", Constants::colorF);
+    createTextEditor(F1, "F", Constants::colorF);
+    createTextEditor(F2, "F", Constants::colorF);
+    createTextEditor(F3, "F", Constants::colorF);
+    createTextEditor(F4, "F", Constants::colorF);
+    createTextEditor(F5, "F", Constants::colorF);
+    createTextEditor(F6, "F", Constants::colorF);
+    createTextEditor(F7, "F", Constants::colorF);
+    createTextEditor(F8, "F", Constants::colorF);
+    createTextEditor(F9, "F", Constants::colorF);
+    createTextEditor(F10, "F", Constants::colorF);
+
+    createTextEditor(FS, "F#", Constants::colorFs);
+    createTextEditor(FS2, "F#", Constants::colorFs);
+    createTextEditor(FS3, "F#", Constants::colorFs);
+    createTextEditor(FS4, "F#", Constants::colorFs);
+    createTextEditor(FS5, "F#", Constants::colorFs);
+    createTextEditor(FS6, "F#", Constants::colorFs);
+    createTextEditor(FS7, "F#", Constants::colorFs);
+    createTextEditor(FS8, "F#", Constants::colorFs);
+    createTextEditor(FS9, "F#", Constants::colorFs);
+    createTextEditor(FS10, "F#", Constants::colorFs);
+
+    createTextEditor(G, "G", Constants::colorG);
+    createTextEditor(G2, "G", Constants::colorG);
+    createTextEditor(G3, "G", Constants::colorG);
+    createTextEditor(G4, "G", Constants::colorG);
+    createTextEditor(G5, "G", Constants::colorG);
+    createTextEditor(G6, "G", Constants::colorG);
+    createTextEditor(G7, "G", Constants::colorG);
+    createTextEditor(G8, "G", Constants::colorG);
+    createTextEditor(G9, "G", Constants::colorG);
+    createTextEditor(G10, "G", Constants::colorG);
+
+    createTextEditor(GS, "G#", Constants::colorGs);
+    createTextEditor(GS2, "G#", Constants::colorGs);
+    createTextEditor(GS3, "G#", Constants::colorGs);
+    createTextEditor(GS4, "G#", Constants::colorGs);
+    createTextEditor(GS5, "G#", Constants::colorGs);
+    createTextEditor(GS6, "G#", Constants::colorGs);
+    createTextEditor(GS7, "G#", Constants::colorGs);
+    createTextEditor(GS8, "G#", Constants::colorGs);
+    createTextEditor(GS9, "G#", Constants::colorGs);
+    createTextEditor(GS10, "G#", Constants::colorGs);
+
+    createTextEditor(A, "A", Constants::colorA);
+    createTextEditor(A2, "A", Constants::colorA);
+    createTextEditor(A3, "A", Constants::colorA);
+    createTextEditor(A4, "A", Constants::colorA);
+    createTextEditor(A5, "A", Constants::colorA);
+    createTextEditor(A6, "A", Constants::colorA);
+    createTextEditor(A7, "A", Constants::colorA);
+    createTextEditor(A8, "A", Constants::colorA);
+    createTextEditor(A9, "A", Constants::colorA);
+    createTextEditor(A10, "A", Constants::colorA);
+
+    createTextEditor(AS, "A#", Constants::colorAs);
+    createTextEditor(AS2, "A#", Constants::colorAs);
+    createTextEditor(AS3, "A#", Constants::colorAs);
+    createTextEditor(AS4, "A#", Constants::colorAs);
+    createTextEditor(AS5, "A#", Constants::colorAs);
+    createTextEditor(AS6, "A#", Constants::colorAs);
+    createTextEditor(AS7, "A#", Constants::colorAs);
+    createTextEditor(AS8, "A#", Constants::colorAs);
+    createTextEditor(AS9, "A#", Constants::colorAs);
+    createTextEditor(AS10, "A#", Constants::colorAs);
+    createTextEditor(AS11, "A#", Constants::colorAs);
+
+    createTextEditor(B, "B", Constants::colorB);
+    createTextEditor(B2, "B", Constants::colorB);
+    createTextEditor(B3, "B", Constants::colorB);
+    createTextEditor(B4, "B", Constants::colorB);
+    createTextEditor(B5, "B", Constants::colorB);
+    createTextEditor(B6, "B", Constants::colorB);
+    createTextEditor(B7, "B", Constants::colorB);
+    createTextEditor(B8, "B", Constants::colorB);
+    createTextEditor(B9, "B", Constants::colorB);
+    createTextEditor(B10, "B", Constants::colorB);
 
     cachedImage_gneck_inverted_png_1 = std::make_unique<Image>(ImageCache::getFromMemory (gneck_inverted_png, gneck_inverted_pngSize));
 
-    //[UserPreSize]
-    //[/UserPreSize]
-
-    setSize (1000, 600);
-
-
-    //[Constructor] You can add your own custom stuff here..
+    setSize (1000, 400); // Call Resized()
+    //==============================================================================
 
 	guitarnotes.push_back(std::move(C));
 	guitarnotes.push_back(std::move(C2));
@@ -1815,7 +367,6 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
 	guitarnotes.push_back(std::move(F8));
 	guitarnotes.push_back(std::move(F9));
 	guitarnotes.push_back(std::move(F10));
-
 
 	guitarnotes.push_back(std::move(FS));
 	guitarnotes.push_back(std::move(FS2));
@@ -1884,730 +435,415 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
 	guitarnotes.push_back(std::move(B9));
 	guitarnotes.push_back(std::move(B10));
 
-	resetGuitarNotes();
-    //[/Constructor]
+    // Restore plugin state
+    scaleKeyAttachment = std::make_unique<AudioProcessorValueTreeState::ComboBoxAttachment>(*p.state, "scaleKey", *scaleKey);
+    scaleModeAttachment = std::make_unique<AudioProcessorValueTreeState::ComboBoxAttachment>(*p.state, "scaleMode", *scaleMode);
+    chordRootAttachment = std::make_unique<AudioProcessorValueTreeState::ComboBoxAttachment>(*p.state, "chordRoot", *chordRoot);
+    chordTypeAttachment = std::make_unique<AudioProcessorValueTreeState::ComboBoxAttachment>(*p.state, "chordType", *chordType);
+    
+    buttonColourAttachment = std::make_unique<AudioProcessorValueTreeState::ButtonAttachment>(*p.state, "buttonColour", *buttonColour);
+    buttonViewAttachment = std::make_unique<AudioProcessorValueTreeState::ButtonAttachment>(*p.state, "buttonView", *buttonView);
+
+    viewAllAttachment = std::make_unique<AudioProcessorValueTreeState::ButtonAttachment>(*p.state, "viewAll", *viewAll);
+    viewScaleAttachment = std::make_unique<AudioProcessorValueTreeState::ButtonAttachment>(*p.state, "viewScale", *viewScale);
+    viewChordAttachment = std::make_unique<AudioProcessorValueTreeState::ButtonAttachment>(*p.state, "viewChord", *viewChord);
+    viewMidiAttachment = std::make_unique<AudioProcessorValueTreeState::ButtonAttachment>(*p.state, "viewMidi", *viewMidi);
+
+    if (viewAll->getToggleState())
+    {
+        selectButton("All");
+    }
+    else if (viewScale->getToggleState())
+    {
+        selectButton("Scale");
+    }
+    else if (viewChord->getToggleState())
+    {
+        selectButton("Chord");
+    }
+    else if (viewMidi->getToggleState())
+    {
+        selectButton("All");
+    }
 }
 
-PluginEditor::~PluginEditor()
-{
-    //[Destructor_pre]. You can add your own custom destruction code here..
-    //[/Destructor_pre]
-
-    groupComponent = nullptr;
-    groupComponent4 = nullptr;
-    groupComponent3 = nullptr;
-    groupComponent2 = nullptr;
-    scaleKey = nullptr;
-    comboBox2 = nullptr;
-    scaleMode = nullptr;
-    chordRoot = nullptr;
-    chordType = nullptr;
-    textEditor2 = nullptr;
-    txtScale = nullptr;
-    txtChord = nullptr;
-    GS4 = nullptr;
-    DS3 = nullptr;
-    AS2 = nullptr;
-    F1 = nullptr;
-    C5 = nullptr;
-    F2 = nullptr;
-    A4 = nullptr;
-    E3 = nullptr;
-    B2 = nullptr;
-    FS = nullptr;
-    CS5 = nullptr;
-    FS6 = nullptr;
-    AS4 = nullptr;
-    F = nullptr;
-    C2 = nullptr;
-    G = nullptr;
-    D5 = nullptr;
-    G6 = nullptr;
-    B4 = nullptr;
-    FS3 = nullptr;
-    CS2 = nullptr;
-    GS = nullptr;
-    DS5 = nullptr;
-    GS6 = nullptr;
-    C4 = nullptr;
-    G3 = nullptr;
-    D2 = nullptr;
-    A = nullptr;
-    E5 = nullptr;
-    A6 = nullptr;
-    CS4 = nullptr;
-    GS3 = nullptr;
-    DS2 = nullptr;
-    AS = nullptr;
-    F5 = nullptr;
-    AS6 = nullptr;
-    D4 = nullptr;
-    A3 = nullptr;
-    E2 = nullptr;
-    B = nullptr;
-    FS5 = nullptr;
-    B6 = nullptr;
-    DS4 = nullptr;
-    AS3 = nullptr;
-    F3 = nullptr;
-    C = nullptr;
-    G5 = nullptr;
-    C6 = nullptr;
-    E4 = nullptr;
-    B3 = nullptr;
-    FS2 = nullptr;
-    CS = nullptr;
-    GS5 = nullptr;
-    CS6 = nullptr;
-    F4 = nullptr;
-    C3 = nullptr;
-    G2 = nullptr;
-    D = nullptr;
-    A5 = nullptr;
-    D6 = nullptr;
-    FS4 = nullptr;
-    CS3 = nullptr;
-    GS2 = nullptr;
-    DS = nullptr;
-    AS5 = nullptr;
-    DS6 = nullptr;
-    G4 = nullptr;
-    D3 = nullptr;
-    A2 = nullptr;
-    E = nullptr;
-    B5 = nullptr;
-    E6 = nullptr;
-    GS7 = nullptr;
-    DS7 = nullptr;
-    AS7 = nullptr;
-    F6 = nullptr;
-    C7 = nullptr;
-    F7 = nullptr;
-    A7 = nullptr;
-    E7 = nullptr;
-    B7 = nullptr;
-    FS7 = nullptr;
-    CS7 = nullptr;
-    FS8 = nullptr;
-    AS8 = nullptr;
-    F8 = nullptr;
-    C8 = nullptr;
-    G7 = nullptr;
-    D7 = nullptr;
-    G8 = nullptr;
-    B8 = nullptr;
-    FS9 = nullptr;
-    CS8 = nullptr;
-    GS8 = nullptr;
-    DS8 = nullptr;
-    GS9 = nullptr;
-    C9 = nullptr;
-    G9 = nullptr;
-    D8 = nullptr;
-    A8 = nullptr;
-    E8 = nullptr;
-    A9 = nullptr;
-    CS9 = nullptr;
-    GS10 = nullptr;
-    DS9 = nullptr;
-    AS9 = nullptr;
-    F9 = nullptr;
-    AS10 = nullptr;
-    D9 = nullptr;
-    A10 = nullptr;
-    E9 = nullptr;
-    B9 = nullptr;
-    FS10 = nullptr;
-    B10 = nullptr;
-    DS10 = nullptr;
-    AS11 = nullptr;
-    F10 = nullptr;
-    C10 = nullptr;
-    G10 = nullptr;
-    C11 = nullptr;
-
-
-    //[Destructor]. You can add your own custom destruction code here..
-    //[/Destructor]
-}
+PluginEditor::~PluginEditor() = default;
 
 //==============================================================================
 void PluginEditor::paint (Graphics& g)
 {
-    //[UserPrePaint] Add your own custom painting code here..
-    //[/UserPrePaint]
-
-    g.fillAll (Colours::cadetblue);
+    g.fillAll (backgroundColour);
 
     {
-        int x = 16, y = 328, width = 968, height = 212;
-        //[UserPaintCustomArguments] Customize the painting arguments here..
-        //[/UserPaintCustomArguments]
+        int x = 16, y = 150, width = 968, height = 212;
         g.setColour (Colours::black);
         g.drawImage (*cachedImage_gneck_inverted_png_1,
                      x, y, width, height,
                      0, 0, cachedImage_gneck_inverted_png_1->getWidth(), cachedImage_gneck_inverted_png_1->getHeight());
     }
-
     {
-        int x = 13, y = 168, width = 109, height = 30;
-        String text (TRANS("KEY"));
-        Colour fillColour = Colours::black;
-        //[UserPaintCustomArguments] Customize the painting arguments here..
-        //[/UserPaintCustomArguments]
-        g.setColour (fillColour);
-        g.setFont (Font ("Arca Majora 3", 26.40f, Font::plain).withTypefaceStyle ("Bold"));
-        g.drawText (text, x, y, width, height,
-                    Justification::centred, true);
-    }
-
-    {
-        int x = 341, y = 0, width = 411, height = 72;
-        String text (TRANS("MTHVST"));
-        Colour fillColour = Colours::black;
-        //[UserPaintCustomArguments] Customize the painting arguments here..
-        //[/UserPaintCustomArguments]
-        g.setColour (fillColour);
-        g.setFont (Font ("Arca Majora 3", 67.30f, Font::plain).withTypefaceStyle ("Bold"));
-        g.drawText (text, x, y, width, height,
-                    Justification::centred, true);
-    }
-
-    {
-        int x = 220, y = 716, width = 588, height = 5;
-        Colour fillColour = Colours::black;
-        //[UserPaintCustomArguments] Customize the painting arguments here..
-        //[/UserPaintCustomArguments]
-        g.setColour (fillColour);
-        g.fillRect (x, y, width, height);
-    }
-
-    {
-        int x = 324, y = 724, width = 44, height = 30;
+        int x = 146, y = 363, width = 48, height = 30;
         String text (TRANS("3"));
-        Colour fillColour = Colours::black;
-        //[UserPaintCustomArguments] Customize the painting arguments here..
-        //[/UserPaintCustomArguments]
+        Colour fillColour = Colours::white;
         g.setColour (fillColour);
-        g.setFont (Font ("Arca Majora 3", 15.00f, Font::plain));
+        g.setFont (11.0f);
         g.drawText (text, x, y, width, height,
                     Justification::centred, true);
     }
 
     {
-        int x = 420, y = 724, width = 44, height = 30;
+        int x = 264, y = 363, width = 40, height = 30;
         String text (TRANS("5"));
-        Colour fillColour = Colours::black;
-        //[UserPaintCustomArguments] Customize the painting arguments here..
-        //[/UserPaintCustomArguments]
+        Colour fillColour = Colours::white;
         g.setColour (fillColour);
-        g.setFont (Font ("Arca Majora 3", 15.00f, Font::plain));
+        g.setFont (11.0f);
         g.drawText (text, x, y, width, height,
                     Justification::centred, true);
     }
 
     {
-        int x = 524, y = 724, width = 44, height = 30;
+        int x = 365, y = 363, width = 51, height = 30;
         String text (TRANS("7"));
-        Colour fillColour = Colours::black;
-        //[UserPaintCustomArguments] Customize the painting arguments here..
-        //[/UserPaintCustomArguments]
+        Colour fillColour = Colours::white;
         g.setColour (fillColour);
-        g.setFont (Font ("Arca Majora 3", 15.00f, Font::plain));
+        g.setFont (11.0f);
         g.drawText (text, x, y, width, height,
                     Justification::centred, true);
     }
 
     {
-        int x = 612, y = 724, width = 44, height = 30;
+        int x = 470, y = 363, width = 43, height = 30;
         String text (TRANS("9"));
-        Colour fillColour = Colours::black;
-        //[UserPaintCustomArguments] Customize the painting arguments here..
-        //[/UserPaintCustomArguments]
+        Colour fillColour = Colours::white;
         g.setColour (fillColour);
-        g.setFont (Font ("Arca Majora 3", 15.00f, Font::plain));
+        g.setFont (11.0f);
         g.drawText (text, x, y, width, height,
                     Justification::centred, true);
     }
 
     {
-        int x = 756, y = 724, width = 44, height = 30;
+        int x = 614, y = 363, width = 43, height = 30;
         String text (TRANS("12"));
-        Colour fillColour = Colours::black;
-        //[UserPaintCustomArguments] Customize the painting arguments here..
-        //[/UserPaintCustomArguments]
+        Colour fillColour = Colours::white;
         g.setColour (fillColour);
-        g.setFont (Font ("Arca Majora 3", 15.00f, Font::plain));
+        g.setFont (11.0f);
         g.drawText (text, x, y, width, height,
                     Justification::centred, true);
     }
 
     {
-        int x = 93, y = 168, width = 200, height = 30;
-        String text (TRANS("MODE/SCALE"));
-        Colour fillColour = Colours::black;
-        //[UserPaintCustomArguments] Customize the painting arguments here..
-        //[/UserPaintCustomArguments]
-        g.setColour (fillColour);
-        g.setFont (Font ("Arca Majora 3", 26.40f, Font::plain).withTypefaceStyle ("Bold"));
-        g.drawText (text, x, y, width, height,
-                    Justification::centred, true);
-    }
-
-    {
-        int x = 29, y = 24, width = 200, height = 30;
-        String text (TRANS("CHORD"));
-        Colour fillColour = Colours::black;
-        //[UserPaintCustomArguments] Customize the painting arguments here..
-        //[/UserPaintCustomArguments]
-        g.setColour (fillColour);
-        g.setFont (Font ("Arca Majora 3", 26.40f, Font::plain).withTypefaceStyle ("Bold"));
-        g.drawText (text, x, y, width, height,
-                    Justification::centred, true);
-    }
-
-    {
-        int x = 445, y = 48, width = 200, height = 30;
-        String text (TRANS("MusicTheoryHelperVST"));
-        Colour fillColour = Colours::black;
-        //[UserPaintCustomArguments] Customize the painting arguments here..
-        //[/UserPaintCustomArguments]
-        g.setColour (fillColour);
-        g.setFont (Font ("Arca Majora 3", 15.00f, Font::plain).withTypefaceStyle ("Bold"));
-        g.drawText (text, x, y, width, height,
-                    Justification::centred, true);
-    }
-
-    {
-        int x = 144, y = 544, width = 48, height = 30;
-        String text (TRANS("3"));
-        Colour fillColour = Colours::black;
-        //[UserPaintCustomArguments] Customize the painting arguments here..
-        //[/UserPaintCustomArguments]
-        g.setColour (fillColour);
-        g.setFont (Font ("Arca Majora 3", 15.00f, Font::plain).withTypefaceStyle ("Bold"));
-        g.drawText (text, x, y, width, height,
-                    Justification::centred, true);
-    }
-
-    {
-        int x = 264, y = 544, width = 40, height = 30;
-        String text (TRANS("5"));
-        Colour fillColour = Colours::black;
-        //[UserPaintCustomArguments] Customize the painting arguments here..
-        //[/UserPaintCustomArguments]
-        g.setColour (fillColour);
-        g.setFont (Font ("Arca Majora 3", 15.00f, Font::plain).withTypefaceStyle ("Bold"));
-        g.drawText (text, x, y, width, height,
-                    Justification::centred, true);
-    }
-
-    {
-        int x = 365, y = 544, width = 51, height = 30;
-        String text (TRANS("7"));
-        Colour fillColour = Colours::black;
-        //[UserPaintCustomArguments] Customize the painting arguments here..
-        //[/UserPaintCustomArguments]
-        g.setColour (fillColour);
-        g.setFont (Font ("Arca Majora 3", 15.00f, Font::plain).withTypefaceStyle ("Bold"));
-        g.drawText (text, x, y, width, height,
-                    Justification::centred, true);
-    }
-
-    {
-        int x = 469, y = 544, width = 43, height = 30;
-        String text (TRANS("9"));
-        Colour fillColour = Colours::black;
-        //[UserPaintCustomArguments] Customize the painting arguments here..
-        //[/UserPaintCustomArguments]
-        g.setColour (fillColour);
-        g.setFont (Font ("Arca Majora 3", 15.00f, Font::plain).withTypefaceStyle ("Bold"));
-        g.drawText (text, x, y, width, height,
-                    Justification::centred, true);
-    }
-
-    {
-        int x = 613, y = 544, width = 43, height = 30;
-        String text (TRANS("12"));
-        Colour fillColour = Colours::black;
-        //[UserPaintCustomArguments] Customize the painting arguments here..
-        //[/UserPaintCustomArguments]
-        g.setColour (fillColour);
-        g.setFont (Font ("Arca Majora 3", 15.00f, Font::plain).withTypefaceStyle ("Bold"));
-        g.drawText (text, x, y, width, height,
-                    Justification::centred, true);
-    }
-
-    {
-        int x = 741, y = 544, width = 51, height = 30;
+        int x = 742, y = 363, width = 51, height = 30;
         String text (TRANS("15"));
-        Colour fillColour = Colours::black;
-        //[UserPaintCustomArguments] Customize the painting arguments here..
-        //[/UserPaintCustomArguments]
+        Colour fillColour = Colours::white;
         g.setColour (fillColour);
-        g.setFont (Font ("Arca Majora 3", 15.00f, Font::plain).withTypefaceStyle ("Bold"));
+        g.setFont(11.00f);
         g.drawText (text, x, y, width, height,
                     Justification::centred, true);
     }
 
     {
-        int x = 829, y = 544, width = 43, height = 30;
+        int x = 829, y = 363, width = 43, height = 30;
         String text (TRANS("17"));
-        Colour fillColour = Colours::black;
-        //[UserPaintCustomArguments] Customize the painting arguments here..
-        //[/UserPaintCustomArguments]
+        Colour fillColour = Colours::white;
+        g.setFont(11.0f);
         g.setColour (fillColour);
-        g.setFont (Font ("Arca Majora 3", 15.00f, Font::plain).withTypefaceStyle ("Bold"));
         g.drawText (text, x, y, width, height,
                     Justification::centred, true);
     }
 
     {
-        int x = 901, y = 544, width = 51, height = 30;
+        int x = 901, y = 363, width = 51, height = 30;
         String text (TRANS("19"));
-        Colour fillColour = Colours::black;
-        //[UserPaintCustomArguments] Customize the painting arguments here..
-        //[/UserPaintCustomArguments]
+        Colour fillColour = Colours::white;
         g.setColour (fillColour);
-        g.setFont (Font ("Arca Majora 3", 15.00f, Font::plain).withTypefaceStyle ("Bold"));
+        g.setFont (11.0f);
         g.drawText (text, x, y, width, height,
                     Justification::centred, true);
     }
-
-    //[UserPaint] Add your own custom painting code here..
-    //[/UserPaint]
 }
 
 void PluginEditor::resized()
 {
-    //[UserPreResize] Add your own custom resize code here..
-    //[/UserPreResize]
+    // x,y,width,height
+    chordsComponent->setBounds (8, 8, 200, 75);
+    chordRoot->setBounds (15, 25, 60, 24);
+    chordType->setBounds (75, 25, 120, 24);
+    txtChord->setBounds (15, 50, 180, 25);
 
-    groupComponent->setBounds (8, 264, 985, 320);
-    groupComponent4->setBounds (8, 136, 272, 128);
-    groupComponent3->setBounds (288, 72, 704, 192);
-    groupComponent2->setBounds (8, 8, 272, 128);
-    scaleKey->setBounds (40, 200, 64, 24);
-    comboBox2->setBounds (24, 288, 150, 24);
-    scaleMode->setBounds (120, 200, 152, 24);
-    chordRoot->setBounds (56, 56, 64, 24);
-    chordType->setBounds (144, 56, 88, 24);
-    textEditor2->setBounds (304, 96, 680, 160);
-    txtScale->setBounds (32, 224, 224, 32);
-    txtChord->setBounds (16, 90, 256, 32);
-    GS4->setBounds (24, 400, 56, 24);
-    DS3->setBounds (24, 440, 56, 24);
-    AS2->setBounds (24, 480, 56, 24);
-    F1->setBounds (24, 525, 56, 24);
-    C5->setBounds (24, 360, 56, 24);
-    F2->setBounds (24, 317, 56, 24);
-    A4->setBounds (84, 400, 56, 24);
-    E3->setBounds (84, 440, 56, 24);
-    B2->setBounds (84, 480, 56, 24);
-    FS->setBounds (84, 525, 56, 24);
-    CS5->setBounds (84, 360, 56, 24);
-    FS6->setBounds (84, 317, 56, 24);
-    AS4->setBounds (145, 400, 52, 24);
-    F->setBounds (145, 440, 52, 24);
-    C2->setBounds (145, 480, 52, 24);
-    G->setBounds (145, 525, 52, 24);
-    D5->setBounds (145, 360, 52, 24);
-    G6->setBounds (145, 317, 52, 24);
-    B4->setBounds (202, 400, 52, 24);
-    FS3->setBounds (202, 440, 52, 24);
-    CS2->setBounds (202, 480, 52, 24);
-    GS->setBounds (202, 525, 52, 24);
-    DS5->setBounds (202, 360, 52, 24);
-    GS6->setBounds (202, 317, 52, 24);
-    C4->setBounds (257, 400, 52, 24);
-    G3->setBounds (257, 440, 52, 24);
-    D2->setBounds (257, 480, 52, 24);
-    A->setBounds (257, 525, 52, 24);
-    E5->setBounds (257, 360, 52, 24);
-    A6->setBounds (257, 317, 52, 24);
-    CS4->setBounds (312, 400, 51, 24);
-    GS3->setBounds (312, 440, 51, 24);
-    DS2->setBounds (312, 480, 51, 24);
-    AS->setBounds (312, 525, 51, 24);
-    F5->setBounds (312, 360, 51, 24);
-    AS6->setBounds (312, 317, 51, 24);
-    D4->setBounds (367, 400, 48, 24);
-    A3->setBounds (367, 440, 48, 24);
-    E2->setBounds (367, 480, 48, 24);
-    B->setBounds (367, 525, 48, 24);
-    FS5->setBounds (367, 360, 48, 24);
-    B6->setBounds (367, 317, 48, 24);
-    DS4->setBounds (420, 400, 46, 24);
-    AS3->setBounds (420, 440, 46, 24);
-    F3->setBounds (420, 480, 46, 24);
-    C->setBounds (420, 525, 46, 24);
-    G5->setBounds (420, 360, 46, 24);
-    C6->setBounds (420, 317, 46, 24);
-    E4->setBounds (471, 400, 44, 24);
-    B3->setBounds (471, 440, 44, 24);
-    FS2->setBounds (471, 480, 44, 24);
-    CS->setBounds (471, 525, 44, 24);
-    GS5->setBounds (471, 360, 44, 24);
-    CS6->setBounds (471, 317, 44, 24);
-    F4->setBounds (520, 400, 44, 24);
-    C3->setBounds (520, 440, 44, 24);
-    G2->setBounds (520, 480, 44, 24);
-    D->setBounds (520, 525, 44, 24);
-    A5->setBounds (520, 360, 44, 24);
-    D6->setBounds (520, 317, 44, 24);
-    FS4->setBounds (569, 400, 43, 24);
-    CS3->setBounds (569, 440, 43, 24);
-    GS2->setBounds (569, 480, 43, 24);
-    DS->setBounds (569, 525, 43, 24);
-    AS5->setBounds (569, 360, 43, 24);
-    DS6->setBounds (569, 317, 43, 24);
-    G4->setBounds (616, 400, 42, 24);
-    D3->setBounds (616, 440, 42, 24);
-    A2->setBounds (616, 480, 42, 24);
-    E->setBounds (616, 525, 42, 24);
-    B5->setBounds (616, 360, 42, 24);
-    E6->setBounds (616, 317, 42, 24);
-    GS7->setBounds (664, 400, 39, 24);
-    DS7->setBounds (664, 440, 39, 24);
-    AS7->setBounds (664, 480, 39, 24);
-    F6->setBounds (664, 525, 39, 24);
-    C7->setBounds (664, 360, 39, 24);
-    F7->setBounds (664, 317, 39, 24);
-    A7->setBounds (708, 400, 38, 24);
-    E7->setBounds (708, 440, 38, 24);
-    B7->setBounds (708, 480, 38, 24);
-    FS7->setBounds (708, 525, 38, 24);
-    CS7->setBounds (708, 360, 38, 24);
-    FS8->setBounds (708, 317, 38, 24);
-    AS8->setBounds (751, 400, 36, 24);
-    F8->setBounds (751, 440, 36, 24);
-    C8->setBounds (751, 480, 36, 24);
-    G7->setBounds (751, 525, 36, 24);
-    D7->setBounds (751, 360, 36, 24);
-    G8->setBounds (751, 317, 36, 24);
-    B8->setBounds (792, 400, 36, 24);
-    FS9->setBounds (792, 440, 36, 24);
-    CS8->setBounds (792, 480, 36, 24);
-    GS8->setBounds (792, 525, 36, 24);
-    DS8->setBounds (792, 360, 36, 24);
-    GS9->setBounds (792, 317, 36, 24);
-    C9->setBounds (834, 400, 34, 24);
-    G9->setBounds (834, 440, 34, 24);
-    D8->setBounds (834, 480, 34, 24);
-    A8->setBounds (834, 525, 34, 24);
-    E8->setBounds (834, 360, 34, 24);
-    A9->setBounds (834, 317, 34, 24);
-    CS9->setBounds (873, 400, 32, 24);
-    GS10->setBounds (873, 440, 32, 24);
-    DS9->setBounds (873, 480, 32, 24);
-    AS9->setBounds (873, 525, 32, 24);
-    F9->setBounds (873, 360, 32, 24);
-    AS10->setBounds (873, 317, 32, 24);
-    D9->setBounds (911, 400, 32, 24);
-    A10->setBounds (911, 440, 32, 24);
-    E9->setBounds (911, 480, 32, 24);
-    B9->setBounds (911, 525, 32, 24);
-    FS10->setBounds (911, 360, 32, 24);
-    B10->setBounds (911, 317, 32, 24);
-    DS10->setBounds (949, 400, 30, 24);
-    AS11->setBounds (949, 440, 30, 24);
-    F10->setBounds (949, 480, 30, 24);
-    C10->setBounds (949, 525, 30, 24);
-    G10->setBounds (949, 360, 30, 24);
-    C11->setBounds (949, 317, 30, 24);
-    //[UserResized] Add your own custom resize handling here..
-    //[/UserResized]
+    scalesComponent->setBounds (208, 8, 200, 75);
+    scaleKey->setBounds (215, 25, 60, 24);
+    scaleMode->setBounds (275, 25, 125, 24);
+    txtScale->setBounds (215, 50, 184, 25);
+
+    infoComponent->setBounds (408, 8, 584, 75);
+    infoText->setBounds (415, 25, 570, 50);
+
+    guitarComponent->setBounds (8, 90, 985, 300);
+    
+    viewAll->setBounds (15, 110, 50, 24);
+    viewScale->setBounds (65, 110, 75, 24);
+    viewChord->setBounds (130, 110, 75, 24);
+    viewMidi->setBounds (200, 110, 75, 24);
+    
+    buttonColour->setBounds (910, 107, 75, 24);
+    buttonView->setBounds (830, 107, 75, 24);
+
+    GS4->setBounds (24, 222, 56, 24);
+    DS3->setBounds (24, 262, 56, 24);
+    AS2->setBounds (24, 302, 56, 24);
+    F1->setBounds (24, 347, 56, 24);
+    C5->setBounds (24, 182, 56, 24);
+    F2->setBounds (24, 139, 56, 24);
+    A4->setBounds (84, 222, 56, 24);
+    E3->setBounds (84, 262, 56, 24);
+    B2->setBounds (84, 302, 56, 24);
+    FS->setBounds (84, 347, 56, 24);
+    CS5->setBounds (84, 182, 56, 24);
+    FS6->setBounds (84, 139, 56, 24);
+    AS4->setBounds (145, 222, 52, 24);
+    F->setBounds (145, 262, 52, 24);
+    C2->setBounds (145, 302, 52, 24);
+    G->setBounds (145, 347, 52, 24);
+    D5->setBounds (145, 182, 52, 24);
+    G6->setBounds (145, 139, 52, 24);
+    B4->setBounds (202, 222, 52, 24);
+    FS3->setBounds (202, 262, 52, 24);
+    CS2->setBounds (202, 302, 52, 24);
+    GS->setBounds (202, 347, 52, 24);
+    DS5->setBounds (202, 182, 52, 24);
+    GS6->setBounds (202, 139, 52, 24);
+    C4->setBounds (257, 222, 52, 24);
+    G3->setBounds (257, 262, 52, 24);
+    D2->setBounds (257, 302, 52, 24);
+    A->setBounds (257, 347, 52, 24);
+    E5->setBounds (257, 182, 52, 24);
+    A6->setBounds (257, 139, 52, 24);
+    CS4->setBounds (312, 222, 51, 24);
+    GS3->setBounds (312, 262, 51, 24);
+    DS2->setBounds (312, 302, 51, 24);
+    AS->setBounds (312, 347, 51, 24);
+    F5->setBounds (312, 182, 51, 24);
+    AS6->setBounds (312, 139, 51, 24);
+    D4->setBounds (367, 222, 48, 24);
+    A3->setBounds (367, 262, 48, 24);
+    E2->setBounds (367, 302, 48, 24);
+    B->setBounds (367, 347, 48, 24);
+    FS5->setBounds (367, 182, 48, 24);
+    B6->setBounds (367, 139, 48, 24);
+    DS4->setBounds (420, 222, 46, 24);
+    AS3->setBounds (420, 262, 46, 24);
+    F3->setBounds (420, 302, 46, 24);
+    C->setBounds (420, 347, 46, 24);
+    G5->setBounds (420, 182, 46, 24);
+    C6->setBounds (420, 139, 46, 24);
+    E4->setBounds (471, 222, 44, 24);
+    B3->setBounds (471, 262, 44, 24);
+    FS2->setBounds (471, 302, 44, 24);
+    CS->setBounds (471, 347, 44, 24);
+    GS5->setBounds (471, 182, 44, 24);
+    CS6->setBounds (471, 139, 44, 24);
+    F4->setBounds (520, 222, 44, 24);
+    C3->setBounds (520, 262, 44, 24);
+    G2->setBounds (520, 302, 44, 24);
+    D->setBounds (520, 347, 44, 24);
+    A5->setBounds (520, 182, 44, 24);
+    D6->setBounds (520, 139, 44, 24);
+    FS4->setBounds (569, 222, 43, 24);
+    CS3->setBounds (569, 262, 43, 24);
+    GS2->setBounds (569, 302, 43, 24);
+    DS->setBounds (569, 347, 43, 24);
+    AS5->setBounds (569, 182, 43, 24);
+    DS6->setBounds (569, 139, 43, 24);
+    G4->setBounds (616, 222, 42, 24);
+    D3->setBounds (616, 262, 42, 24);
+    A2->setBounds (616, 302, 42, 24);
+    E->setBounds (616, 347, 42, 24);
+    B5->setBounds (616, 182, 42, 24);
+    E6->setBounds (616, 139, 42, 24);
+    GS7->setBounds (664, 222, 39, 24);
+    DS7->setBounds (664, 262, 39, 24);
+    AS7->setBounds (664, 302, 39, 24);
+    F6->setBounds (664, 347, 39, 24);
+    C7->setBounds (664, 182, 39, 24);
+    F7->setBounds (664, 139, 39, 24);
+    A7->setBounds (708, 222, 38, 24);
+    E7->setBounds (708, 262, 38, 24);
+    B7->setBounds (708, 302, 38, 24);
+    FS7->setBounds (708, 347, 38, 24);
+    CS7->setBounds (708, 182, 38, 24);
+    FS8->setBounds (708, 139, 38, 24);
+    AS8->setBounds (751, 222, 36, 24);
+    F8->setBounds (751, 262, 36, 24);
+    C8->setBounds (751, 302, 36, 24);
+    G7->setBounds (751, 347, 36, 24);
+    D7->setBounds (751, 182, 36, 24);
+    G8->setBounds (751, 139, 36, 24);
+    B8->setBounds (792, 222, 36, 24);
+    FS9->setBounds (792, 262, 36, 24);
+    CS8->setBounds (792, 302, 36, 24);
+    GS8->setBounds (792, 347, 36, 24);
+    DS8->setBounds (792, 182, 36, 24);
+    GS9->setBounds (792, 139, 36, 24);
+    C9->setBounds (834, 222, 34, 24);
+    G9->setBounds (834, 262, 34, 24);
+    D8->setBounds (834, 302, 34, 24);
+    A8->setBounds (834, 347, 34, 24);
+    E8->setBounds (834, 182, 34, 24);
+    A9->setBounds (834, 139, 34, 24);
+    CS9->setBounds (873, 222, 32, 24);
+    GS10->setBounds (873, 262, 32, 24);
+    DS9->setBounds (873, 302, 32, 24);
+    AS9->setBounds (873, 347, 32, 24);
+    F9->setBounds (873, 182, 32, 24);
+    AS10->setBounds (873, 139, 32, 24);
+    D9->setBounds (911, 222, 32, 24);
+    A10->setBounds (911, 262, 32, 24);
+    E9->setBounds (911, 302, 32, 24);
+    B9->setBounds (911, 347, 32, 24);
+    FS10->setBounds (911, 182, 32, 24);
+    B10->setBounds (911, 139, 32, 24);
+    DS10->setBounds (949, 222, 30, 24);
+    AS11->setBounds (949, 262, 30, 24);
+    F10->setBounds (949, 302, 30, 24);
+    C10->setBounds (949, 347, 30, 24);
+    G10->setBounds (949, 182, 30, 24);
+    C11->setBounds (949, 139, 30, 24);
+}
+
+void PluginEditor::switchColour()
+{
+    switch (currentColourState)
+    {
+        case ColourThemes::CadetBlue:
+            currentColourState = ColourThemes::TransparentBlack;
+            backgroundColour = Colours::transparentBlack;
+            break;
+
+        case ColourThemes::TransparentBlack:
+            currentColourState = ColourThemes::CadetBlue;
+            backgroundColour = Colours::cadetblue;
+            break;
+    }
+    repaint();
+}
+
+void PluginEditor::viewButton()
+{
+    if(viewScale->getToggleState()) {
+        updateGuitarNeckScales();
+    }
+    else if(viewChord->getToggleState()) {
+        updateGuitarNeckChords();
+    }
+}
+
+void PluginEditor::selectButton(const std::string & function)
+{
+    if(function == "All") {
+        viewAll->setToggleState(true, dontSendNotification);
+        viewScale->setToggleState(false, dontSendNotification);
+        viewChord->setToggleState(false, dontSendNotification);
+        viewMidi->setToggleState(false, dontSendNotification);
+        processor.state->getParameter("viewAll")->setValueNotifyingHost(1.0f); 
+        processor.state->getParameter("viewScale")->setValueNotifyingHost(0.0f);
+        processor.state->getParameter("viewChord")->setValueNotifyingHost(0.0f);
+        processor.state->getParameter("viewMidi")->setValueNotifyingHost(0.0f);
+        infoText->setText("", dontSendNotification);
+        resetGuitarNotes();
+    }
+    else if(function == "Scale") {
+        viewScale->setToggleState(true, dontSendNotification);
+        viewAll->setToggleState(false, dontSendNotification);
+        viewChord->setToggleState(false, dontSendNotification);
+        viewMidi->setToggleState(false, dontSendNotification);
+        processor.state->getParameter("viewAll")->setValueNotifyingHost(0.0f); 
+        processor.state->getParameter("viewScale")->setValueNotifyingHost(1.0f);
+        processor.state->getParameter("viewChord")->setValueNotifyingHost(0.0f);
+        processor.state->getParameter("viewMidi")->setValueNotifyingHost(0.0f);
+        updateGuitarNeckScales();
+    }
+    else if(function == "Chord") {
+        viewChord->setToggleState(true, dontSendNotification);
+        viewAll->setToggleState(false, dontSendNotification);
+        viewScale->setToggleState(false, dontSendNotification);
+        viewMidi->setToggleState(false, dontSendNotification);
+        processor.state->getParameter("viewAll")->setValueNotifyingHost(0.0f); 
+        processor.state->getParameter("viewScale")->setValueNotifyingHost(0.0f);
+        processor.state->getParameter("viewChord")->setValueNotifyingHost(1.0f);
+        processor.state->getParameter("viewMidi")->setValueNotifyingHost(0.0f);
+        updateGuitarNeckChords();
+    }
+    else if(function == "Midi") {
+        viewMidi->setToggleState(true, dontSendNotification);
+        viewAll->setToggleState(false, dontSendNotification);
+        viewScale->setToggleState(false, dontSendNotification);
+        viewChord->setToggleState(false, dontSendNotification);
+        processor.state->getParameter("viewAll")->setValueNotifyingHost(0.0f); 
+        processor.state->getParameter("viewScale")->setValueNotifyingHost(0.0f);
+        processor.state->getParameter("viewChord")->setValueNotifyingHost(0.0f);
+        processor.state->getParameter("viewMidi")->setValueNotifyingHost(1.0f);
+        startTimerHz(Constants::MIDI_UPDATE_TIMER_FREQ_HZ);
+    }
 }
 
 void PluginEditor::comboBoxChanged (ComboBox* comboBoxThatHasChanged)
 {
-    //[UsercomboBoxChanged_Pre]
-    //[/UsercomboBoxChanged_Pre]
-
     if (comboBoxThatHasChanged == scaleKey.get())
     {
-        //[UserComboBoxCode_scaleKey] -- add your combo box handling code here..
-
-		std::string scalekeystr = scaleKey->getText().toStdString();
-		root = scalekeystr[0];
-		char scalekeychar = scalekeystr[0];
-
-		int offset = 0;
-		if (scalekeystr[1] != '\0') {
-			offset = 1;
-			root += "#";
-		}
-
-		scaleroot = Note{ scalekeychar, offset,4 };
+		scaleroot = stringToNote(scaleKey->getText());
 		updateScale();
-
-        //[/UserComboBoxCode_scaleKey]
-    }
-    else if (comboBoxThatHasChanged == comboBox2.get())
-    {
-        //[UserComboBoxCode_comboBox2] -- add your combo box handling code here..
-		if (comboBox2->getText() == "Scales") {
-			// Show only notes that are in the chosen scale
-			updateGuitarNeckScales();
-		}
-		else if (comboBox2->getText() == "Chords") {
-			// Show only notes that are in the chosen chords
-			updateGuitarNeckChords();
-		}
-
-		else if (comboBox2->getText() == "Notes") {
-			// Show all notes
-			resetGuitarNotes();
-		}
-        //[/UserComboBoxCode_comboBox2]
+        if(viewScale->getToggleState()) {
+            updateGuitarNeckScales();
+        }
     }
     else if (comboBoxThatHasChanged == scaleMode.get())
     {
-        //[UserComboBoxCode_scaleMode] -- add your combo box handling code here..
-		std::string scalemodestr = scaleMode->getText().toStdString();
-
-		if (scalemodestr == "Major") {
-			scaletype = BasicScale{ BasicScale::Major };
-			updateScale();
-		}
-		else if (scalemodestr == "Minor") {
-			scaletype = BasicScale{ BasicScale::Minor };
-			updateScale();
-		}
-		else if (scalemodestr == "Harmonic Minor") {
-			scaletype = BasicScale{ BasicScale::HarmonicMinor };
-			updateScale();
-		}
-		else if (scalemodestr == "Minor Pentatonic") {
-			scaletype = BasicScale{ BasicScale::MinorPentatonic };
-			updateScale();
-		}
-		else if (scalemodestr == "Major Pentatonic") {
-			scaletype = BasicScale{ BasicScale::MajorPentatonic };
-			updateScale();
-		}
-		else if (scalemodestr == "Blues") {
-			scaletype = BasicScale{ BasicScale::Blues };
-			updateScale();
-		}
-		else if (scalemodestr == "Dorian") {
-			scaletype = BasicScale{ BasicScale::Dorian };
-			updateScale();
-		}
-		else if (scalemodestr == "Lydian") {
-			scaletype = BasicScale{ BasicScale::Lydian};
-			updateScale();
-		}
-		else if (scalemodestr == "Mixolydian") {
-			scaletype = BasicScale{ BasicScale::Mixolydian };
-			updateScale();
-		}
-		else if (scalemodestr == "Phrygian") {
-			scaletype = BasicScale{ BasicScale::Phrygian};
-			updateScale();
-		}
-		else if (scalemodestr == "Aeolian") {
-			scaletype = BasicScale{ BasicScale::Aeolian };
-			updateScale();
-		}
-		else if (scalemodestr == "Ionian") {
-			scaletype = BasicScale{ BasicScale::Ionian};
-			updateScale();
-		}
-		else if (scalemodestr == "Locrian") {
-			scaletype = BasicScale{ BasicScale::Locrian};
-			updateScale();
-		}
-		else if (scalemodestr == "Metallica") {
-			scaletype = BasicScale{ BasicScale::Metallica };
-			updateScale();
-		}
-		else {
-			txtScale->setText(TRANS("invalid scale type"));
-		}
-
-        //[/UserComboBoxCode_scaleMode]
+        scaletype = BasicScale{ Constants::SCALE_MODES[scaleMode->getSelectedId()-1].type };
+        updateScale();
+        if(viewScale->getToggleState()) {
+            updateGuitarNeckScales();
+        }
     }
     else if (comboBoxThatHasChanged == chordRoot.get())
     {
-        //[UserComboBoxCode_chordRoot] -- add your combo box handling code here..
-		std::string chordkeystr = chordRoot->getText().toStdString();
-		char chordkeychar = chordkeystr[0];
-
-		int offset = 0;
-		if (chordkeystr[1] != '\0') {
-			offset = 1;
-		}
-
-		chordroot = Note{ chordkeychar, offset,4 };
+		chordroot = stringToNote(chordRoot->getText());
 		updateChord();
-        //[/UserComboBoxCode_chordRoot]
+        if(viewChord->getToggleState()) {
+            updateGuitarNeckChords();
+        }
     }
     else if (comboBoxThatHasChanged == chordType.get())
     {
-        //[UserComboBoxCode_chordType] -- add your combo box handling code here..
-		std::string chordtypestr = chordType->getText().toStdString();
-
-		if (chordtypestr == "M") {
-			chordtype = BasicChord{ BasicChord::maj };
-			updateChord();
-		}
-		else if (chordtypestr == "m") {
-			chordtype = BasicChord{ BasicChord::min};
-			updateChord();
-		}
-		else if (chordtypestr == "M7") {
-			chordtype = BasicChord{ BasicChord::maj7 };
-			updateChord();
-		}
-		else if (chordtypestr == "m7") {
-			chordtype = BasicChord{ BasicChord::min7 };
-			updateChord();
-		}
-		else if (chordtypestr == "aug") {
-			chordtype = BasicChord{ BasicChord::aug };
-			updateChord();
-		}
-		else {
-			txtChord->setText(TRANS("Invalid chord type"));
-		}
-        //[/UserComboBoxCode_chordType]
+        chordtype = BasicChord{ Constants::CHORD_TYPES[chordType->getSelectedId()-1].type };
+        updateChord();
+        if(viewChord->getToggleState()) {
+            updateGuitarNeckChords();
+        }
     }
-
-    //[UsercomboBoxChanged_Post]
-    //[/UsercomboBoxChanged_Post]
 }
 
-
-
-//[MiscUserCode] You can add your own definitions of your custom methods or any other code here...
 void PluginEditor::updateScale() {
 	std::ostringstream stream;
-	stream << Scale(scaleroot, scaletype) << std::endl;
+    currentScale = Scale(scaleroot, scaletype);
+	stream << currentScale << std::endl;
 	std::string scalestr = stream.str();
+    scalestr += " ";
 	juce::String jscalestr = simplifyNotes(scalestr);
 	txtScale->setText(jscalestr);
-
-	if (comboBox2->getText() == "Scales") {
-		updateGuitarNeckScales();
-	}
 }
 
 void PluginEditor::updateChord() {
 	std::ostringstream stream;
-	stream << Chord(chordroot, chordtype) << std::endl;
+    currentChord = Chord(chordroot, chordtype);
+	stream << currentChord << std::endl;
 	std::string chordstr = stream.str();
+    chordstr += " ";
 	juce::String jchordstr = simplifyNotes(chordstr);
     txtChord->setText(jchordstr);
-    
-	if (comboBox2->getText() == "Chords") {
-		updateGuitarNeckChords();
-	}
 }
 
-juce::String PluginEditor::simplifyNotes(std::string str) {
+juce::String PluginEditor::simplifyNotes(const std::string & str) {
 	// This is a bit stupid but works
-
 	juce::String jscalestr = str;
 
 	jscalestr = jscalestr.replace("B#", "C");
@@ -2629,43 +865,99 @@ juce::String PluginEditor::simplifyNotes(std::string str) {
 	jscalestr = jscalestr.replace("A##", "B");
 	jscalestr = jscalestr.replace("B##", "C#");
 
-
 	return jscalestr;
 }
 
+Note PluginEditor::stringToNote(const juce::String & noteString)
+{
+    if (noteString.isEmpty())
+        return Note();
+    char noteChar = noteString[0];
+    int offset = noteString[1] != '\0' ? 1 : 0;
+    return Note(noteChar, offset, 4);
+}
+
+void PluginEditor::timerCallback()
+{
+    if(!viewMidi->getToggleState()) {
+        stopTimer();
+        return;
+    }
+
+    auto midiNotes = processor.getActiveMidiNotes();
+    String midiNotesStr;
+    for (const auto& note : midiNotes) {
+        midiNotesStr += note + " ";
+    }
+    String infostr;
+    if(midiNotes.empty()) {
+        infostr = "No active MIDI notes.\nPlayback MIDI in the plugin's track to see active notes on the fretboard.";
+    } else {
+        infostr = "Active MIDI Notes: " + midiNotesStr;
+    }
+    infoText->setText(infostr, dontSendNotification);
+    updateGuitarNeckMidi(midiNotesStr);
+}
 
 void PluginEditor::updateGuitarNeckScales() {
-	resetGuitarNotes();
-	for (int i = 0; i < guitarnotes.size(); ++i) {
-		guitarnotes.at(i)->setAlpha(0.7);
-		if (!(txtScale->getText().contains(guitarnotes.at(i)->getText() + " "))) {
-			guitarnotes.at(i)->setVisible(false);
-		}
-		if (txtScale->getText().getLastCharacters(3).trim() == guitarnotes.at(i)->getText()) {
-			guitarnotes.at(i)->setVisible(true);
-		}
+    juce::StringArray notesToMatch = juce::StringArray::fromTokens(txtScale->getText().trim(), " ", "");
 
-		// Make root note distinct
-		if (guitarnotes.at(i)->getText() == String(root.c_str())) {
+	for (int i = 0; i < guitarnotes.size(); ++i) {
+        if (!(notesToMatch.contains(guitarnotes.at(i)->getName()))) {
+            guitarnotes.at(i)->setVisible(false);
+            continue;
+        }
+        guitarnotes.at(i)->setVisible(true);
+
+        if(buttonView->getToggleState()) {
+            guitarnotes.at(i)->setText(currentScale.getDegreeString(stringToNote(guitarnotes.at(i)->getName())));
+        } else {
+            guitarnotes.at(i)->setText(guitarnotes.at(i)->getName());
+        }
+
+		if (guitarnotes.at(i)->getName() == scaleKey->getText()) {
 			guitarnotes.at(i)->setAlpha(1);
-		}
+		} else {
+            guitarnotes.at(i)->setAlpha(Constants::NON_ROOT_NOTE_ALPHA);
+        }
 	}
+
+    infoText->setText(getScalesInformation(), dontSendNotification);
 }
 
 void PluginEditor::updateGuitarNeckChords() {
-    resetGuitarNotes();
+    juce::StringArray notesToMatch = juce::StringArray::fromTokens(txtChord->getText().trim(), " ", "");
+
     for (int i = 0; i < guitarnotes.size(); ++i) {
-        guitarnotes.at(i)->setAlpha(0.7);
-        if (!(txtChord->getText().contains(guitarnotes.at(i)->getText() + " "))) {
+        if (!(notesToMatch.contains(guitarnotes.at(i)->getName()))) {
             guitarnotes.at(i)->setVisible(false);
+            continue;
         }
-        if (txtChord->getText().getLastCharacters(3).trim() == guitarnotes.at(i)->getText()) {
-            guitarnotes.at(i)->setVisible(true);
+        guitarnotes.at(i)->setVisible(true);
+
+        if(buttonView->getToggleState()) {
+            guitarnotes.at(i)->setText(currentChord.getIntervalString(stringToNote(guitarnotes.at(i)->getName())));
+        } else {
+            guitarnotes.at(i)->setText(guitarnotes.at(i)->getName());
         }
 
-   		// Make root note distinct
-        if (guitarnotes.at(i)->getText() == chordRoot->getText()) {
+        if (guitarnotes.at(i)->getName() == chordRoot->getText()) {
             guitarnotes.at(i)->setAlpha(1);
+        } else {
+            guitarnotes.at(i)->setAlpha(Constants::NON_ROOT_NOTE_ALPHA);
+        }
+    }
+
+    infoText->setText(getChordsInformation(), dontSendNotification);
+}
+
+void PluginEditor::updateGuitarNeckMidi(const String & midinotes) {
+    resetGuitarNotes();
+    juce::StringArray notesToMatch = juce::StringArray::fromTokens(midinotes, " ", "");
+
+    for (int i = 0; i < guitarnotes.size(); ++i) {
+        if (!(notesToMatch.contains(guitarnotes.at(i)->getName()))) {
+            guitarnotes.at(i)->setVisible(false);
         }
     }
 }
@@ -2674,772 +966,25 @@ void PluginEditor::resetGuitarNotes() {
 	for (int i = 0; i < guitarnotes.size(); ++i) {
 		guitarnotes.at(i)->setAlpha(1);
 		guitarnotes.at(i)->setVisible(true);
-
-		if (guitarnotes.at(i)->getText() == "F") {
-			guitarnotes.at(i)->setColour(TextEditor::backgroundColourId, colorF);
-		}
-		else if (guitarnotes.at(i)->getText() == "F#") {
-			guitarnotes.at(i)->setColour(TextEditor::backgroundColourId, colorFs);
-		}
-		else if (guitarnotes.at(i)->getText() == "G") {
-			guitarnotes.at(i)->setColour(TextEditor::backgroundColourId, colorG);
-		}
-		else if (guitarnotes.at(i)->getText() == "G#") {
-			guitarnotes.at(i)->setColour(TextEditor::backgroundColourId, colorGs);
-		}
-		else if (guitarnotes.at(i)->getText() == "A") {
-			guitarnotes.at(i)->setColour(TextEditor::backgroundColourId, colorA);
-		}
-		else if (guitarnotes.at(i)->getText() == "A#") {
-			guitarnotes.at(i)->setColour(TextEditor::backgroundColourId, colorAs);
-		}
-		else if (guitarnotes.at(i)->getText() == "B") {
-			guitarnotes.at(i)->setColour(TextEditor::backgroundColourId, colorB);
-		}
-		else if (guitarnotes.at(i)->getText() == "C") {
-			guitarnotes.at(i)->setColour(TextEditor::backgroundColourId, colorC);
-		}
-		else if (guitarnotes.at(i)->getText() == "C#") {
-			guitarnotes.at(i)->setColour(TextEditor::backgroundColourId, colorCs);
-		}
-		else if (guitarnotes.at(i)->getText() == "D") {
-			guitarnotes.at(i)->setColour(TextEditor::backgroundColourId, colorD);
-		}
-		else if (guitarnotes.at(i)->getText() == "D#") {
-			guitarnotes.at(i)->setColour(TextEditor::backgroundColourId, colorDs);
-		}
-		else if (guitarnotes.at(i)->getText() == "E") {
-			guitarnotes.at(i)->setColour(TextEditor::backgroundColourId, colorE);
-		}
+        guitarnotes.at(i)->setText(guitarnotes.at(i)->getName());
 	}
 }
 
+juce::String PluginEditor::getScalesInformation()
+{
+    juce::String infotext = juce::String(scaleKey->getText() + " " + scaleMode->getText() + " — ");
+    infotext += juce::String(" degrees: " + currentScale.getDegreesString() + "\n");
+    infotext += Constants::SCALE_MODES[scaleMode->getSelectedId()-1].description;
+    return infotext;
+}
 
-//[/MiscUserCode]
-
-
-//==============================================================================
-#if 0
-/*  -- Projucer information section --
-
-    This is where the Projucer stores the metadata that describe this GUI layout, so
-    make changes in here at your peril!
-
-BEGIN_JUCER_METADATA
-
-<JUCER_COMPONENT documentType="Component" className="PluginEditor" componentName=""
-                 parentClasses="public AudioProcessorEditor" constructorParams="MusicTheoryAudioProcessor&amp; p"
-                 variableInitialisers="AudioProcessorEditor (&amp;p), processor (p)"
-                 snapPixels="8" snapActive="1" snapShown="1" overlayOpacity="0.330"
-                 fixedSize="1" initialWidth="1000" initialHeight="600">
-  <BACKGROUND backgroundColour="ff5f9ea0">
-    <IMAGE pos="16 328 968 212" resource="gneck_inverted_png" opacity="1"
-           mode="0"/>
-    <TEXT pos="13 168 109 30" fill="solid: ff000000" hasStroke="0" text="KEY"
-          fontname="Arca Majora 3" fontsize="26.399999999999998579" kerning="0"
-          bold="1" italic="0" justification="36" typefaceStyle="Bold"/>
-    <TEXT pos="341 0 411 72" fill="solid: ff000000" hasStroke="0" text="MTHVST"
-          fontname="Arca Majora 3" fontsize="67.299999999999997158" kerning="0"
-          bold="1" italic="0" justification="36" typefaceStyle="Bold"/>
-    <RECT pos="220 716 588 5" fill="solid: ff000000" hasStroke="0"/>
-    <TEXT pos="324 724 44 30" fill="solid: ff000000" hasStroke="0" text="3"
-          fontname="Arca Majora 3" fontsize="15" kerning="0" bold="0" italic="0"
-          justification="36"/>
-    <TEXT pos="420 724 44 30" fill="solid: ff000000" hasStroke="0" text="5"
-          fontname="Arca Majora 3" fontsize="15" kerning="0" bold="0" italic="0"
-          justification="36"/>
-    <TEXT pos="524 724 44 30" fill="solid: ff000000" hasStroke="0" text="7"
-          fontname="Arca Majora 3" fontsize="15" kerning="0" bold="0" italic="0"
-          justification="36"/>
-    <TEXT pos="612 724 44 30" fill="solid: ff000000" hasStroke="0" text="9"
-          fontname="Arca Majora 3" fontsize="15" kerning="0" bold="0" italic="0"
-          justification="36"/>
-    <TEXT pos="756 724 44 30" fill="solid: ff000000" hasStroke="0" text="12"
-          fontname="Arca Majora 3" fontsize="15" kerning="0" bold="0" italic="0"
-          justification="36"/>
-    <TEXT pos="93 168 200 30" fill="solid: ff000000" hasStroke="0" text="MODE/SCALE"
-          fontname="Arca Majora 3" fontsize="26.399999999999998579" kerning="0"
-          bold="1" italic="0" justification="36" typefaceStyle="Bold"/>
-    <TEXT pos="29 24 200 30" fill="solid: ff000000" hasStroke="0" text="CHORD"
-          fontname="Arca Majora 3" fontsize="26.399999999999998579" kerning="0"
-          bold="1" italic="0" justification="36" typefaceStyle="Bold"/>
-    <TEXT pos="445 48 200 30" fill="solid: ff000000" hasStroke="0" text="MusicTheoryHelperVST"
-          fontname="Arca Majora 3" fontsize="15" kerning="0" bold="1" italic="0"
-          justification="36" typefaceStyle="Bold"/>
-    <TEXT pos="144 544 48 30" fill="solid: ff000000" hasStroke="0" text="3"
-          fontname="Arca Majora 3" fontsize="15" kerning="0" bold="1" italic="0"
-          justification="36" typefaceStyle="Bold"/>
-    <TEXT pos="264 544 40 30" fill="solid: ff000000" hasStroke="0" text="5"
-          fontname="Arca Majora 3" fontsize="15" kerning="0" bold="1" italic="0"
-          justification="36" typefaceStyle="Bold"/>
-    <TEXT pos="365 544 51 30" fill="solid: ff000000" hasStroke="0" text="7"
-          fontname="Arca Majora 3" fontsize="15" kerning="0" bold="1" italic="0"
-          justification="36" typefaceStyle="Bold"/>
-    <TEXT pos="469 544 43 30" fill="solid: ff000000" hasStroke="0" text="9"
-          fontname="Arca Majora 3" fontsize="15" kerning="0" bold="1" italic="0"
-          justification="36" typefaceStyle="Bold"/>
-    <TEXT pos="613 544 43 30" fill="solid: ff000000" hasStroke="0" text="12"
-          fontname="Arca Majora 3" fontsize="15" kerning="0" bold="1" italic="0"
-          justification="36" typefaceStyle="Bold"/>
-    <TEXT pos="741 544 51 30" fill="solid: ff000000" hasStroke="0" text="15"
-          fontname="Arca Majora 3" fontsize="15" kerning="0" bold="1" italic="0"
-          justification="36" typefaceStyle="Bold"/>
-    <TEXT pos="829 544 43 30" fill="solid: ff000000" hasStroke="0" text="17"
-          fontname="Arca Majora 3" fontsize="15" kerning="0" bold="1" italic="0"
-          justification="36" typefaceStyle="Bold"/>
-    <TEXT pos="901 544 51 30" fill="solid: ff000000" hasStroke="0" text="19"
-          fontname="Arca Majora 3" fontsize="15" kerning="0" bold="1" italic="0"
-          justification="36" typefaceStyle="Bold"/>
-  </BACKGROUND>
-  <GROUPCOMPONENT name="new group" id="d3e9a3eb7c3fc20b" memberName="groupComponent"
-                  virtualName="" explicitFocusOrder="0" pos="8 264 985 320" outlinecol="ff7fffd4"
-                  title="guitar"/>
-  <GROUPCOMPONENT name="new group" id="d6a80f42cd589941" memberName="groupComponent4"
-                  virtualName="" explicitFocusOrder="0" pos="8 136 272 128" outlinecol="ff7fffd4"
-                  title="scales"/>
-  <GROUPCOMPONENT name="new group" id="870f042dcaa691d" memberName="groupComponent3"
-                  virtualName="" explicitFocusOrder="0" pos="288 72 704 192" outlinecol="ff7fffd4"
-                  title="notepad"/>
-  <GROUPCOMPONENT name="new group" id="8bfcb5af8d4d4e7a" memberName="groupComponent2"
-                  virtualName="" explicitFocusOrder="0" pos="8 8 272 128" outlinecol="ff7fffd4"
-                  title="chords"/>
-  <COMBOBOX name="new combo box" id="d0bac3320deb23bb" memberName="scaleKey"
-            virtualName="" explicitFocusOrder="0" pos="40 192 64 24" editable="0"
-            layout="33" items="C&#10;C#&#10;D&#10;D#&#10;E&#10;F&#10;F#&#10;G&#10;G#&#10;A&#10;A#&#10;B"
-            textWhenNonSelected="none" textWhenNoItems="(no choices)"/>
-  <COMBOBOX name="new combo box" id="28c57b6ee300da4c" memberName="comboBox2"
-            virtualName="" explicitFocusOrder="0" pos="24 288 150 24" editable="0"
-            layout="33" items="Notes&#10;Scales&#10;Chords" textWhenNonSelected="Notes"
-            textWhenNoItems="(no choices)"/>
-  <COMBOBOX name="new combo box" id="1c5c8e2cb3a97fca" memberName="scaleMode"
-            virtualName="" explicitFocusOrder="0" pos="120 192 152 24" editable="0"
-            layout="33" items="Major&#10;Minor&#10;Harmonic Minor&#10;Blues&#10;Minor Pentatonic&#10;Major Pentatonic&#10;Dorian&#10;Lydian&#10;Mixolydian&#10;Phrygian"
-            textWhenNonSelected="none" textWhenNoItems="(no choices)"/>
-  <COMBOBOX name="new combo box" id="5df79c76e34b7dfe" memberName="chordRoot"
-            virtualName="" explicitFocusOrder="0" pos="56 56 64 24" editable="0"
-            layout="33" items="C&#10;C#&#10;D&#10;D#&#10;E&#10;F&#10;F#&#10;G&#10;G#&#10;A&#10;A#&#10;B"
-            textWhenNonSelected="root" textWhenNoItems="(no choices)"/>
-  <COMBOBOX name="new combo box" id="f1a298a1b78330af" memberName="chordType"
-            virtualName="" explicitFocusOrder="0" pos="144 56 88 24" editable="0"
-            layout="33" items="m&#10;M&#10;aug&#10;M7&#10;m7" textWhenNonSelected="type"
-            textWhenNoItems="(no choices)"/>
-  <TEXTEDITOR name="new text editor" id="61e50ec73da81d20" memberName="textEditor2"
-              virtualName="" explicitFocusOrder="0" pos="304 96 680 160" bkgcol="ff508385"
-              initialText="write anything here ...&#10;" multiline="1" retKeyStartsLine="1"
-              readonly="0" scrollbars="1" caret="1" popupmenu="1"/>
-  <TEXTEDITOR name="new text editor" id="f01c2b8f289a8b31" memberName="txtScale"
-              virtualName="" explicitFocusOrder="0" pos="32 224 224 32" bkgcol="ff5f9ea0"
-              initialText="" multiline="1" retKeyStartsLine="0" readonly="1"
-              scrollbars="0" caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="e8c8a7592443a9c8" memberName="txtChord"
-              virtualName="" explicitFocusOrder="0" pos="16 96 256 32" bkgcol="ff5f9ea0"
-              initialText="" multiline="1" retKeyStartsLine="0" readonly="1"
-              scrollbars="0" caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="c47feac105422dee" memberName="GS4"
-              virtualName="" explicitFocusOrder="0" pos="24 400 56 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="G#"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="8c65bc6efcc4c953" memberName="DS3"
-              virtualName="" explicitFocusOrder="0" pos="24 440 56 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="D#"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="11e8748facae5482" memberName="AS2"
-              virtualName="" explicitFocusOrder="0" pos="24 480 56 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="A#"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="38889325be6cdf59" memberName="F1"
-              virtualName="" explicitFocusOrder="0" pos="24 525 56 24" textcol="ff000000"
-              bkgcol="ff4d91a9" outlinecol="522d2d" shadowcol="c12323" initialText="F"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="256b55a354c61630" memberName="C5"
-              virtualName="" explicitFocusOrder="0" pos="24 360 56 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="C"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="ee66443517e5cc2a" memberName="F2"
-              virtualName="" explicitFocusOrder="0" pos="24 317 56 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="F"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="1150582751d8f554" memberName="A4"
-              virtualName="" explicitFocusOrder="0" pos="84 400 56 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="A"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="48d1d426ce401fa7" memberName="E3"
-              virtualName="" explicitFocusOrder="0" pos="84 440 56 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="E"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="85bf0d6659d292cf" memberName="B2"
-              virtualName="" explicitFocusOrder="0" pos="84 480 56 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="B"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="248c44bfea1f4b03" memberName="FS"
-              virtualName="" explicitFocusOrder="0" pos="84 525 56 24" textcol="ff000000"
-              bkgcol="ff5681ab" outlinecol="522d2d" shadowcol="c12323" initialText="&#10;F#&#10;"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="9e3372e35d461be6" memberName="CS5"
-              virtualName="" explicitFocusOrder="0" pos="84 360 56 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="C#"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="1446fd17a02ce952" memberName="FS6"
-              virtualName="" explicitFocusOrder="0" pos="84 317 56 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="F#"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="d6412f64c5d61ed9" memberName="AS4"
-              virtualName="" explicitFocusOrder="0" pos="145 400 52 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="A#"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="6b6a95ce76a43e78" memberName="F" virtualName=""
-              explicitFocusOrder="0" pos="145 440 52 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="F"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="845fa63053d672b7" memberName="C2"
-              virtualName="" explicitFocusOrder="0" pos="145 480 52 24" textcol="ff000000"
-              bkgcol="d4ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="C"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="51298939a8a19acd" memberName="G" virtualName=""
-              explicitFocusOrder="0" pos="145 525 52 24" textcol="ff000000"
-              bkgcol="ff706ea1" outlinecol="522d2d" shadowcol="c12323" initialText="G"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="7a2cca9782229d3c" memberName="D5"
-              virtualName="" explicitFocusOrder="0" pos="145 360 52 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="D"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="3b60e4e31b65c698" memberName="G6"
-              virtualName="" explicitFocusOrder="0" pos="145 317 52 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="G"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="f2d240f22b9509ad" memberName="B4"
-              virtualName="" explicitFocusOrder="0" pos="202 400 52 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="B"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="db1be30023af9b5d" memberName="FS3"
-              virtualName="" explicitFocusOrder="0" pos="202 440 52 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="F#"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="b2f7b9627635e43e" memberName="CS2"
-              virtualName="" explicitFocusOrder="0" pos="202 480 52 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="C#"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="3c29dcee22064d9f" memberName="GS"
-              virtualName="" explicitFocusOrder="0" pos="202 525 52 24" textcol="ff000000"
-              bkgcol="ff885887" outlinecol="522d2d" shadowcol="c12323" initialText="G#"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="fe43304bd428c553" memberName="DS5"
-              virtualName="" explicitFocusOrder="0" pos="202 360 52 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="D#"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="63533c6138e94925" memberName="GS6"
-              virtualName="" explicitFocusOrder="0" pos="202 317 52 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="G#"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="2a65236799f11be3" memberName="C4"
-              virtualName="" explicitFocusOrder="0" pos="257 400 52 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="C"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="bef9f3ce5b8183c3" memberName="G3"
-              virtualName="" explicitFocusOrder="0" pos="257 440 52 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="G"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="541ba0a7b0dcda21" memberName="D2"
-              virtualName="" explicitFocusOrder="0" pos="257 480 52 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="D"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="709c3ff69cde455a" memberName="A" virtualName=""
-              explicitFocusOrder="0" pos="257 525 52 24" textcol="ff000000"
-              bkgcol="ff934561" outlinecol="522d2d" shadowcol="c12323" initialText="A"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="f4c7f8a29ae2686d" memberName="E5"
-              virtualName="" explicitFocusOrder="0" pos="257 360 52 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="E"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="9e062d3865c3a6d6" memberName="A6"
-              virtualName="" explicitFocusOrder="0" pos="257 317 52 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="A"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="afb5bca316e5cc6e" memberName="CS4"
-              virtualName="" explicitFocusOrder="0" pos="312 400 51 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="C#"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="678d85789080f749" memberName="GS3"
-              virtualName="" explicitFocusOrder="0" pos="312 440 51 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="G#"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="13f02da8033a15fa" memberName="DS2"
-              virtualName="" explicitFocusOrder="0" pos="312 480 51 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="D#"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="17541f8aa0e0c16f" memberName="AS"
-              virtualName="" explicitFocusOrder="0" pos="312 525 51 24" textcol="ff000000"
-              bkgcol="ffbd5c63" outlinecol="522d2d" shadowcol="c12323" initialText="A#"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="d34dddb5bda2afc8" memberName="F5"
-              virtualName="" explicitFocusOrder="0" pos="312 360 51 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="F"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="9541c70a1c430578" memberName="AS6"
-              virtualName="" explicitFocusOrder="0" pos="312 317 51 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="A#"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="36d89d85d2491463" memberName="D4"
-              virtualName="" explicitFocusOrder="0" pos="367 400 48 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="D"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="f56d4450a66f4d65" memberName="A3"
-              virtualName="" explicitFocusOrder="0" pos="367 440 48 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="A"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="be86533ab2c0f36e" memberName="E2"
-              virtualName="" explicitFocusOrder="0" pos="367 480 48 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="E"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="2298f80f641b190d" memberName="B" virtualName=""
-              explicitFocusOrder="0" pos="367 525 48 24" textcol="ff000000"
-              bkgcol="ffdf7b60" outlinecol="522d2d" shadowcol="c12323" initialText="B"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="a50cf62188f318cc" memberName="FS5"
-              virtualName="" explicitFocusOrder="0" pos="367 360 48 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="F#"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="c5aa0440900f2b14" memberName="B6"
-              virtualName="" explicitFocusOrder="0" pos="367 317 48 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="B"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="8b11edbbb6b93a3d" memberName="DS4"
-              virtualName="" explicitFocusOrder="0" pos="420 400 46 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="D#"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="35663d800eb06fe" memberName="AS3"
-              virtualName="" explicitFocusOrder="0" pos="420 440 46 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="A#"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="82bdd472cd349cf9" memberName="F3"
-              virtualName="" explicitFocusOrder="0" pos="420 480 46 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="F"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="49bda9d59f9250c9" memberName="C" virtualName=""
-              explicitFocusOrder="0" pos="420 525 46 24" textcol="ff000000"
-              bkgcol="fffecb5f" outlinecol="522d2d" shadowcol="c12323" initialText="C"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="d2a1e2d6e4ec8efc" memberName="G5"
-              virtualName="" explicitFocusOrder="0" pos="420 360 46 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="G"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="ad744b27041092fe" memberName="C6"
-              virtualName="" explicitFocusOrder="0" pos="420 317 46 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="C"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="527437bcdc447b1d" memberName="E4"
-              virtualName="" explicitFocusOrder="0" pos="471 400 44 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="E"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="ce62bba04be5dd5b" memberName="B3"
-              virtualName="" explicitFocusOrder="0" pos="471 440 44 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="B"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="f652d10509ebe94b" memberName="FS2"
-              virtualName="" explicitFocusOrder="0" pos="471 480 44 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="F#"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="e0f6882bcc88dd0b" memberName="CS"
-              virtualName="" explicitFocusOrder="0" pos="471 525 44 24" textcol="ff000000"
-              bkgcol="ffc1be4f" outlinecol="522d2d" shadowcol="c12323" initialText="C#"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="683dc1af36244b1c" memberName="GS5"
-              virtualName="" explicitFocusOrder="0" pos="471 360 44 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="G#"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="9f5df1efa442c0c3" memberName="CS6"
-              virtualName="" explicitFocusOrder="0" pos="471 317 44 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="C#"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="aec7cefcf70eec10" memberName="F4"
-              virtualName="" explicitFocusOrder="0" pos="520 400 44 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="F"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="5aecebb3ce5a6274" memberName="C3"
-              virtualName="" explicitFocusOrder="0" pos="520 440 44 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="C"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="cdc65c06f224bb35" memberName="G2"
-              virtualName="" explicitFocusOrder="0" pos="520 480 44 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="G"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="37bc7174c5d9f43b" memberName="D" virtualName=""
-              explicitFocusOrder="0" pos="520 525 44 24" textcol="ff000000"
-              bkgcol="ff86af4d" outlinecol="522d2d" shadowcol="c12323" initialText="D"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="711cb79dd815b051" memberName="A5"
-              virtualName="" explicitFocusOrder="0" pos="520 360 44 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="A"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="a9fa6acc8204956f" memberName="D6"
-              virtualName="" explicitFocusOrder="0" pos="520 317 44 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="D"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="eaaa77e97e97c2dc" memberName="FS4"
-              virtualName="" explicitFocusOrder="0" pos="569 400 43 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="F#"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="a7db4ff38469c8c2" memberName="CS3"
-              virtualName="" explicitFocusOrder="0" pos="569 440 43 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="C#"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="2648f4d1b0918a9d" memberName="GS2"
-              virtualName="" explicitFocusOrder="0" pos="569 480 43 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="G#"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="e0a2f56fdc20e35b" memberName="DS"
-              virtualName="" explicitFocusOrder="0" pos="569 525 43 24" textcol="ff000000"
-              bkgcol="ff499b53" outlinecol="522d2d" shadowcol="c12323" initialText="D#"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="ab71d96f3affec99" memberName="AS5"
-              virtualName="" explicitFocusOrder="0" pos="569 360 43 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="A#"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="f202c01a1c02b479" memberName="DS6"
-              virtualName="" explicitFocusOrder="0" pos="569 317 43 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="D#"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="7e5131977f911f5b" memberName="G4"
-              virtualName="" explicitFocusOrder="0" pos="616 400 42 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="G"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="1b61964a64e39cd7" memberName="D3"
-              virtualName="" explicitFocusOrder="0" pos="616 440 42 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="D"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="9d98dce091c93330" memberName="A2"
-              virtualName="" explicitFocusOrder="0" pos="616 480 42 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="A"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="c976fc24f6659c21" memberName="E" virtualName=""
-              explicitFocusOrder="0" pos="616 525 42 24" textcol="ff000000"
-              bkgcol="ff007062" outlinecol="522d2d" shadowcol="c12323" initialText="E"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="78566031c387cffd" memberName="B5"
-              virtualName="" explicitFocusOrder="0" pos="616 360 42 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="B"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="5f4415d59eaada7f" memberName="E6"
-              virtualName="" explicitFocusOrder="0" pos="616 317 42 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="E"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="6a4e8ecf68a67b8f" memberName="GS7"
-              virtualName="" explicitFocusOrder="0" pos="664 400 39 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="G#"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="e76aab8d5c26d98c" memberName="DS7"
-              virtualName="" explicitFocusOrder="0" pos="664 440 39 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="D#"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="ca01491146053d39" memberName="AS7"
-              virtualName="" explicitFocusOrder="0" pos="664 480 39 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="A#"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="f804716a51416b47" memberName="F6"
-              virtualName="" explicitFocusOrder="0" pos="664 525 39 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="F"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="39cd5f30a8579f6e" memberName="C7"
-              virtualName="" explicitFocusOrder="0" pos="664 360 39 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="C"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="8b2ae6fc1aa6bb19" memberName="F7"
-              virtualName="" explicitFocusOrder="0" pos="664 317 39 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="F"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="813bc65bf4cc13b1" memberName="A7"
-              virtualName="" explicitFocusOrder="0" pos="708 400 38 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="A"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="c751671410e9b16d" memberName="E7"
-              virtualName="" explicitFocusOrder="0" pos="708 440 38 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="E"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="f76cba3b6e845220" memberName="B7"
-              virtualName="" explicitFocusOrder="0" pos="708 480 38 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="B"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="3be7532decf1ec47" memberName="FS7"
-              virtualName="" explicitFocusOrder="0" pos="708 525 38 24" textcol="ff000000"
-              bkgcol="ff5681ab" outlinecol="522d2d" shadowcol="c12323" initialText="&#10;F#&#10;"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="fa7344c71665a69d" memberName="CS7"
-              virtualName="" explicitFocusOrder="0" pos="708 360 38 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="C#"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="4f1b58bd90216f08" memberName="FS8"
-              virtualName="" explicitFocusOrder="0" pos="708 317 38 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="F#"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="2fc9142567c7d22f" memberName="AS8"
-              virtualName="" explicitFocusOrder="0" pos="751 400 36 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="A#"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="c2ad20cbf7074689" memberName="F8"
-              virtualName="" explicitFocusOrder="0" pos="751 440 36 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="F"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="d265f4ad8ef157c2" memberName="C8"
-              virtualName="" explicitFocusOrder="0" pos="751 480 36 24" textcol="ff000000"
-              bkgcol="d4ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="C"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="5905c54918f4638a" memberName="G7"
-              virtualName="" explicitFocusOrder="0" pos="751 525 36 24" textcol="ff000000"
-              bkgcol="ff706ea1" outlinecol="522d2d" shadowcol="c12323" initialText="G"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="6734dca45d7272a5" memberName="D7"
-              virtualName="" explicitFocusOrder="0" pos="751 360 36 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="D"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="deacafc969b4dd68" memberName="G8"
-              virtualName="" explicitFocusOrder="0" pos="751 317 36 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="G"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="1a3233b14b075b02" memberName="B8"
-              virtualName="" explicitFocusOrder="0" pos="792 400 36 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="B"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="760083f33f8090fa" memberName="FS9"
-              virtualName="" explicitFocusOrder="0" pos="792 440 36 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="F#"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="25dc2468cff9a323" memberName="CS8"
-              virtualName="" explicitFocusOrder="0" pos="792 480 36 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="C#"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="b49227e3554e39fa" memberName="GS8"
-              virtualName="" explicitFocusOrder="0" pos="792 525 36 24" textcol="ff000000"
-              bkgcol="ff885887" outlinecol="522d2d" shadowcol="c12323" initialText="G#"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="69770d0e9306bae" memberName="DS8"
-              virtualName="" explicitFocusOrder="0" pos="792 360 36 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="D#"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="630a74800b89eed0" memberName="GS9"
-              virtualName="" explicitFocusOrder="0" pos="792 317 36 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="G#"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="ef3a7c27764f4c60" memberName="C9"
-              virtualName="" explicitFocusOrder="0" pos="834 400 34 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="C"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="c63ff8a25a654b15" memberName="G9"
-              virtualName="" explicitFocusOrder="0" pos="834 440 34 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="G"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="fce36c5d506942a0" memberName="D8"
-              virtualName="" explicitFocusOrder="0" pos="834 480 34 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="D"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="276b467bf37aaf95" memberName="A8"
-              virtualName="" explicitFocusOrder="0" pos="834 525 34 24" textcol="ff000000"
-              bkgcol="ff934561" outlinecol="522d2d" shadowcol="c12323" initialText="A"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="346cf5aa5e8328b3" memberName="E8"
-              virtualName="" explicitFocusOrder="0" pos="834 360 34 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="E"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="a7fd9daa59e61cf1" memberName="A9"
-              virtualName="" explicitFocusOrder="0" pos="834 317 34 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="A"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="f50004115de09a61" memberName="CS9"
-              virtualName="" explicitFocusOrder="0" pos="873 400 32 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="C#"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="b343afe4af32edd8" memberName="GS10"
-              virtualName="" explicitFocusOrder="0" pos="873 440 32 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="G#"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="c624556af48185b1" memberName="DS9"
-              virtualName="" explicitFocusOrder="0" pos="873 480 32 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="D#"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="bb127f86d163652f" memberName="AS9"
-              virtualName="" explicitFocusOrder="0" pos="873 525 32 24" textcol="ff000000"
-              bkgcol="ffbd5c63" outlinecol="522d2d" shadowcol="c12323" initialText="A#"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="3698e08d1bd3a134" memberName="F9"
-              virtualName="" explicitFocusOrder="0" pos="873 360 32 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="F"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="49687131b28c55c9" memberName="AS10"
-              virtualName="" explicitFocusOrder="0" pos="873 317 32 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="A#"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="a3735da997fc7382" memberName="D9"
-              virtualName="" explicitFocusOrder="0" pos="911 400 32 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="D"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="81e3046a31ae1f3b" memberName="A10"
-              virtualName="" explicitFocusOrder="0" pos="911 440 32 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="A"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="df21a3524a6a8415" memberName="E9"
-              virtualName="" explicitFocusOrder="0" pos="911 480 32 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="E"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="9b85bd427f4c501c" memberName="B9"
-              virtualName="" explicitFocusOrder="0" pos="911 525 32 24" textcol="ff000000"
-              bkgcol="ffdf7b60" outlinecol="522d2d" shadowcol="c12323" initialText="B"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="a7b339ce729013f4" memberName="FS10"
-              virtualName="" explicitFocusOrder="0" pos="911 360 32 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="F#"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="100c0673289ac95" memberName="B10"
-              virtualName="" explicitFocusOrder="0" pos="911 317 32 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="B"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="b74717f7ff7f84a8" memberName="DS10"
-              virtualName="" explicitFocusOrder="0" pos="949 400 30 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="D#"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="1c3f6bbaeaee26a2" memberName="AS11"
-              virtualName="" explicitFocusOrder="0" pos="949 440 30 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="A#"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="d304d2073a4648d8" memberName="F10"
-              virtualName="" explicitFocusOrder="0" pos="949 480 30 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="F"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="a347f501b552d8d2" memberName="C10"
-              virtualName="" explicitFocusOrder="0" pos="949 525 30 24" textcol="ff000000"
-              bkgcol="fffecb5f" outlinecol="522d2d" shadowcol="c12323" initialText="C"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="1461e3a30095cada" memberName="G10"
-              virtualName="" explicitFocusOrder="0" pos="949 360 30 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="G"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-  <TEXTEDITOR name="new text editor" id="8a36f1d76d71d77b" memberName="C11"
-              virtualName="" explicitFocusOrder="0" pos="949 317 30 24" textcol="ff000000"
-              bkgcol="49ab1e1e" outlinecol="522d2d" shadowcol="c12323" initialText="C"
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="0"/>
-</JUCER_COMPONENT>
-
-END_JUCER_METADATA
-*/
-#endif
+juce::String PluginEditor::getChordsInformation()
+{
+    juce::String infotext = juce::String(chordRoot->getText() + " " + chordType->getText()  + " — ");
+    infotext += juce::String(" intervals: " + currentChord.getIntervalsString() + "\n");
+    infotext += Constants::CHORD_TYPES[chordType->getSelectedId()-1].description;
+    return infotext;
+}
 
 //==============================================================================
 // Binary resources - be careful not to edit any of these sections!
@@ -3655,7 +1200,3 @@ static const unsigned char resource_PluginEditor_gneck_inverted_png[] = { 137,80
 
 const char* PluginEditor::gneck_inverted_png = (const char*) resource_PluginEditor_gneck_inverted_png;
 const int PluginEditor::gneck_inverted_pngSize = 5025;
-
-
-//[EndFile] You can add extra defines here...
-//[/EndFile]

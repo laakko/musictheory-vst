@@ -32,11 +32,21 @@ namespace acentric_core {
 		Note getRoot() const { return root; }
 		void setRoot(Note newRoot) { this->root = root; }
 		const std::vector<Interval>& getPitches() const { return pitches; }
+		
 
 		Chord getInversion(int inversionNumber) const;
 
 		std::string getRawString() const;
 		std::string getCommonString() const; // going to be the tough one
+		std::string getIntervalsString() const; // Method to format intervals as string
+
+		// Returns the interval of the given note relative to the chord's root
+		// Returns Interval(0) if the note is not in the chord
+		Interval getInterval(Note note) const;
+
+		// Returns the interval as a string (e.g. "P1", "M3", etc.) for the given note
+		// Returns "P1" if the note is not in the chord
+		std::string getIntervalString(Note note) const;
 	};
 
 	std::ostream& operator<<(std::ostream &os, const Chord &chord);

@@ -129,6 +129,15 @@ namespace acentric_core {
 			degrees.push_back(Interval{ 'm', 6 });
 			degrees.push_back(Interval{ 'M', 7 });
 			break;
+
+		case BasicScale::PhrygianDominant:
+			degrees.push_back(Interval{ 'm', 2 });
+			degrees.push_back(Interval{ 'M', 3 });
+			degrees.push_back(Interval{ 'P', 4 });
+			degrees.push_back(Interval{ 'P', 5 });
+			degrees.push_back(Interval{ 'm', 6 });
+			degrees.push_back(Interval{ 'm', 7 });
+			break;
 		}
 	}
 
@@ -140,6 +149,41 @@ namespace acentric_core {
 
 
 		return scaleNotes;
+	}
+
+	std::string Scale::getDegreeString(const Note & note) const
+	{
+		if (note.isEnharmonic(this->getBase())) {
+			return "P1";
+		}
+		for (size_t i = 0; i < degrees.size(); ++i) {
+			Note scaleNote = base.getOtherNote(degrees[i]);
+			bool absMatch = (scaleNote.getAbsoluteDistance() % 12) == (note.getAbsoluteDistance() % 12);
+			if (absMatch) {
+				std::ostringstream ss;
+				ss << degrees[i];
+				return ss.str();
+			}
+		}
+		return "Not in scale";
+	}
+
+	std::string Scale::getDegreesString() const
+	{
+		if(degrees.empty())
+		{
+			return "";
+		}
+		
+		std::ostringstream stream;
+		stream << "P1";
+
+		for(size_t i = 0; i < this->degrees.size(); ++i)
+		{
+			stream << " " << this->degrees[i];
+		}
+
+		return stream.str();
 	}
 
 	std::ostream & operator<<(std::ostream & os, const Scale & scale)

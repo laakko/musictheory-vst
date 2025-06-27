@@ -153,7 +153,26 @@ namespace acentric_core {
 			pitches.push_back(Interval{ 'P', 5 });
 			pitches.push_back(Interval{ 'M', 7 });
 			break;
+		
+			case BasicChord::sus2:
+			pitches.push_back(Interval{ 'P', 1 });
+			pitches.push_back(Interval{ 'M', 2 });
+			pitches.push_back(Interval{ 'P', 5 });
+			break;
 
+		case BasicChord::sus4:
+			pitches.push_back(Interval{ 'P', 1 });
+			pitches.push_back(Interval{ 'P', 4 });
+			pitches.push_back(Interval{ 'P', 5 });
+			break;
+
+		case BasicChord::hendrix:
+			pitches.push_back(Interval{ 'P', 1 });
+			pitches.push_back(Interval{ 'M', 3 });
+			pitches.push_back(Interval{ 'P', 5 });
+			pitches.push_back(Interval{ 'm', 7 });
+			pitches.push_back(Interval{ 'a', 9 });
+			break;
 		}
 
 		// TODO any reason to call cleanAndValidate() here? probably not
@@ -193,6 +212,43 @@ namespace acentric_core {
 			this->pitches.push_back(notes.at(0).getInterval(notes.at(i)));
 		}
 		this->cleanAndValidate();
+	}
+
+	std::string Chord::getIntervalsString() const {
+		if (pitches.empty()) {
+			return "";
+		}
+		
+		std::ostringstream ss;
+		
+		// Append the first interval
+		ss << pitches[0];
+		
+		// Append the rest of the intervals with commas
+		for (size_t i = 1; i < pitches.size(); i++) {
+			ss << " " << pitches[i];
+		}
+		
+		return ss.str();
+	}
+
+	Interval Chord::getInterval(Note note) const {
+		Interval targetInterval = root.getInterval(note);
+		for (const Interval& interval : pitches) {
+			Note chordNote = root.getOtherNote(interval);
+			if (chordNote.getAbsoluteDistance() % 12 == note.getAbsoluteDistance() % 12) {
+				return interval;
+			}
+		}
+		
+		// If the note is not found in the chord, return Interval(0)
+		return Interval{'P', 1};
+	}
+
+	std::string Chord::getIntervalString(Note note) const {
+		std::ostringstream ss;
+		ss << getInterval(note);
+		return ss.str();
 	}
 
 	std::ostream & operator<<(std::ostream & os, const Chord & chord)

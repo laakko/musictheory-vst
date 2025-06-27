@@ -10,17 +10,20 @@ Written with Juce & C++
 
 <br>
   
-![sc](/musictheory.gif)  
+![sc](/musictheoryvst.gif)  
 
-### Usage
+### Installation & Usage
 
 - Download latest Linux or Windows vst3 plugin binaries from Github releases, or build manually from sources (instructions below).
 
 - Search and add the plugin on your DAW of choice. To use the midi-live feature, add the plugin to a midi track. Note that it will block and mute midi instruments and effects, so use a separate track.
 
+- The plugin has parameters for all choices, so you can use DAW automation to e.g. have certain scales to show at specific times
 
+<br>
 
-#### Linux build
+### Source build
+#### Linux
 ```
 docker build -t musictheory-juce709 .
 
@@ -45,7 +48,7 @@ Change JUCE installation path on the MusicTheory.jucer file if needed
 
 ```
 
-#### Windows build
+#### Windows
 ```
 Open .sln project in VisualStudio2022
   

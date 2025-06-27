@@ -13,10 +13,10 @@ MusicTheoryAudioProcessor::MusicTheoryAudioProcessor()
                 std::make_unique<AudioParameterBool>("buttonColour", "theme", false),
                 std::make_unique<AudioParameterBool>("buttonView", "view", false),
 
-                std::make_unique<AudioParameterBool>("viewAll", "All", true),
-                std::make_unique<AudioParameterBool>("viewScale", "Scale", false),
-                std::make_unique<AudioParameterBool>("viewChord", "Chord", false),
-                std::make_unique<AudioParameterBool>("viewMidi", "Midi", false),
+                std::make_unique<AudioParameterBool>("viewAll", "toggleAll", true),
+                std::make_unique<AudioParameterBool>("viewScale", "toggleScale", false),
+                std::make_unique<AudioParameterBool>("viewChord", "toggleChord", false),
+                std::make_unique<AudioParameterBool>("viewMidi", "toggleMidi", false),
 
                 std::make_unique<AudioParameterChoice>("chordRoot", "root", Constants::ROOT_NOTES, 0),
                 std::make_unique<AudioParameterChoice>("chordType", "chord", Constants::getChordTypesStringArray(), 0),

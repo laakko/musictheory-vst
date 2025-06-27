@@ -51,7 +51,6 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     }
     scaleKey->setSelectedId (1, dontSendNotification);
     scaleKey->addListener (this);
-    scaleKeyAttachment = std::make_unique<AudioProcessorValueTreeState::ComboBoxAttachment>(*p.state, "scaleKey", *scaleKey);
 
     addAndMakeVisible (*(scaleMode = std::make_unique<ComboBox> ("new combo box")));
     scaleMode->setEditableText (false);
@@ -63,7 +62,6 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     }
     scaleMode->setSelectedId (1, dontSendNotification);
     scaleMode->addListener (this);
-    scaleModeAttachment = std::make_unique<AudioProcessorValueTreeState::ComboBoxAttachment>(*p.state, "scaleMode", *scaleMode);
 
     addAndMakeVisible (*(chordRoot = std::make_unique<ComboBox> ("new combo box")));
     chordRoot->setEditableText (false);
@@ -75,7 +73,6 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     }
     chordRoot->setSelectedId (1, dontSendNotification);
     chordRoot->addListener (this);
-    chordRootAttachment = std::make_unique<AudioProcessorValueTreeState::ComboBoxAttachment>(*p.state, "chordRoot", *chordRoot);
 
     addAndMakeVisible (*(chordType = std::make_unique<ComboBox> ("new combo box")));
     chordType->setEditableText (false);
@@ -87,7 +84,6 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
     }
     chordType->setSelectedId (1, dontSendNotification);
     chordType->addListener (this);
-    chordTypeAttachment = std::make_unique<AudioProcessorValueTreeState::ComboBoxAttachment>(*p.state, "chordType", *chordType);
 
     addAndMakeVisible (*(infoText = std::make_unique<TextEditor> ("new text editor")));
     infoText->setMultiLine (true);
@@ -121,40 +117,37 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
 
     addAndMakeVisible (*(viewAll = std::make_unique<ToggleButton> ("new toggle button")));
     viewAll->setButtonText("All");
-    viewAll->setClickingTogglesState (true);
-    viewAll->setToggleState (true, dontSendNotification);
+    viewAll->setToggleState (false, dontSendNotification);
+    viewAll->setClickingTogglesState (false);
     viewAll->onClick = [this]() { selectButton("All"); };
-    viewAllAttachment = std::make_unique<AudioProcessorValueTreeState::ButtonAttachment>(*p.state, "viewAll", *viewAll);
 
     addAndMakeVisible (*(viewScale = std::make_unique<ToggleButton> ("new toggle button")));
     viewScale->setButtonText("Scale");
     viewScale->setToggleState (false, dontSendNotification);
+    viewScale->setClickingTogglesState (false);
     viewScale->onClick = [this]() { selectButton("Scale"); };
-    viewScaleAttachment = std::make_unique<AudioProcessorValueTreeState::ButtonAttachment>(*p.state, "viewScale", *viewScale);
 
     addAndMakeVisible (*(viewChord = std::make_unique<ToggleButton> ("new toggle button")));
     viewChord->setButtonText("Chord");
     viewChord->setToggleState (false, dontSendNotification);
+    viewChord->setClickingTogglesState (false);
     viewChord->onClick = [this]() { selectButton("Chord"); };
-    viewChordAttachment = std::make_unique<AudioProcessorValueTreeState::ButtonAttachment>(*p.state, "viewChord", *viewChord);
 
     addAndMakeVisible (*(viewMidi = std::make_unique<ToggleButton> ("new toggle button")));
     viewMidi->setButtonText("Midi");
     viewMidi->setToggleState (false, dontSendNotification);
+    viewMidi->setClickingTogglesState (false);
     viewMidi->onClick = [this]() { selectButton("Midi"); };
-    viewMidiAttachment = std::make_unique<AudioProcessorValueTreeState::ButtonAttachment>(*p.state, "viewMidi", *viewMidi);
 
     addAndMakeVisible (*(buttonColour = std::make_unique<TextButton> ("new toggle button")));
     buttonColour->setButtonText("theme");
     buttonColour->setClickingTogglesState (true);
     buttonColour->onClick = [this]() { switchColour(); };
-    buttonColourAttachment = std::make_unique<AudioProcessorValueTreeState::ButtonAttachment>(*p.state, "buttonColour", *buttonColour);
 
     addAndMakeVisible (*(buttonView = std::make_unique<TextButton> ("new toggle button")));
     buttonView->setButtonText("view");
     buttonView->setClickingTogglesState (true);
     buttonView->onClick = [this]() { viewButton(); };
-    buttonViewAttachment = std::make_unique<AudioProcessorValueTreeState::ButtonAttachment>(*p.state, "buttonView", *buttonView);
 
     auto createTextEditor = [this](std::unique_ptr<TextEditor>& editorPtr, const String& labelText, Colour color)
     {
@@ -442,7 +435,36 @@ PluginEditor::PluginEditor (MusicTheoryAudioProcessor& p)
 	guitarnotes.push_back(std::move(B9));
 	guitarnotes.push_back(std::move(B10));
 
-  	resetGuitarNotes();
+    // Restore plugin state
+    scaleKeyAttachment = std::make_unique<AudioProcessorValueTreeState::ComboBoxAttachment>(*p.state, "scaleKey", *scaleKey);
+    scaleModeAttachment = std::make_unique<AudioProcessorValueTreeState::ComboBoxAttachment>(*p.state, "scaleMode", *scaleMode);
+    chordRootAttachment = std::make_unique<AudioProcessorValueTreeState::ComboBoxAttachment>(*p.state, "chordRoot", *chordRoot);
+    chordTypeAttachment = std::make_unique<AudioProcessorValueTreeState::ComboBoxAttachment>(*p.state, "chordType", *chordType);
+    
+    buttonColourAttachment = std::make_unique<AudioProcessorValueTreeState::ButtonAttachment>(*p.state, "buttonColour", *buttonColour);
+    buttonViewAttachment = std::make_unique<AudioProcessorValueTreeState::ButtonAttachment>(*p.state, "buttonView", *buttonView);
+
+    viewAllAttachment = std::make_unique<AudioProcessorValueTreeState::ButtonAttachment>(*p.state, "viewAll", *viewAll);
+    viewScaleAttachment = std::make_unique<AudioProcessorValueTreeState::ButtonAttachment>(*p.state, "viewScale", *viewScale);
+    viewChordAttachment = std::make_unique<AudioProcessorValueTreeState::ButtonAttachment>(*p.state, "viewChord", *viewChord);
+    viewMidiAttachment = std::make_unique<AudioProcessorValueTreeState::ButtonAttachment>(*p.state, "viewMidi", *viewMidi);
+
+    if (viewAll->getToggleState())
+    {
+        selectButton("All");
+    }
+    else if (viewScale->getToggleState())
+    {
+        selectButton("Scale");
+    }
+    else if (viewChord->getToggleState())
+    {
+        selectButton("Chord");
+    }
+    else if (viewMidi->getToggleState())
+    {
+        selectButton("All");
+    }
 }
 
 PluginEditor::~PluginEditor() = default;
@@ -722,6 +744,10 @@ void PluginEditor::selectButton(const std::string & function)
         viewScale->setToggleState(false, dontSendNotification);
         viewChord->setToggleState(false, dontSendNotification);
         viewMidi->setToggleState(false, dontSendNotification);
+        processor.state->getParameter("viewAll")->setValueNotifyingHost(1.0f); 
+        processor.state->getParameter("viewScale")->setValueNotifyingHost(0.0f);
+        processor.state->getParameter("viewChord")->setValueNotifyingHost(0.0f);
+        processor.state->getParameter("viewMidi")->setValueNotifyingHost(0.0f);
         infoText->setText("", dontSendNotification);
         resetGuitarNotes();
     }
@@ -730,7 +756,10 @@ void PluginEditor::selectButton(const std::string & function)
         viewAll->setToggleState(false, dontSendNotification);
         viewChord->setToggleState(false, dontSendNotification);
         viewMidi->setToggleState(false, dontSendNotification);
-        infoText->setText("", dontSendNotification); // TODO
+        processor.state->getParameter("viewAll")->setValueNotifyingHost(0.0f); 
+        processor.state->getParameter("viewScale")->setValueNotifyingHost(1.0f);
+        processor.state->getParameter("viewChord")->setValueNotifyingHost(0.0f);
+        processor.state->getParameter("viewMidi")->setValueNotifyingHost(0.0f);
         updateGuitarNeckScales();
     }
     else if(function == "Chord") {
@@ -738,7 +767,10 @@ void PluginEditor::selectButton(const std::string & function)
         viewAll->setToggleState(false, dontSendNotification);
         viewScale->setToggleState(false, dontSendNotification);
         viewMidi->setToggleState(false, dontSendNotification);
-        infoText->setText("", dontSendNotification); // TODO
+        processor.state->getParameter("viewAll")->setValueNotifyingHost(0.0f); 
+        processor.state->getParameter("viewScale")->setValueNotifyingHost(0.0f);
+        processor.state->getParameter("viewChord")->setValueNotifyingHost(1.0f);
+        processor.state->getParameter("viewMidi")->setValueNotifyingHost(0.0f);
         updateGuitarNeckChords();
     }
     else if(function == "Midi") {
@@ -746,6 +778,10 @@ void PluginEditor::selectButton(const std::string & function)
         viewAll->setToggleState(false, dontSendNotification);
         viewScale->setToggleState(false, dontSendNotification);
         viewChord->setToggleState(false, dontSendNotification);
+        processor.state->getParameter("viewAll")->setValueNotifyingHost(0.0f); 
+        processor.state->getParameter("viewScale")->setValueNotifyingHost(0.0f);
+        processor.state->getParameter("viewChord")->setValueNotifyingHost(0.0f);
+        processor.state->getParameter("viewMidi")->setValueNotifyingHost(1.0f);
         startTimerHz(Constants::MIDI_UPDATE_TIMER_FREQ_HZ);
     }
 }
